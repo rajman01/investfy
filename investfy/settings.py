@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from datetime import timedelta
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -152,3 +153,13 @@ EMAIL_HOST_PASSWORD = config('PASSWORD')
 CELERY_BROKER_URL = config('CELERY_BROKER_URL')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
+CELERY_BEAT_SCHEDULE = {
+    "quicksave": {
+        "task": "savings.tasks.quicksave_autosave_task",
+        "schedule": timedelta(days=1, hours=7)
+    },
+    "targetsave": {
+        "task": "savings.tasks.targetsave_autosave_task",
+        "schedule": timedelta(days=1, hours=7)
+    }
+}

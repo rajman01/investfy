@@ -16,6 +16,7 @@ class QuickSave(models.Model):
     autosave = models.BooleanField(default=False)
     day_interval = models.IntegerField(blank=True, null=True)
     autosave_amount = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
+    last_saved = models.DateField(blank=True, null=True)
 
     def cashout(self):
         if self.balance > Decimal('0.00'):
@@ -51,6 +52,7 @@ class TargetSave(models.Model):
     autosave = models.BooleanField(default=False)
     day_interval = models.IntegerField(blank=True, null=True)
     autosave_amount = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
+    last_saved = models.DateField(blank=True, null=True)
 
     def deposit(self, amount):
         if self.active:
@@ -60,7 +62,7 @@ class TargetSave(models.Model):
         return False
 
     def cashout(self):
-        if self.progress > (Decimal('0.5') * self.targeted_saving):
+        if self.progress >= (Decimal('0.5') * self.targeted_saving):
             self.wallet.balance += self.progress
             self.progress = Decimal('0.00')
             self.targeted_saving = Decimal('0.00')

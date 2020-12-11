@@ -7,7 +7,7 @@ from .models import Wallet, WalletTransaction
 from .permissions import ViewOwnWallet
 from django.contrib.auth import get_user_model
 from user.permissions import EmailVerified, BVNVerified
-from user.utils import send_email
+from user.tasks import send_email_task
 
 
 UserModel = get_user_model()
@@ -72,8 +72,8 @@ class WalletTransferView(generics.GenericAPIView):
             beneficiary_body = f'You just recieved {amount} from {sender.full_name}'
             sender_data = {'body': sender_body, 'subject': 'Wallet debit', 'to': sender.email}
             beneficiary_data = {'body': beneficiary_body, 'subject': 'Wallet Credit', 'to': beneficiary.email}
-            send_email(send_email)
-            send_email(beneficiary_data)
+            send_email_task.delay(sender_data)
+            send_email_task.delay(beneficiary_data)
             return Response({'response': 'Transaction succesful'}, status=status.HTTP_200_OK)
         return Response({'error': 'insufficient funds'}, status=status.HTTP_400_BAD_REQUEST)
         

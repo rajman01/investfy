@@ -127,9 +127,10 @@ class WalletTargetSaveView(generics.GenericAPIView):
         wallet = request.user.wallet
         if not wallet.check_password(password):
             return Response(data={'error': 'incorrect password'}, status=status.HTTP_400_BAD_REQUEST)
-        if wallet.deduct(amount):
+        if wallet.can_deduct(amount):
             targetsave = request.user.target_save
             if targetsave.deposit(amount):
+                wallet.deduct(amount)
                 TargetSavingTransaction.objects.create(
                     user=request.user,
                     target_save=targetsave,
@@ -143,7 +144,7 @@ class WalletTargetSaveView(generics.GenericAPIView):
                     transaction_type=WTS
                 )
                 return Response(data={'response': f'Saved {amount} to investfy with target save'}, status=status.HTTP_200_OK)     
-            return Response(data={'error': 'set target befor saving'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'error': 'set target before saving'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(data={'error': 'insufficient funds'}, status=status.HTTP_400_BAD_REQUEST)
 
 

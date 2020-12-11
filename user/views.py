@@ -9,6 +9,7 @@ from rest_framework import generics, status, views
 from rest_framework.response import Response
 from django.contrib.auth import login
 from .utils import send_email
+from .tasks import send_email_task
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -70,7 +71,7 @@ class sendEmailVerificationView(views.APIView):
         absurl = 'http://' + current_site + relative_link + '?token=' + str(token)
         body = f"Hi {user.full_name}, use the link below to verify your email \n {absurl}"
         data = {'body': body, 'subject': 'Verify your email', 'to': user.email}
-        send_email(data)
+        send_email_task.delay(data)
         return Response({'response': 'A mail has been sent to verify your email'}, status=status.HTTP_200_OK)
 
 
@@ -137,7 +138,7 @@ class ChangeEmailView(generics.GenericAPIView):
         absurl = 'http://' + current_site + relative_link + '?token=' + str(token)
         body = f"Hi {user.full_name}, use the link below to verify your new email \n {absurl}"
         data = {'body': body, 'subject': 'Verify your new email', 'to': user.email}
-        send_email(data)
+        send_email_task.delay(data)
         return Response({'response': 'Your email has been updated, We have sent verication link to your ntew email'}, status=status.HTTP_200_OK)
 
 
