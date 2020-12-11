@@ -2,8 +2,8 @@ from rest_framework import generics, status, views
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from investfy.wallet.models import SavingTransaction
-from investfy.wallet.utils import WTS, STW, QS, TS, JS
+from wallet.models import SavingTransaction
+from wallet.utils import WTS, STW, QS, TS, JS
 from .serializers import QuickSaveSerializer, SaveSerializer, TargetSaveSerializer, SetTargetSerializer
 from .permissions import ViewOwnSave
 from .models import QuickSave, QuicksaveTransaction, TargetSave, TargetSavingTransaction
