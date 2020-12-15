@@ -4,9 +4,11 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from wallet.models import SavingTransaction
 from wallet.utils import WTS, STW, QS, TS, JS
-from .serializers import QuickSaveSerializer, SaveSerializer, TargetSaveSerializer, SetTargetSerializer
-from .permissions import ViewOwnSave
-from .models import QuickSave, QuicksaveTransaction, TargetSave, TargetSavingTransaction
+from .serializers import (QuickSaveSerializer, SaveSerializer, TargetSaveSerializer, SetTargetSerializer, 
+                            QuickSaveAutoSaveSerializer, TargetSaveAutosaveSerializer, JointSaveSerializer, 
+                            CreateJointSaveSerializer)
+from .permissions import ViewOwnSave, ViewJointSave
+from .models import QuickSave, QuicksaveTransaction, TargetSave, TargetSavingTransaction, JointSave, JointSaveTransaction
 from .utils import QTW, WTQ, TTW, WTT
 
 
@@ -164,3 +166,72 @@ class SetTargetView(generics.GenericAPIView):
         if targetsave.set_target(amount):
             return Response(data={'response': 'target has been set'}, status=status.HTTP_200_OK)
         return Response(data={'error': 'new target must be higher than old target'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class QuickSaveAutoSaveView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    serializer_class = QuickSaveAutoSaveSerializer
+
+    def put(self, request, *args, **kwargs):
+        quicksave = request.user.quick_save
+        serializer = self.serializer_class(instance=quicksave, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        quicksave = serializer.save()
+        if quicksave.autosave:
+            data = {'response' : 'activated quicksave autosave'}
+        else:
+            data = {'response' : 'de-activated quicksave autosave'}
+        return Response(data=data, status=status.HTTP_200_OK)
+
+
+class TargetSaveAutoSaveView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    serializer_class = TargetSaveSerializer
+
+    def put(self, request, *args, **kwargs):
+        targetsave = request.user.target_save
+        serializer = self.serializer_class(instance=targetsave, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        targetsave = serializer.save()
+        if targetsave.autosave:
+            data = {'response' : 'activated targetsave autosave'}
+        else:
+            data = {'response' : 'de-activated target autosave'}
+        return Response(data=data, status=status.HTTP_200_OK)
+
+
+class JointSavingsView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    serializer_class = JointSaveSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = user.joint_savings.all()
+        return queryset
+
+
+class JointSaveView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated, ViewJointSave]
+    authentication_classes = [TokenAuthentication]
+    serializer_class = JointSaveSerializer
+    queryset = JointSave.objects.all()
+
+
+class CreateJointSaveView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    serializer_class = CreateJointSaveSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'user': request.user})
+        serializer.is_valid(raise_exception=True)
+        joint_save = serializer.save()
+        data = JointSaveSerializer(instance=joint_save)
+        return Response(data=data.data, status=status.HTTP_200_OK)
+
+
+class AcceptJointSaveView(generics.GenericAPIView):
+    pass

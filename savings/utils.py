@@ -21,3 +21,21 @@ TARGET_SAVE_TRANSACTION_TYPES = [
    (BTT, BTT),
    (TTB, TTB)
 ]
+
+D = 'daily'
+W = 'weekly'
+M = 'monthly'
+
+JOINT_SAVING_FREQUENCY_TYPES = [
+    (D, D),
+    (W, W),
+    (M, M)
+]
+
+WTJ = 'wallet to joint save'
+JTW = 'joint save to wallet'
+
+JOINT_SAVE_TRANSACTION_TYPES = [
+    (WTJ, WTJ),
+    (JTW, JTW)
+]

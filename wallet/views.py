@@ -70,8 +70,8 @@ class WalletTransferView(generics.GenericAPIView):
             )
             sender_body = f'You sent {amount} to {beneficiary.username}'
             beneficiary_body = f'You just recieved {amount} from {sender.full_name}'
-            sender_data = {'body': sender_body, 'subject': 'Wallet debit', 'to': sender.email}
-            beneficiary_data = {'body': beneficiary_body, 'subject': 'Wallet Credit', 'to': beneficiary.email}
+            sender_data = {'body': sender_body, 'subject': 'Wallet debit', 'to': [sender.email]}
+            beneficiary_data = {'body': beneficiary_body, 'subject': 'Wallet Credit', 'to': [beneficiary.email]}
             send_email_task.delay(sender_data)
             send_email_task.delay(beneficiary_data)
             return Response({'response': 'Transaction succesful'}, status=status.HTTP_200_OK)

@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (QuickSaveView, WalletCashOutView, WalletQuickSaveView,
-                     TargetSaveView, TargetSaveCashoutView, WalletTargetSaveView, SetTargetView)
+                     TargetSaveView, TargetSaveCashoutView, WalletTargetSaveView, SetTargetView, 
+                     QuickSaveAutoSaveView, JointSavingsView, JointSaveView, CreateJointSaveView)
 
 
 urlpatterns = [
@@ -10,5 +11,10 @@ urlpatterns = [
     path('targetsave/<int:pk>', TargetSaveView.as_view()),
     path('targetsave/cashout', TargetSaveCashoutView.as_view()),
     path('targetsave/save', WalletTargetSaveView.as_view()),
-    path('targetsave/set', SetTargetView.as_view())
+    path('targetsave/set', SetTargetView.as_view()),
+    path('quicksave/autosave', QuickSaveAutoSaveView.as_view()),
+    path('jointsave/<int:pk>', JointSaveView.as_view()),
+    path('jointsavings', JointSavingsView.as_view()),
+    path('jointsave/create', CreateJointSaveView.as_view())
+
 ]

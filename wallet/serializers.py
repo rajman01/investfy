@@ -1,14 +1,14 @@
 from rest_framework import serializers
 from .models import Wallet, WalletTransaction, SavingTransaction
 from django.contrib.auth import get_user_model
-from user.models import User
+
 
 UserModel = get_user_model()
 
 
 class UserForWallet(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = UserModel
         fields = ['id', 'username', 'full_name', 'first_name', 'last_name']
 
 

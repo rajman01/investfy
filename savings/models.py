@@ -4,7 +4,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from wallet.models import Wallet
 from decimal import Decimal
-from .utils import QUICKSAVE_TRANSACTION_TYPES, TARGET_SAVE_TRANSACTION_TYPES, WTQ, WTT
+from .utils import (QUICKSAVE_TRANSACTION_TYPES, TARGET_SAVE_TRANSACTION_TYPES, WTQ, WTT, 
+                        JOINT_SAVING_FREQUENCY_TYPES, W, WTJ, JOINT_SAVE_TRANSACTION_TYPES)
 
 UserModel = get_user_model()
 
@@ -67,6 +68,7 @@ class TargetSave(models.Model):
             self.progress = Decimal('0.00')
             self.targeted_saving = Decimal('0.00')
             self.active = False
+            self.autosave = False
             self.wallet.save()
             self.save()
             return True
@@ -96,9 +98,19 @@ def create_target_save(sender, instance=None, created=False, **kwargs):
         TargetSave.objects.create(user=instance, wallet=instance.wallet)
 
 
-class JointSaving(models.Model):
-    # owner = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING, related_name='joint_saving')
-    # members = models.ManyToOneRel(UserModel, related_name='joint')
-    pass
+class JointSave(models.Model):
+    name = models.CharField(max_length=64)
+    admin = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING, related_name='my_joint_saving')
+    members = models.ManyToManyField(UserModel, related_name='joint_savings', blank=True)
+    amount = models.DecimalField(decimal_places=2, max_digits=10, default='0.00')
+    total = models.DecimalField(decimal_places=2, max_digits=10, default='0.00')
+    frequency = models.CharField(max_length=64, default=W, choices=JOINT_SAVING_FREQUENCY_TYPES)
+    date_created = models.DateField(auto_now_add=True)
 
 
+class JointSaveTransaction(models.Model):
+    joint_saving = models.ForeignKey(JointSave, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='joint_saving_transactions')
+    amount =  models.DecimalField(decimal_places=2, max_digits=10)
+    transaction_types = models.CharField(max_length=64, default=WTJ, choices=JOINT_SAVE_TRANSACTION_TYPES)
+    timestamp = models.DateTimeField(auto_now_add=True)

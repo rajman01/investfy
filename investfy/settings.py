@@ -149,6 +149,9 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER  = config('EMAIL')
 EMAIL_HOST_PASSWORD = config('PASSWORD')
 
+# SIMPLE_JWT = {
+#     'REFRESH_TOKEN_LIFETIME': timedelta(seconds=20)
+# }
 
 CELERY_BROKER_URL = config('CELERY_BROKER_URL')
 CELERY_ACCEPT_CONTENT = ['json']
@@ -156,10 +159,10 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     "quicksave": {
         "task": "savings.tasks.quicksave_autosave_task",
-        "schedule": timedelta(days=1, hours=7)
+        "schedule": timedelta(days=1)
     },
     "targetsave": {
         "task": "savings.tasks.targetsave_autosave_task",
-        "schedule": timedelta(days=1, hours=7)
+        "schedule": timedelta(days=1)
     }
 }
