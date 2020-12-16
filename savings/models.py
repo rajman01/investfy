@@ -112,5 +112,5 @@ class JointSaveTransaction(models.Model):
     joint_saving = models.ForeignKey(JointSave, on_delete=models.DO_NOTHING)
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='joint_saving_transactions')
     amount =  models.DecimalField(decimal_places=2, max_digits=10)
-    transaction_types = models.CharField(max_length=64, default=WTJ, choices=JOINT_SAVE_TRANSACTION_TYPES)
+    transaction_type = models.CharField(max_length=64, default=WTJ, choices=JOINT_SAVE_TRANSACTION_TYPES)
     timestamp = models.DateTimeField(auto_now_add=True)

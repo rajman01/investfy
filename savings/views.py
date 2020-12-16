@@ -1,15 +1,26 @@
+import jwt
 from rest_framework import generics, status, views
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
 from wallet.models import SavingTransaction
 from wallet.utils import WTS, STW, QS, TS, JS
 from .serializers import (QuickSaveSerializer, SaveSerializer, TargetSaveSerializer, SetTargetSerializer, 
                             QuickSaveAutoSaveSerializer, TargetSaveAutosaveSerializer, JointSaveSerializer, 
-                            CreateJointSaveSerializer)
+                            CreateJointSaveSerializer, AcceptJointSaveSerializer, SaveToJointSaveSerializer)
+from user.tasks import send_email_task
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
 from .permissions import ViewOwnSave, ViewJointSave
 from .models import QuickSave, QuicksaveTransaction, TargetSave, TargetSavingTransaction, JointSave, JointSaveTransaction
 from .utils import QTW, WTQ, TTW, WTT
+from django.contrib.auth import get_user_model
+from django.conf import settings
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
+UserModel = get_user_model()
 
 
 class QuickSaveView(generics.RetrieveAPIView):
@@ -229,9 +240,57 @@ class CreateJointSaveView(generics.CreateAPIView):
         serializer = self.serializer_class(data=request.data, context={'user': request.user})
         serializer.is_valid(raise_exception=True)
         joint_save = serializer.save()
+        members = ((serializer.validated_data)['members'])
+        for username in members:
+            user = UserModel.objects.get(username=username)
+            token = RefreshToken.for_user(user)
+            token['joint_saving_id'] = joint_save.id
+            current_site = get_current_site(request).domain
+            relative_link = reverse('accept-joint-saving')
+            absurl = 'http://' + current_site + relative_link + '?token=' + str(token)
+            body = f"Hi {user.full_name}, {joint_save.admin.username} invited you to join {joint_save.name} joint save. click this link to join \n {absurl} \n the link will expire in 24hrs"
+            email = {'body': body, 'subject': 'Accept joint saving', 'to': [user.email]}
+            send_email_task.delay(email)
         data = JointSaveSerializer(instance=joint_save)
         return Response(data=data.data, status=status.HTTP_200_OK)
 
 
 class AcceptJointSaveView(generics.GenericAPIView):
-    pass
+    serializer_class = AcceptJointSaveSerializer
+
+    token_param_config = openapi.Parameter(
+        'token', in_=openapi.IN_QUERY, description='Description', type=openapi.TYPE_STRING)
+
+    @swagger_auto_schema(manual_parameters=[token_param_config])
+
+    def get(self, request, *args, **kwargs):
+        token = request.GET.get('token')
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY)
+            user = UserModel.objects.get(id=payload['user_id'])
+            joint_save = JointSave.objects.get(id=payload['joint_saving_id'])
+            if user not in joint_save.members.all():
+                joint_save.members.add(user)
+                joint_save.save()
+            return Response({'response': f'You are now part of {joint_save.name} joint save'}, status=status.HTTP_200_OK)
+        except jwt.ExpiredSignatureError:
+            return Response({'error': 'link expired'}, status=status.HTTP_400_BAD_REQUEST)
+        except jwt.exceptions.DecodeError:
+            return Response({'error': 'invaid token'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SaveToJointSaveView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated, ViewJointSave]
+    authentication_classes = [TokenAuthentication]
+    serializer_class = SaveToJointSaveSerializer
+    queryset = JointSave.objects.all()
+
+    def put(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        password = ((serializer.validated_data)['password'])
+        wallet = request.user.wallet
+        if not wallet.check_password(password):
+            return Response(data={'error': 'incorrect password'}, status=status.HTTP_400_BAD_REQUEST)
+        joint_save = self.get_object()
+        

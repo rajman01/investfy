@@ -34,6 +34,12 @@ class SaveSerializer(Serializer):
         fields = ['amount', 'password']
 
 
+class SaveToJointSaveSerializer(Serializer):
+    password = CharField(max_length=4, min_length=4, write_only=True)
+
+    class Meta:
+        fields = ['password']
+
 
 class TargeSaveTransactionSerializer(ModelSerializer):
     class Meta:
@@ -138,12 +144,19 @@ class CreateJointSaveSerializer(ModelSerializer):
     def create(self, validated_data):
         admin = self.context['user']
         name = validated_data['name']
-        members = validated_data['members']
         amount = validated_data['amount']
         jointsave = JointSave.objects.create(
             name=name,
             admin=admin,
             amount=amount
         )
-        for username in members:
-            pass
+        jointsave.members.add(admin)
+        jointsave.save()
+        return jointsave
+
+
+class AcceptJointSaveSerializer(Serializer):
+    token = CharField(max_length=528)
+
+    class Meta:
+        fields = ['token']
