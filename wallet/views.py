@@ -30,8 +30,11 @@ class SetPasswordView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         password = ((serializer.validated_data)['password'])
-        wallet.set_password(password)
-        return Response({'response': 'Your password has been set'}, status=status.HTTP_200_OK)
+        if not wallet.has_password():
+            wallet.set_password(password)
+            return Response({'response': 'Your password has been set'}, status=status.HTTP_200_OK)
+        return Response({'error': 'You can\'t set password more than once'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ChangePasswordView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -42,12 +45,10 @@ class ChangePasswordView(generics.GenericAPIView):
         user = request.user
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        if user.wallet.has_password():
-            if user.wallet.check_password(((serializer.validated_data)['current_password'])):
-                user.wallet.set_password(((serializer.validated_data)['new_password']))
-                return Response({'response': 'Your password has been updated'}, status=status.HTTP_200_OK)
-            return Response({'error': 'invalid_password'}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'error': 'You haven\'t set your password'}, status=status.HTTP_400_BAD_REQUEST)
+        if user.wallet.check_password(((serializer.validated_data)['current_password'])):
+            user.wallet.set_password(((serializer.validated_data)['new_password']))
+            return Response({'response': 'Your password has been updated'}, status=status.HTTP_200_OK)
+        return Response({'error': 'invalid_password'}, status=status.HTTP_400_BAD_REQUEST)
 
 class WalletTransferView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, EmailVerified, BVNVerified]

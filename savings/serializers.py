@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, IntegerField, Serializer, DecimalField, CharField, ValidationError, ListField
+from rest_framework.serializers import ModelSerializer, IntegerField, Serializer, DecimalField, CharField, ValidationError, ListField, BooleanField
 from .models import QuickSave, QuicksaveTransaction, TargetSave, TargetSavingTransaction, JointSave, JointSaveTransaction
 from wallet.serializers import UserForWallet
 from datetime import datetime
@@ -34,7 +34,7 @@ class SaveSerializer(Serializer):
         fields = ['amount', 'password']
 
 
-class SaveToJointSaveSerializer(Serializer):
+class PasswordSerializer(Serializer):
     password = CharField(max_length=4, min_length=4, write_only=True)
 
     class Meta:
@@ -122,7 +122,7 @@ class JointSaveSerializer(ModelSerializer):
 
     class Meta:
         model = JointSave
-        fields = ['id', 'name', 'admin', 'amount', 'total', 'frequency', 'date_created', 'members']
+        fields = ['id', 'name', 'admin', 'amount', 'total', 'frequency', 'date_created', 'can_invite_member', 'can_disband', 'can_leave', 'members']
 
 
 class CreateJointSaveSerializer(ModelSerializer):
@@ -160,3 +160,20 @@ class AcceptJointSaveSerializer(Serializer):
 
     class Meta:
         fields = ['token']
+
+
+class InviteSerializer(Serializer):
+    members = ListField(min_length=1)
+
+
+    class Meta:
+        model = JointSave
+        fields = ['members']
+
+    def validate_members(self, members):
+        for username in members:
+            try:
+                UserModel.objects.get(username=username)
+            except UserModel.DoesNotExist:
+                raise ValidationError(f'user with {username} does not exists')
+        return members

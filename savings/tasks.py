@@ -1,10 +1,18 @@
+from random import randint
 from celery import shared_task
-from .models import  QuickSave, QuicksaveTransaction, TargetSave, TargetSavingTransaction
+from .models import  QuickSave, QuicksaveTransaction, TargetSave, TargetSavingTransaction, JointSave, JointSaveTransaction, JointSaveTrack
 from wallet.models import SavingTransaction
 import datetime
 from datetime import datetime
-from .utils import QTW, WTQ, TTW, WTT
+from .utils import QTW, WTQ, TTW, WTT,JTW, check_end_of_week, check_week, check_end_of_month
 from wallet.utils import WTS, STW, QS, TS, JS
+from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.urls import reverse
+from user.tasks import send_email_task
+
+
+UserModel = get_user_model()
 
 
 @shared_task
@@ -59,3 +67,116 @@ def targetsave_autosave_task():
                     account.save()
     return None
 
+
+@shared_task
+def send_joint_save_invite(members, joint_save_id, current_site):
+    for username in members:
+        user = UserModel.objects.get(username=username)
+        token = RefreshToken.for_user(user)
+        token['joint_save_id'] = joint_save_id
+        joint_save = JointSave.objects.get(id=joint_save_id)
+        relative_link = reverse('accept-joint-saving')
+        absurl = 'http://' + current_site + relative_link + '?token=' + str(token)
+        body = f"Hi {user.full_name}, {joint_save.admin.username} invited you to join {joint_save.name} joint save. click this link to join \n {absurl} \n the link will expire in 24hrs"
+        email = {'body': body, 'subject': 'Accept joint saving', 'to': [user.email]}
+        send_email_task(email)
+    return None
+
+
+@shared_task
+def send_disband_email_task(name, emails):
+    body = f"{name} joint save as been disbanded"
+    if emails:
+        send_email_task({'body': body, 'subject': 'Joint Save Disbaned', 'to': emails})
+    return None
+
+
+@shared_task
+def joint_save_weekly_round_up():
+    joint_savings = JointSave.objects.filter(is_active=True)
+    for joint_save in joint_savings:
+        if check_end_of_week(datetime.date(datetime.now()), joint_save.date_created):
+            amount = joint_save.amount
+            for member in joint_save.members.all():
+                wallet = member.wallet
+                latest_transaction = JointSaveTransaction.objects.filter(user=member, joint_save=joint_save)
+                if not latest_transaction.exists():
+                    wallet.balance -= joint_save.amount
+                    joint_save.contribute()
+                    JointSaveTransaction.objects.create(
+                        joint_save=joint_save,
+                        user=member,
+                        amount=amount
+                    )
+                    SavingTransaction.objects.create(
+                        user=member,
+                        amount=amount,
+                        savings_account=JS,
+                        transaction_type=WTS
+                    )
+                else:
+                    transaction = latest_transaction.last()
+                    print(transaction)
+                    print(check_week(datetime.date(transaction.timestamp), joint_save.date_created), (check_week(datetime.date(datetime.now()), joint_save.date_created) - 1))
+                    if check_week(datetime.date(transaction.timestamp), joint_save.date_created) != (check_week(datetime.date(datetime.now()), joint_save.date_created) - 1):
+                        wallet.balance -= joint_save.amount
+                        joint_save.contribute()
+                        JointSaveTransaction.objects.create(
+                            joint_save=joint_save,
+                            user=member,
+                            amount=amount
+                        )
+                        SavingTransaction.objects.create(
+                            user=member,
+                            amount=amount,
+                            savings_account=JS,
+                            transaction_type=WTS
+                        )
+    return 
+    
+
+
+@shared_task
+def joint_save_monthly_check_up():
+    joint_savings = JointSave.objects.filter(is_active=True)
+    for joint_save in joint_savings:    
+        # if check_end_of_month(datetime.date(datetime.now()), joint_save.date_created):
+        if True:
+            count = 0
+            check = []
+            members = joint_save.members
+            while count < members.count():
+                random_member = joint_save.members.all()[randint(0, members.count()-1)]
+                if random_member not in check:
+                    track = JointSaveTrack.objects.filter(joint_save=joint_save, user=random_member).first()
+                    if not track.cashed_out:
+                        joint_save.cash_out(random_member)
+                        track.cashed_out = True
+                        track.save()
+                        JointSaveTransaction.objects.create(
+                            joint_save=joint_save,
+                            user=random_member,
+                            amount=joint_save.total,
+                            transaction_type=JTW
+                        )
+                        SavingTransaction.objects.create(
+                            user=random_member,
+                            amount=joint_save.total,
+                            savings_account=JS,
+                            transaction_type=STW
+                        )
+                        body = f"Congratulation {random_member.full_name},  its you turn to cash out from {joint_save.name} joint saving, {joint_save.total} has been transfered to wallet"
+                        email = {'body': body, 'subject': f'{joint_save.name} cash out', 'to': [random_member.email]}
+                        send_email_task(email)
+                        break
+                    count += 1
+                    check.append(random_member)
+            if joint_save.has_all_cahsed_out():
+                joint_save.is_active = False
+                joint_save.save()
+                for track in joint_save.tracks.all():
+                    track.cashed_out = False
+                    track.save()
+                if joint_save.admin:
+                    pass
+    return None

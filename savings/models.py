@@ -6,6 +6,7 @@ from wallet.models import Wallet
 from decimal import Decimal
 from .utils import (QUICKSAVE_TRANSACTION_TYPES, TARGET_SAVE_TRANSACTION_TYPES, WTQ, WTT, 
                         JOINT_SAVING_FREQUENCY_TYPES, W, WTJ, JOINT_SAVE_TRANSACTION_TYPES)
+from datetime import datetime
 
 UserModel = get_user_model()
 
@@ -100,17 +101,65 @@ def create_target_save(sender, instance=None, created=False, **kwargs):
 
 class JointSave(models.Model):
     name = models.CharField(max_length=64)
-    admin = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING, related_name='my_joint_saving')
+    admin = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING, related_name='my_joint_saving', blank=True, null=True)
     members = models.ManyToManyField(UserModel, related_name='joint_savings', blank=True)
     amount = models.DecimalField(decimal_places=2, max_digits=10, default='0.00')
     total = models.DecimalField(decimal_places=2, max_digits=10, default='0.00')
     frequency = models.CharField(max_length=64, default=W, choices=JOINT_SAVING_FREQUENCY_TYPES)
+    is_active = models.BooleanField(default=True)
     date_created = models.DateField(auto_now_add=True)
+
+    def contribute(self):
+        self.total += self.amount
+        self.save()
+
+    def can_disband(self):
+        now = datetime.date(datetime.now())
+        date_difference = now - self.date_created
+        if date_difference.days < 29:
+            return True
+        return False
+
+    def can_invite_member(self):
+        if self.frequency == W:
+            now = datetime.date(datetime.now())
+            date_difference = now - self.date_created
+            if date_difference.days < 8:
+                return True
+            return False
+
+    def can_leave(self):
+        now = datetime.date(datetime.now())
+        date_difference = now - self.date_created
+        if date_difference.days < 29:
+            return True
+        return False
+
+    def has_all_cahsed_out(self):
+        res = True
+        for track in self.tracks.all():
+            res = track.cashed_out
+            if res == False:
+                break
+        return res
+    
+    def cash_out(self, member):
+        if member in self.members.all():
+            member.wallet.balance += self.total
+            self.total = Decimal('0.00')
+            member.wallet.save()
+            self.save()
 
 
 class JointSaveTransaction(models.Model):
-    joint_saving = models.ForeignKey(JointSave, on_delete=models.DO_NOTHING)
+    joint_save = models.ForeignKey(JointSave, on_delete=models.CASCADE)
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='joint_saving_transactions')
     amount =  models.DecimalField(decimal_places=2, max_digits=10)
     transaction_type = models.CharField(max_length=64, default=WTJ, choices=JOINT_SAVE_TRANSACTION_TYPES)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class JointSaveTrack(models.Model):
+    joint_save = models.ForeignKey(JointSave, on_delete=models.CASCADE, related_name='tracks')
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    cashed_out = models.BooleanField(default=False)

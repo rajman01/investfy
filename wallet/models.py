@@ -50,7 +50,9 @@ class Wallet(models.Model):
         self.save()
 
     def check_password(self, password):
-        return bcrypt.checkpw(password.encode('utf_8'), self.password.tobytes())
+        if self.has_password():
+            return bcrypt.checkpw(password.encode('utf_8'), self.password.tobytes())
+        return False
     
     def has_password(self):
         if self.password.tobytes():
