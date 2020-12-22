@@ -9,5 +9,6 @@ urlpatterns = [
     path('password/change', views.ChangePasswordView.as_view()),
     path('email/change', views.ChangeEmailView.as_view()),
     path('user/<int:pk>', views.UserDetailView.as_view()),
-    path('bvn/verification', views.VerifyBVNView.as_view())
+    path('bvn/verification', views.VerifyBVNView.as_view()),
+    path('users', views.UsersView.as_view()),
 ]

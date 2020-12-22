@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.urls import reverse
 from user.tasks import send_email_task
+from user.views import GLOBAL_CURRENT_SITE
 
 
 UserModel = get_user_model()
@@ -42,11 +43,12 @@ def quicksave_autosave_task():
 
 @shared_task
 def targetsave_autosave_task():
-    autosave_accounts = TargetSave.objects.filter(autosave=True)
+    autosave_accounts = TargetSave.objects.filter(joint=False, autosave__active=True)
     for account in autosave_accounts:
-        check_date = datetime.date(datetime.now()) - account.last_saved
-        if check_date.days == account.day_interval:
-            amount = account.autosave_amount
+        autosave = account.autosave
+        check_date = datetime.date(datetime.now()) - autosave.last_saved
+        if check_date.days == autosave.day_interval:
+            amount = autosave.autosave_amount
             wallet = account.wallet
             if wallet.can_deduct(amount):
                 if account.deposit(amount):
@@ -63,8 +65,8 @@ def targetsave_autosave_task():
                         savings_account=TS,
                         transaction_type=WTS
                     )
-                    account.last_saved = datetime.date(datetime.now())
-                    account.save()
+                    autosave.last_saved = datetime.date(datetime.now())
+                    autosave.save()
     return None
 
 
@@ -139,38 +141,30 @@ def joint_save_weekly_round_up():
 @shared_task
 def joint_save_monthly_check_up():
     joint_savings = JointSave.objects.filter(is_active=True)
-    for joint_save in joint_savings:    
+    for joint_save in joint_savings:   
         # if check_end_of_month(datetime.date(datetime.now()), joint_save.date_created):
         if True:
-            count = 0
-            check = []
-            members = joint_save.members
-            while count < members.count():
-                random_member = joint_save.members.all()[randint(0, members.count()-1)]
-                if random_member not in check:
-                    track = JointSaveTrack.objects.filter(joint_save=joint_save, user=random_member).first()
-                    if not track.cashed_out:
-                        joint_save.cash_out(random_member)
-                        track.cashed_out = True
-                        track.save()
-                        JointSaveTransaction.objects.create(
-                            joint_save=joint_save,
-                            user=random_member,
-                            amount=joint_save.total,
-                            transaction_type=JTW
-                        )
-                        SavingTransaction.objects.create(
-                            user=random_member,
-                            amount=joint_save.total,
-                            savings_account=JS,
-                            transaction_type=STW
-                        )
-                        body = f"Congratulation {random_member.full_name},  its you turn to cash out from {joint_save.name} joint saving, {joint_save.total} has been transfered to wallet"
-                        email = {'body': body, 'subject': f'{joint_save.name} cash out', 'to': [random_member.email]}
-                        send_email_task(email)
-                        break
-                    count += 1
-                    check.append(random_member)
+            non_cashed_out = joint_save.get_non_cashed_out()
+            random_member = non_cashed_out[randint(0, len(non_cashed_out)-1)]
+            track = JointSaveTrack.objects.filter(joint_save=joint_save, user=random_member).first()
+            joint_save.cash_out(random_member)
+            track.cashed_out = True
+            track.save()
+            JointSaveTransaction.objects.create(
+                joint_save=joint_save,
+                user=random_member,
+                amount=joint_save.total,
+                transaction_type=JTW
+            )
+            SavingTransaction.objects.create(
+                user=random_member,
+                amount=joint_save.total,
+                savings_account=JS,
+                transaction_type=STW
+            )
+            body = f"Congratulation {random_member.full_name},  its you turn to cash out from {joint_save.name} joint saving, {joint_save.total} has been transfered to wallet"
+            email = {'body': body, 'subject': f'{joint_save.name} cash out', 'to': [random_member.email]}
+            send_email_task(email)
             if joint_save.has_all_cahsed_out():
                 joint_save.is_active = False
                 joint_save.save()
@@ -178,5 +172,11 @@ def joint_save_monthly_check_up():
                     track.cashed_out = False
                     track.save()
                 if joint_save.admin:
-                    pass
+                    token = RefreshToken.for_user(joint_save.admin)
+                    token['joint_save_id'] = joint_save.id
+                    relative_link = reverse('Re-activate-joint-saving')
+                    absurl = 'http://' + GLOBAL_CURRENT_SITE + relative_link + '?token=' + str(token)
+                    body = f"Hi {joint_save.admin.full_name}, Your {joint_save.name} joint savings has been completed. click the link below to re-activate. ignore if you think other wise \n {absurl}"
+                    email = {'body': body, 'subject': 'Re-activate joint saving', 'to': [joint_save.admin.email]}
+                    send_email_task(email)
     return None

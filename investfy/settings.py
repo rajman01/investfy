@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'wallet',
     'savings',
     'investment',
+    'payment',
 ]
 
 REST_FRAMEWORK = {
@@ -164,6 +165,14 @@ CELERY_BEAT_SCHEDULE = {
     },
     "targetsave": {
         "task": "savings.tasks.targetsave_autosave_task",
+        "schedule": timedelta(days=1)
+    },
+    "weekly": {
+        "task": "savings.tasks.joint_save_weekly_round_up",
+        "schedule": timedelta(days=1)
+    },
+    "monthly": {
+        "task": "savings.tasks.joint_save_monthly_check_up",
         "schedule": timedelta(days=1)
     }
 }

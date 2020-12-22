@@ -63,8 +63,8 @@ def check_end_of_month(date2, date1):
     date_difference = date2 - date1
     days = date_difference.days
     days = date_difference.days
-    if days != 1:
-        return (days - 1) % 28 == 0
+    if days != 1 and days != 2:
+        return (days - 2) % 28 == 0
     return False
 
     

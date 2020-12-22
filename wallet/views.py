@@ -2,7 +2,7 @@ from rest_framework import generics, status, views
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .serializers import WalletSerializer, SetWalletPasswordSerializer, WalletTransferSerializer, ChangeWalletPasswordSerializer
+from .serializers import WalletSerializer, SetWalletPasswordSerializer, WalletTransferSerializer, ChangeWalletPasswordSerializer, ChangeWalletIDSerializer
 from .models import Wallet, WalletTransaction
 from .permissions import ViewOwnWallet
 from django.contrib.auth import get_user_model
@@ -13,11 +13,14 @@ from user.tasks import send_email_task
 UserModel = get_user_model()
 
 
-class GetWalletView(generics.RetrieveAPIView):
-    permission_classes = [IsAuthenticated, ViewOwnWallet]
+class GetWalletView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
     serializer_class = WalletSerializer
-    queryset = Wallet.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        serializer = self.serializer_class(instance=request.user.wallet)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
     
 
 class SetPasswordView(generics.GenericAPIView):
@@ -30,10 +33,11 @@ class SetPasswordView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         password = ((serializer.validated_data)['password'])
+        wallet_id = ((serializer.validated_data)['wallet_id'])
         if not wallet.has_password():
-            wallet.set_password(password)
+            wallet.set_password(password, wallet_id)
             return Response({'response': 'Your password has been set'}, status=status.HTTP_200_OK)
-        return Response({'error': 'You can\'t set password more than once'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'You can\'t set wallet more than once'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ChangePasswordView(generics.GenericAPIView):
@@ -59,11 +63,12 @@ class WalletTransferView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         sender = request.user
-        amount = ((serializer.validated_data)['amount'])
-        beneficiary = UserModel.objects.get(username=((serializer.validated_data)['beneficiary']))
         if not sender.wallet.check_password(((serializer.validated_data)['password'])):
             return Response({'error': 'incorect password'}, status=status.HTTP_400_BAD_REQUEST)
-        if sender.wallet.transfer(beneficiary.wallet, amount):
+        amount = ((serializer.validated_data)['amount'])
+        beneficiary_wallet = Wallet.objects.get(wallet_id=((serializer.validated_data)['wallet_id']))
+        beneficiary = UserModel.objects.get(wallet=beneficiary_wallet)
+        if sender.wallet.transfer(beneficiary_wallet, amount):
             WalletTransaction.objects.create(
                 sender=sender,
                 beneficiary=beneficiary,
@@ -77,4 +82,15 @@ class WalletTransferView(generics.GenericAPIView):
             send_email_task.delay(beneficiary_data)
             return Response({'response': 'Transaction succesful'}, status=status.HTTP_200_OK)
         return Response({'error': 'insufficient funds'}, status=status.HTTP_400_BAD_REQUEST)
-        
+
+
+class ChangeWalletIDView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    serialzer_class = ChangeWalletIDSerializer
+
+    def put(self, request, *args, **kwargs):
+        serializer = self.serializer_class(instance=request.user.wallet, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(data={'response': 'You wallet id has been updated'}, status=status.HTTP_200_OK)

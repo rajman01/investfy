@@ -12,6 +12,7 @@ UserModel = get_user_model()
 
 
 class Wallet(models.Model):
+    wallet_id = models.CharField(max_length=32, unique=True)
     owner = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name='wallet')
     balance = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
     password = models.BinaryField(default=b'')
@@ -44,9 +45,10 @@ class Wallet(models.Model):
             return True
         return False
 
-    def set_password(self, password):
+    def set_password(self, password, wallet_id):
         hashed_password = bcrypt.hashpw(password.encode('utf_8'), bcrypt.gensalt())
         self.password = hashed_password
+        self.wallet_id = wallet_id
         self.save()
 
     def check_password(self, password):
@@ -80,4 +82,4 @@ class SavingTransaction(models.Model):
 @receiver(signal=post_save, sender=UserModel)
 def create_wallet(sender, instance=None, created=False, **kwargs):
     if created:
-        Wallet.objects.create(owner=instance)
+        Wallet.objects.create(owner=instance, wallet_id=instance.username)

@@ -1,14 +1,13 @@
 import jwt
-import requests
 from decouple import config
 from .serializers import (RegisterSerializer, UserSerializer, LoginSerializer, EmailVerificationSerializer, 
                             ChangePasswordSerializer, ChangeEmailSerializer, VerifyBVNSerializer)
 from .permissions import UpdateOwnProfile
 from wallet.serializers import UserForWallet
-from rest_framework import generics, status, views
+from rest_framework import generics, status, views, filters
 from rest_framework.response import Response
 from django.contrib.auth import login
-from .utils import send_email
+from .utils import send_email, get_bvn_details
 from .tasks import send_email_task
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework.authentication import TokenAuthentication
@@ -22,6 +21,7 @@ from drf_yasg import openapi
 
 
 UserModel = get_user_model()
+GLOBAL_CURRENT_SITE = ''
 
 class RegisterView(generics.CreateAPIView):
     """
@@ -30,6 +30,7 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
     def post(self, request, *args, **kwargs):
+        GLOBAL_CURRENT_SITE = get_current_site(request).domain
         seriaizer = self.serializer_class(data=request.data)
         if seriaizer.is_valid():
             user = seriaizer.save()
@@ -167,15 +168,6 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
 
     def patch(self, request, *args, **kwargs):
         return Response({'error': 'update user details through PUT request'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-def get_bvn_details(bvn):
-    url = f'https://api.flutterwave.com/v3/kyc/bvns/{bvn}'
-    headers = {
-        'Authorization': f'Bearer {config("FLUTTERWAVE_SECRET_KEY")}'
-    }
-    result = requests.get(url=url, headers=headers)
-    return {'data': result.json(), 'status_code': result.status_code}
     
 
 class VerifyBVNView(generics.GenericAPIView):
@@ -205,3 +197,12 @@ class VerifyBVNView(generics.GenericAPIView):
                 return Response(data={'response': 'Your account has been verified'}, status=status.HTTP_200_OK)
             return Response(data={'error': 'Invalid bvn details'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UsersView(generics.ListAPIView):
+    serializer_class = UserForWallet
+    queryset = UserModel.objects.all()
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username', 'full_name', 'first_name', 'last_name', 'wallet__wallet_id']

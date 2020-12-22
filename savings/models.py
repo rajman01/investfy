@@ -46,57 +46,59 @@ def create_quick_save(sender, instance=None, created=False, **kwargs):
 
 
 class TargetSave(models.Model):
-    user = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name='target_save')
-    wallet = models.OneToOneField(Wallet, on_delete=models.CASCADE, related_name='target_save')
-    targeted_saving = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
+    name = models.CharField(max_length=64, null=True, blank=True)
+    description = models.CharField(max_length=128, null=True, blank=True)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='target_savings')
+    wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, related_name='target_savings')
+    targeted_amount = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
     progress = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
-    active = models.BooleanField(default=False)
-    autosave = models.BooleanField(default=False)
-    day_interval = models.IntegerField(blank=True, null=True)
-    autosave_amount = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
-    last_saved = models.DateField(blank=True, null=True)
+    joint = models.BooleanField(default=False)
+    members = models.ManyToManyField(UserModel, related_name='joint_target_savings', blank=True)
+    date_created = models.DateField(auto_now_add=True)
+
 
     def deposit(self, amount):
-        if self.active:
-            self.progress += Decimal(str(amount))
-            self.save()
-            return True
-        return False
+        self.progress += Decimal(str(amount))
+        self.save()
 
     def cashout(self):
-        if self.progress >= (Decimal('0.5') * self.targeted_saving):
+        if self.progress >= (Decimal('0.5') * self.targeted_amount):
             self.wallet.balance += self.progress
             self.progress = Decimal('0.00')
-            self.targeted_saving = Decimal('0.00')
-            self.active = False
-            self.autosave = False
+            self.targeted_amount = Decimal('0.00')
+            if not self.joint:
+                self.autosave.active = False
+                self.autosave.save()
             self.wallet.save()
             self.save()
             return True
         return False
 
-    def set_target(self, amount):
-        if Decimal(str(amount)) > self.targeted_saving:
-            self.targeted_saving = Decimal(str(amount))
-            if not self.active:
-                self.active = True
-            self.save()
-            return True
-        return False
+    def can_delete(self):
+        return self.progress < (Decimal('0.25') * self.targeted_amount)
+
+
+
+class TargetSaveAutoSave(models.Model):
+    target_save = models.OneToOneField(TargetSave, on_delete=models.CASCADE, related_name='autosave')
+    active = models.BooleanField(default=False)
+    day_interval = models.IntegerField(blank=True, null=True)
+    autosave_amount = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
+    last_saved = models.DateField(blank=True, null=True)
+
+
+@receiver(signal=post_save, sender=TargetSave)
+def create_target_save_autosave(sender, instance=None, created=False, **kwargs):
+    if created and not instance.joint:
+        TargetSaveAutoSave.objects.create(target_save=instance)
 
 
 class TargetSavingTransaction(models.Model):
-    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='target_saving_transactions')
     target_save = models.ForeignKey(TargetSave, on_delete=models.CASCADE, related_name='transactions')
     amount = models.DecimalField(decimal_places=2, max_digits=10)
     transaction_type = models.CharField(default=WTT, choices=TARGET_SAVE_TRANSACTION_TYPES, max_length=64)
     timestamp = models.DateTimeField(auto_now_add=True)
-
-
-@receiver(signal=post_save, sender=UserModel)
-def create_target_save(sender, instance=None, created=False, **kwargs):
-    if created:
-        TargetSave.objects.create(user=instance, wallet=instance.wallet)
 
 
 class JointSave(models.Model):
@@ -150,9 +152,18 @@ class JointSave(models.Model):
             member.wallet.save()
             self.save()
 
+    def get_non_cashed_out(self):
+        res = []
+        for member in self.members.all():
+            track = member.joint_save_tracks.filter(joint_save=self).first()
+            if not track.cashed_out:
+                res.append(member)
+        return res
+
+
 
 class JointSaveTransaction(models.Model):
-    joint_save = models.ForeignKey(JointSave, on_delete=models.CASCADE)
+    joint_save = models.ForeignKey(JointSave, on_delete=models.CASCADE, related_name='transactions')
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='joint_saving_transactions')
     amount =  models.DecimalField(decimal_places=2, max_digits=10)
     transaction_type = models.CharField(max_length=64, default=WTJ, choices=JOINT_SAVE_TRANSACTION_TYPES)
@@ -161,5 +172,5 @@ class JointSaveTransaction(models.Model):
 
 class JointSaveTrack(models.Model):
     joint_save = models.ForeignKey(JointSave, on_delete=models.CASCADE, related_name='tracks')
-    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='joint_save_tracks')
     cashed_out = models.BooleanField(default=False)

@@ -55,14 +55,8 @@ class TokenSerializer(serializers.ModelSerializer):
 class WalletForUser(serializers.ModelSerializer):
     class Meta:
         model = Wallet
-        fields = ['id', 'balance']
-        read_only_fields = ['id', 'balance']
-
-class QuicksaveForUser(serializers.ModelSerializer):
-    class Meta:
-        model = QuickSave
-        fields = ['id', 'balance']
-        read_only_fields = ['id', 'balance']
+        fields = ['id', 'wallet_id', 'balance']
+        read_only_fields = ['id', 'balance', 'wallet_id']
 
 
 class TargetSaveForUser(serializers.ModelSerializer):
@@ -75,14 +69,12 @@ class TargetSaveForUser(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     token = TokenSerializer(read_only=True, source='auth_token')
     wallet = WalletForUser(read_only=True)
-    quick_save = QuicksaveForUser(read_only=True)
-    target_save = TargetSaveForUser(read_only=True)
 
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'full_name', 'phone_number', 'email_verified', 
-                    'bvn_verified', 'dob', 'token', 'wallet', 'quick_save', 'target_save']
-        read_only_fields = ['id', 'email', 'email_verified', 'bvn_verified', 'token', 'wallet', 'quick_save', 'target_save']
+                    'bvn_verified', 'dob', 'token', 'wallet']
+        read_only_fields = ['id', 'email', 'email_verified', 'bvn_verified', 'token', 'wallet']
 
     def update(self, instance, validated_data):
         username = validated_data['username']
