@@ -142,27 +142,27 @@ def joint_save_weekly_round_up():
 def joint_save_monthly_check_up():
     joint_savings = JointSave.objects.filter(is_active=True)
     for joint_save in joint_savings:   
-        # if check_end_of_month(datetime.date(datetime.now()), joint_save.date_created):
-        if True:
+        if check_end_of_month(datetime.date(datetime.now()), joint_save.date_created):
+        # if True:
             non_cashed_out = joint_save.get_non_cashed_out()
             random_member = non_cashed_out[randint(0, len(non_cashed_out)-1)]
             track = JointSaveTrack.objects.filter(joint_save=joint_save, user=random_member).first()
-            joint_save.cash_out(random_member)
+            amount = joint_save.cash_out(random_member)
             track.cashed_out = True
             track.save()
             JointSaveTransaction.objects.create(
                 joint_save=joint_save,
                 user=random_member,
-                amount=joint_save.total,
+                amount=amount,
                 transaction_type=JTW
             )
             SavingTransaction.objects.create(
                 user=random_member,
-                amount=joint_save.total,
+                amount=amount,
                 savings_account=JS,
                 transaction_type=STW
             )
-            body = f"Congratulation {random_member.full_name},  its you turn to cash out from {joint_save.name} joint saving, {joint_save.total} has been transfered to wallet"
+            body = f"Congratulation {random_member.full_name},  its you turn to cash out from {joint_save.name} joint saving, {amount} has been transfered to wallet"
             email = {'body': body, 'subject': f'{joint_save.name} cash out', 'to': [random_member.email]}
             send_email_task(email)
             if joint_save.has_all_cahsed_out():

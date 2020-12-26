@@ -147,10 +147,12 @@ class JointSave(models.Model):
     
     def cash_out(self, member):
         if member in self.members.all():
-            member.wallet.balance += self.total
-            self.total = Decimal('0.00')
+            amount = self.amount * self.members.count()
+            member.wallet.balance += amount
+            self.total -= amount
             member.wallet.save()
             self.save()
+            return amount
 
     def get_non_cashed_out(self):
         res = []

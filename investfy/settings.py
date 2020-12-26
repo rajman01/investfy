@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'savings',
     'investment',
     'payment',
+    'salary_management',
+    'frontend'
 ]
 
 REST_FRAMEWORK = {
