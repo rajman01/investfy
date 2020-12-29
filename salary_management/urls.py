@@ -1,5 +1,8 @@
-from django.urls import path
+# from django.urls import path
+# from rest_framework import routers
+# from .views import AccountViewSet
 
-urlpatterns = [
-    
-]
+# router = routers.DefaultRouter()
+# router.register('accounts', AccountViewSet, 'accounts')
+
+# urlpatterns = router.urls

@@ -45,12 +45,6 @@ class LoginSerializer(serializers.Serializer):
 
         return user
 
-class TokenSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Token
-        fields = ['key']
-        read_only_fields = ['key']
-
 
 class WalletForUser(serializers.ModelSerializer):
     class Meta:
@@ -67,14 +61,13 @@ class TargetSaveForUser(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    token = TokenSerializer(read_only=True, source='auth_token')
     wallet = WalletForUser(read_only=True)
 
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'full_name', 'phone_number', 'email_verified', 
-                    'bvn_verified', 'dob', 'token', 'wallet']
-        read_only_fields = ['id', 'email', 'email_verified', 'bvn_verified', 'token', 'wallet']
+                    'bvn_verified', 'dob', 'total_savings', 'total_investments', 'wallet']
+        read_only_fields = ['id', 'email', 'email_verified', 'bvn_verified', 'wallet']
 
     def update(self, instance, validated_data):
         username = validated_data['username']

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Wallet, WalletTransaction, SavingTransaction
+from .models import Wallet, WalletTransaction, SavingTransaction, AccountTransaction
 from django.contrib.auth import get_user_model
 
 
@@ -30,18 +30,24 @@ class SavingTransactionSerializer(serializers.ModelSerializer):
         fields = ['amount', 'savings_account', 'transaction_type', 'timestamp']
         read_only_fields = ['amount', 'savings_account', 'transaction_type', 'timestamp']
 
+class AccountTransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AccountTransaction
+        fields = ['amount', 'acct_no', 'name', 'successful', 'timestamp']
+
 
 class WalletSerializer(serializers.ModelSerializer):
     owner = UserForWallet()
     sent_transactions = WalletTransactionSerializer(many=True, read_only=True, source='owner.sent_transactions')
     recieved_transactions = WalletTransactionSerializer(many=True, read_only=True, source='owner.recieved_transactions')
     savings_transactions = SavingTransactionSerializer(many=True, read_only=True, source='owner.savings_transactions')
+    account_transactions = AccountTransactionSerializer(many=True, read_only=True, source='owner.account_transactions')
 
 
     class Meta:
         model = Wallet
-        fields = ['id', 'owner', 'wallet_id', 'balance', 'sent_transactions', 'recieved_transactions', 'savings_transactions']
-        read_only_fields = ['id', 'wallet_id', 'owner', 'balance', 'sent_transactions', 'recieved_transactions', 'savings_transactions']
+        fields = ['id', 'owner', 'wallet_id', 'balance', 'sent_transactions', 'recieved_transactions', 'savings_transactions', 'account_transactions']
+        read_only_fields = ['id', 'wallet_id', 'owner', 'balance', 'sent_transactions', 'recieved_transactions', 'savings_transactions', 'account_transactions']
 
 
 class SetWalletPasswordSerializer(serializers.ModelSerializer):
@@ -119,3 +125,10 @@ class ChangeWalletIDSerializer(serializers.ModelSerializer):
         instance.wallet_id = validated_data['wallet_id']
         instance.save()
         return instance
+
+
+class FundWalletSerializer(serializers.Serializer):
+    amount = serializers.DecimalField(decimal_places=2, max_digits=10)
+
+    class Meta:
+        fields = ['amount']

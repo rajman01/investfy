@@ -6,11 +6,9 @@ from .permissions import UpdateOwnProfile
 from wallet.serializers import UserForWallet
 from rest_framework import generics, status, views, filters
 from rest_framework.response import Response
-from django.contrib.auth import login
 from .utils import send_email, get_bvn_details
 from .tasks import send_email_task
 from django.contrib.sites.shortcuts import get_current_site
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.urls import reverse
@@ -18,6 +16,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from knox.models import AuthToken
 
 
 UserModel = get_user_model()
@@ -28,15 +27,15 @@ class RegisterView(generics.CreateAPIView):
     Registers a new user and returns user details if succesfull
     """
     serializer_class = RegisterSerializer
+    authentication_classes = []
 
     def post(self, request, *args, **kwargs):
         GLOBAL_CURRENT_SITE = get_current_site(request).domain
         seriaizer = self.serializer_class(data=request.data)
         if seriaizer.is_valid():
             user = seriaizer.save()
-            login(request, user)
             user_serializer = UserSerializer(instance=user)
-            return Response(data=user_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(data={"user": user_serializer.data, "token": AuthToken.objects.create(user)[1]}, status=status.HTTP_201_CREATED)
         return Response(seriaizer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -45,14 +44,14 @@ class LoginView(generics.GenericAPIView):
     logs in a user and returns its details
     """
     serializer_class = LoginSerializer
+    authentication_classes = []
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
-        login(request, user)
         user_serializer = UserSerializer(instance=user)
-        return Response(user_serializer.data, status=status.HTTP_200_OK)
+        return Response(data={"user": user_serializer.data, "token": AuthToken.objects.create(user)[1]}, status=status.HTTP_200_OK)
 
 
 class sendEmailVerificationView(views.APIView):
@@ -60,7 +59,6 @@ class sendEmailVerificationView(views.APIView):
     sends a verification mail to user with unverified email
     """
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
 
     def get(self, request):
         user = request.user
@@ -108,7 +106,6 @@ class ChangePasswordView(generics.GenericAPIView):
     """
     serializer_class = ChangePasswordSerializer
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
 
     def put(self, request, *args, **kwargs):
         user = request.user
@@ -124,7 +121,6 @@ class ChangeEmailView(generics.GenericAPIView):
     """
     serializer_class = ChangeEmailSerializer
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
 
     def put(self, request, *args, **kwargs):
         user = request.user
@@ -143,37 +139,27 @@ class ChangeEmailView(generics.GenericAPIView):
         return Response({'response': 'Your email has been updated, We have sent verication link to your ntew email'}, status=status.HTTP_200_OK)
 
 
-class UserDetailView(generics.RetrieveUpdateAPIView):
+class UserDetailView(generics.GenericAPIView):
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated, UpdateOwnProfile]
-    authentication_classes = [TokenAuthentication]
-    queryset = UserModel.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        user = self.get_object()
-
-        if user != request.user:
-            serializer = UserForWallet(instance=user)
-        else:
-            serializer = self.serializer_class(instance=user)
+        user = request.user
+        serializer = self.serializer_class(instance=user)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
     def put(self, request, *args, **kwargs):
-        user = self.get_object()
+        user = request.user
         serializer = self.serializer_class(data=request.data, instance=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-
-    def patch(self, request, *args, **kwargs):
-        return Response({'error': 'update user details through PUT request'}, status=status.HTTP_400_BAD_REQUEST)
     
 
 class VerifyBVNView(generics.GenericAPIView):
     serializer_class = VerifyBVNSerializer
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
 
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -203,6 +189,5 @@ class UsersView(generics.ListAPIView):
     serializer_class = UserForWallet
     queryset = UserModel.objects.all()
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     filter_backends = [filters.SearchFilter]
     search_fields = ['username', 'full_name', 'first_name', 'last_name', 'wallet__wallet_id']

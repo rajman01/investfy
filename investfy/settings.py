@@ -49,13 +49,13 @@ INSTALLED_APPS = [
     'investment',
     'payment',
     'salary_management',
-    'frontend'
+    'frontend',
+    'knox'
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES':[
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication'
+        'knox.auth.TokenAuthentication'
     ]
 }
 

@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, CharField, ValidationError, Serializer
+from rest_framework.serializers import ModelSerializer, CharField, ValidationError, Serializer, DecimalField
 from .models import Bank, Account
 from wallet.serializers import UserForWallet
 
@@ -58,3 +58,21 @@ class AcountDetailsSerializer(Serializer):
             raise ValidationError('invalid bank code')
         return bank_code
 
+
+class MakePaymentSerializer(Serializer):
+    acct_no = CharField(max_length=10)
+    amount = DecimalField(max_digits=10, decimal_places=2)
+    password = CharField(max_length=4, min_length=4, write_only=True)
+    bank_code = CharField(max_length=16)
+    name = CharField(max_length=64)
+
+    class Meta:
+        fields = ['acct_no', 'amount', 'bank_code', 'password', 'name']
+
+    def validate_bank_code(self, bank_code):
+        try:
+            Bank.objects.get(code=bank_code)
+        except Bank.DoesNotExist:
+            raise ValidationError('invalid bank code')
+        return bank_code
+    

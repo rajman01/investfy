@@ -2,7 +2,6 @@ import jwt
 from decimal import Decimal
 from rest_framework import generics, status, views, filters
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from wallet.models import SavingTransaction
 from wallet.utils import WTS, STW, QS, TS, JS
@@ -29,7 +28,6 @@ UserModel = get_user_model()
 class QuickSaveView(generics.GenericAPIView):
     serializer_class = QuickSaveSerializer
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     
     def get(self, request, *args, **kwargs):
         serializer = self.serializer_class(instance=request.user.quick_save)
@@ -41,7 +39,6 @@ class QuickSaveCashOutView(generics.GenericAPIView):
         cashes out all the money from quicksave to person wallet
     """
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
 
     def get(self, request, *args, **kwargs):
         quick_save = request.user.quick_save
@@ -69,7 +66,6 @@ class QuickSaveDepositView(generics.GenericAPIView):
     """
     serializer_class = SaveSerializer
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -98,7 +94,6 @@ class QuickSaveDepositView(generics.GenericAPIView):
 
 class QuickSaveAutoSaveView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     serializer_class = QuickSaveAutoSaveSerializer
 
     def put(self, request, *args, **kwargs):
@@ -117,12 +112,10 @@ class TargetSaveView(generics.RetrieveAPIView):
     serializer_class = TargetSaveSerializer
     permission_classes = [IsAuthenticated, ViewOwnSave]
     queryset = TargetSave.objects.filter(joint=False)
-    authentication_classes = [TokenAuthentication]
 
 
 class TargetSavingsView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     serializer_class = TargetSaveSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
@@ -135,7 +128,6 @@ class TargetSavingsView(generics.ListAPIView):
 
 class CreateTargetSaveView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     serializer_class = CreateTargetSaveSerializer
 
     def post(self, request, *args, **kwargs):
@@ -151,7 +143,6 @@ class TargetSaveCashoutView(generics.GenericAPIView):
         Cashes out all the money from targetsave to wallet
     """
     permission_classes = [IsAuthenticated, ViewOwnSave]
-    authentication_classes = [TokenAuthentication]
     queryset = TargetSave.objects.filter(joint=False)
 
     def get(self, request, *args, **kwargs):
@@ -179,7 +170,6 @@ class TargetSaveDepositView(generics.GenericAPIView):
         save an amount from person wallet to target save
     """
     permission_classes = [IsAuthenticated, ViewOwnSave]
-    authentication_classes = [TokenAuthentication]
     serializer_class = SaveSerializer
     queryset = TargetSave.objects.filter(joint=False)
 
@@ -213,7 +203,6 @@ class TargetSaveDepositView(generics.GenericAPIView):
 
 class TargetSaveDeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated, ViewOwnSave]
-    authentication_classes = [TokenAuthentication]
     queryset = TargetSave.objects.filter(joint=False)
 
     def delete(self, request, *args, **kwargs):
@@ -238,8 +227,7 @@ class TargetSaveDeleteView(generics.DestroyAPIView):
 
 
 class TargetSaveAutoSaveView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication, ViewOwnSave]
+    permission_classes = [IsAuthenticated, ViewOwnSave]
     serializer_class = TargetSaveAutoSaveSerializer
     queryset = TargetSave.objects.filter(joint=False)
 
@@ -257,7 +245,6 @@ class TargetSaveAutoSaveView(generics.GenericAPIView):
 
 class JointTargetSavingsView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     serializer_class = JointTargetSaveSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
@@ -270,14 +257,12 @@ class JointTargetSavingsView(generics.ListAPIView):
 
 class JointTargetSaveView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated, ViewJointSave]
-    authentication_classes = [TokenAuthentication]
     serializer_class = JointTargetSaveSerializer
     queryset = TargetSave.objects.filter(joint=True)
 
 
 class CreateJointTargetSaveView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     serializer_class = CreateJointTargetSaveSerializer
 
     def post(self, request, *args, **kwargs):
@@ -293,7 +278,6 @@ class CreateJointTargetSaveView(generics.CreateAPIView):
 
 class JointTargetSaveCashOut(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, ViewOwnSave]
-    authentication_classes = [TokenAuthentication]
     queryset = TargetSave.objects.filter(joint=True)
 
     def get(self, request, *args, **kwargs):
@@ -318,7 +302,6 @@ class JointTargetSaveCashOut(generics.GenericAPIView):
         
 class JointTargetSaveDepositView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, ViewJointSave]
-    authentication_classes = [TokenAuthentication]
     serializer_class = SaveSerializer
     queryset = TargetSave.objects.filter(joint=True)
 
@@ -352,7 +335,6 @@ class JointTargetSaveDepositView(generics.GenericAPIView):
 
 class JointTargetSaveDeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated, ViewOwnSave]
-    authentication_classes = [TokenAuthentication]
     queryset = TargetSave.objects.filter(joint=True)
 
     def delete(self, request, *args, **kwargs):
@@ -377,7 +359,6 @@ class JointTargetSaveDeleteView(generics.DestroyAPIView):
 
 class JointTargetSaveInviteView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, ViewOwnSave]
-    authentication_classes = [TokenAuthentication]
     queryset = TargetSave.objects.filter(joint=True)
     serializer_class = InviteSerializer
 
@@ -395,7 +376,6 @@ class JointTargetSaveInviteView(generics.GenericAPIView):
 
 class JointTargetSaveLeaveView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, ViewJointSave]
-    authentication_classes = [TokenAuthentication]
     queryset = TargetSave.objects.filter(joint=True)
 
     def get(self, request, *args, **kwargs):
@@ -410,7 +390,6 @@ class JointTargetSaveLeaveView(generics.GenericAPIView):
 
 class JointSavingsView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     serializer_class = JointSaveSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
@@ -423,14 +402,12 @@ class JointSavingsView(generics.ListAPIView):
 
 class JointSaveView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated, ViewJointSave]
-    authentication_classes = [TokenAuthentication]
     serializer_class = JointSaveSerializer
     queryset = JointSave.objects.filter(is_active=True)
 
 
 class CreateJointSaveView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     serializer_class = CreateJointSaveSerializer
 
     def post(self, request, *args, **kwargs):
@@ -478,7 +455,6 @@ class AcceptJointSaveView(generics.GenericAPIView):
 
 class SaveToJointSaveView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, ViewJointSave]
-    authentication_classes = [TokenAuthentication]
     serializer_class = PasswordSerializer
     queryset = JointSave.objects.filter(is_active=True)
 
@@ -533,7 +509,6 @@ class SaveToJointSaveView(generics.GenericAPIView):
 
 class InviteToJointSaveView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, AdminJointSave]
-    authentication_classes = [TokenAuthentication]
     serializer_class = InviteSerializer
     queryset = JointSave.objects.filter(is_active=True)
 
@@ -551,7 +526,6 @@ class InviteToJointSaveView(generics.GenericAPIView):
 
 class DisbandJointSaveView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated, AdminJointSave]
-    authentication_classes = [TokenAuthentication]
     queryset = JointSave.objects.filter(is_active=True)
 
     def delete(self, request, *args, **kwargs):
@@ -579,7 +553,6 @@ class DisbandJointSaveView(generics.DestroyAPIView):
 
 class LeaveJointSave(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, ViewJointSave]
-    authentication_classes = [TokenAuthentication]
     queryset = JointSave.objects.filter(is_active=True)
 
     def get(self, request, *args, **kwargs):

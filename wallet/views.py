@@ -1,8 +1,7 @@
 from rest_framework import generics, status, views
 from rest_framework.response import Response
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .serializers import WalletSerializer, SetWalletPasswordSerializer, WalletTransferSerializer, ChangeWalletPasswordSerializer, ChangeWalletIDSerializer
+from .serializers import WalletSerializer, SetWalletPasswordSerializer, WalletTransferSerializer, ChangeWalletPasswordSerializer, ChangeWalletIDSerializer, FundWalletSerializer
 from .models import Wallet, WalletTransaction
 from .permissions import ViewOwnWallet
 from django.contrib.auth import get_user_model
@@ -15,7 +14,6 @@ UserModel = get_user_model()
 
 class GetWalletView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     serializer_class = WalletSerializer
 
     def get(self, request, *args, **kwargs):
@@ -25,7 +23,6 @@ class GetWalletView(generics.GenericAPIView):
 
 class SetPasswordView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     serializer_class = SetWalletPasswordSerializer
 
     def post(self, request, *args, **kwargs):
@@ -42,7 +39,6 @@ class SetPasswordView(generics.GenericAPIView):
 
 class ChangePasswordView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     serializer_class = ChangeWalletPasswordSerializer
 
     def post(self, request, *args, **kwargs):
@@ -56,7 +52,6 @@ class ChangePasswordView(generics.GenericAPIView):
 
 class WalletTransferView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, EmailVerified, BVNVerified]
-    authentication_classes = [TokenAuthentication]
     serializer_class = WalletTransferSerializer
 
     def post(self, request, *args, **kwargs):
@@ -86,7 +81,6 @@ class WalletTransferView(generics.GenericAPIView):
 
 class ChangeWalletIDView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
     serialzer_class = ChangeWalletIDSerializer
 
     def put(self, request, *args, **kwargs):
@@ -94,3 +88,22 @@ class ChangeWalletIDView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(data={'response': 'You wallet id has been updated'}, status=status.HTTP_200_OK)
+
+# temporary
+class FundWalletView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated, EmailVerified]
+    serializer_class = FundWalletSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        amount = ((serializer.validated_data)['amount'])
+        wallet = self.request.user.wallet
+        wallet.balance += amount
+        wallet.save()
+        WalletTransaction.objects.create(
+            beneficiary=request.user,
+            amount=amount
+        )
+        return Response(data={'response': f'You have funded Your wallet with {amount} naira'}, status=status.HTTP_200_OK)
+        
