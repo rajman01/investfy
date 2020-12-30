@@ -17,6 +17,7 @@ from django.contrib.auth import get_user_model
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from knox.models import AuthToken
+from knox.auth import TokenAuthentication
 
 
 UserModel = get_user_model()
@@ -142,8 +143,10 @@ class ChangeEmailView(generics.GenericAPIView):
 class UserDetailView(generics.GenericAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
     def get(self, request, *args, **kwargs):
+        print(request.headers)
         user = request.user
         serializer = self.serializer_class(instance=user)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
@@ -188,6 +191,5 @@ class VerifyBVNView(generics.GenericAPIView):
 class UsersView(generics.ListAPIView):
     serializer_class = UserForWallet
     queryset = UserModel.objects.all()
-    permission_classes = [IsAuthenticated]
     filter_backends = [filters.SearchFilter]
     search_fields = ['username', 'full_name', 'first_name', 'last_name', 'wallet__wallet_id']

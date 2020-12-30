@@ -59,7 +59,7 @@ class InvestmentSerializer(serializers.ModelSerializer):
 class CreateInvestorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Investment
-        fieldss = ['name', 'description', 'payout_type', 'units', 'amount_per_unit', 'yearly_profit_percent', 'duration']
+        fields = ['name', 'description', 'payout_type', 'units', 'amount_per_unit', 'yearly_profit_percent', 'duration']
 
     def validate_yearly_profit_percent(self, yearly_profit_percent):
         if yearly_profit_percent < 5 or yearly_profit_percent > 100:

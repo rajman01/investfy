@@ -1,0 +1,266 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+:root {
+    --new-car: rgba(15, 79, 193, 0.7);
+    --portage: rgba(125, 167, 242, 0.2);
+    --portage2: rgba(125, 167, 242, 0.04);
+    --mountain-meadow: rgba(48, 197, 123, 1);
+}
+
+.sidebar {
+    position: fixed;
+    left: -327px;
+    width: 327px;
+    background-color: white;
+    box-shadow: 10px 4px 60px rgba(15, 79, 193, 0.03);
+    transition: all .5s ease;
+    height: 100%;
+}
+
+
+.header {
+    align-items: center;
+    background-color: transparent;
+    display: inline-flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: 106px;
+    justify-content: flex-start;
+    overflow: hidden;
+    width: 327px;
+    padding-left: 30px;
+}
+
+
+
+.investfy-651 {
+    letter-spacing: 0px;
+    line-height: normal;
+    text-align: left;
+    width: auto;
+}
+
+.sidebar ul a {
+    display: block;
+    height: 100%;
+    width: 100%;
+    line-height: 65px;
+}
+
+.sidebar ul a:hover {
+    text-decoration: none;
+}
+
+.sidebar ul li {
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20PX;
+}
+
+.madetommy-medium-white-30px {
+    color: transparent;
+    font-family: "MADE TOMMY", Helvetica, Arial, serif;
+    font-size: 30px;
+}
+
+.span1-VmTTxZ {
+    color: rgba(48, 197, 123, 1);
+    font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.span2-VmTTxZ {
+    color: rgba(15, 79, 193, 1);
+    font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.active {
+    background-color: var(--portage);
+    align-items: center;
+    border-radius: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: 66px;
+    justify-content: flex-start;
+    padding: 17px 20px;
+    width: 275px;
+}
+
+.frame-45:hover {
+    background-color: var(--portage);
+}
+
+.grid-dashboard {
+    align-self: flex-end;
+    background-color: transparent;
+    flex-shrink: 0;
+    height: 28px;
+    width: 28px;
+}
+
+.madetommy-medium-new-car-20px {
+    color: var(--new-car);
+    font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.overview-681 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    margin-bottom: 1px;
+    margin-left: 21px;
+    min-height: 25px;
+    min-width: 101px;
+    text-align: left;
+    width: auto;
+    font-weight: 700;
+}
+
+.frame-45 {
+    align-items: center;
+    background-color: transparent;
+    border-radius: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: 66px;
+    justify-content: flex-start;
+    padding: 18px 21px;
+    width: 275px;
+}
+
+.madetommy-medium-mountain-meadow-20px {
+    color: var(--mountain-meadow);
+    font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.madetommy-medium-mountain-meadow-20px:hover {
+    color: var(--new-car);
+}
+
+.salary-manager-6826 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    margin-bottom: 1px;
+    margin-left: 20px;
+    min-height: 25px;
+    min-width: 158px;
+    text-align: left;
+    width: auto;
+    width: auto;
+    font-weight: 700;
+
+}
+
+.user-usercircle {
+    align-self: flex-end;
+    background-color: transparent;
+    flex-shrink: 0;
+    height: 28px;
+    width: 28px;
+}
+
+.down {
+    margin-top: auto;
+}
+
+#check {
+    display: none;
+}
+
+label #cancle,
+label #btn,
+#icon {
+    position: absolute;
+    cursor: pointer;
+
+}
+
+
+label #btn {
+    left: 40px;
+    top: 25px;
+    font-size: 35px;
+    color: var(--mountain-meadow);
+    transition: all .5s;
+}
+
+label #cancle {
+    z-index: 1111;
+    left: -280px;
+    top: 27px;
+    font-size: 40px;
+    color: var(--mountain-meadow);
+    transition: all .5s ease;
+}
+
+#check:checked ~ .sidebar {
+    left: 0;
+}
+
+#check:checked ~ label #btn {
+    left: 280px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#check:checked ~ label #cancle {
+    left: 280px;
+
+}
+
+.main-content {
+    height: 100%;
+    background-color: var(--portage2);
+}
+
+
+@media only screen and (min-width: 768px) {
+
+    label #cancle,
+    label #btn,
+    #icon {
+        display: none;
+    }
+
+    .sidebar {
+        left: 0;
+    }
+
+    .main-content {
+        margin-left: 327px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+
+    .main-content {
+        padding-top: 50px;
+    }
+    .sidebar{
+        z-index: 1;
+    }
+}
