@@ -47,10 +47,11 @@ class LoginSerializer(serializers.Serializer):
 
 
 class WalletForUser(serializers.ModelSerializer):
+    has_set_wallet = serializers.BooleanField(source='has_password')
     class Meta:
         model = Wallet
-        fields = ['id', 'wallet_id', 'balance']
-        read_only_fields = ['id', 'balance', 'wallet_id']
+        fields = ['id', 'wallet_id', 'balance', 'has_set_wallet']
+        read_only_fields = ['id', 'balance', 'wallet_id', 'has_set_wallet']
 
 
 class TargetSaveForUser(serializers.ModelSerializer):

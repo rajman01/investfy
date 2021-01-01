@@ -1,9 +1,9 @@
 # from datetime import datetime
 
-WTQ = 'wallet to quicksave'
-QTW = 'quicksave to wallet'
-BTQ = 'bank account to quicksave'
-QTB = 'quicksave to bank account'
+WTQ = 'Wallet To Quicksave'
+QTW = 'Quicksave To Wallet'
+BTQ = 'Bank Account To Quicksave'
+QTB = 'Quicksave To Bank Account'
 
 QUICKSAVE_TRANSACTION_TYPES = [
     (WTQ, WTQ),
@@ -12,10 +12,10 @@ QUICKSAVE_TRANSACTION_TYPES = [
     (QTB, QTB)
 ]
 
-WTT = 'wallet to targetsave'
-TTW = 'targetsave to wallet'
-BTT = 'bank account to targetsave'
-TTB = 'targetsave to bank account'
+WTT = 'Wallet To Targetsave'
+TTW = 'Targetsave To Wallet'
+BTT = 'Bank Account To Targetsave'
+TTB = 'Targetsave To Bank Account'
 
 TARGET_SAVE_TRANSACTION_TYPES = [
    (WTT, WTT),
@@ -34,8 +34,8 @@ JOINT_SAVING_FREQUENCY_TYPES = [
     (M, M)
 ]
 
-WTJ = 'wallet to joint save'
-JTW = 'joint save to wallet'
+WTJ = 'Wallet To Joint Save'
+JTW = 'Joint Save To Wallet'
 
 JOINT_SAVE_TRANSACTION_TYPES = [
     (WTJ, WTJ),

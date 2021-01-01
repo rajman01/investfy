@@ -1,0 +1,84 @@
+
+.attention--roroutline6 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: 36px;
+  margin-bottom: 0.07px;
+  width: 36px;
+}
+.caution-card {
+  align-items: center;
+  background-color: var(--lightning-yellow);
+  border-radius: 20px;
+  display: inline-flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  height: 86px;
+  justify-content: flex-start;
+  padding: 23px 39px;
+  width: 80%;
+  margin: auto;
+}
+.complete-r-ration-9236 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 16px;
+  text-align: left;
+  width: 134px;
+}
+.frame-486 {
+  align-items: flex-start;
+  align-self: flex-end;
+  background-color: var(--mountain-meadow);
+  border-radius: 5.9px;
+  display: inline-flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  height: 39px;
+  justify-content: flex-start;
+  margin-bottom: 0.12px;
+  margin-left: 157px;
+  padding: 11px 13.5px;
+  width: 162px;
+}
+.hi-john-yo-mplete-9216 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  margin-left: 20px;
+  margin-top: 0.95px;
+  min-height: 23px;
+  text-align: left;
+  width: 359px;
+}
+.madetommy-medium-white-11976469993591309px6 {
+  color: white;
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+}
+.madetommy-regular-normal-black-17964704513549805px6 {
+  color: black;
+  font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+}
+.menu-closesmall {
+  align-self: flex-start;
+  background-color: transparent;
+  flex-shrink: 0;
+  height: 40px;
+  margin-left: 160px;
+  width: 40px;
+}
+:root {
+  --lightning-yellow: rgba(247, 197, 19, 0.1);
+  --mountain-meadow: rgba(48, 197, 123, 1);
+}

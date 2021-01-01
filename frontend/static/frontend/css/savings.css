@@ -1,0 +1,158 @@
+:root {
+    --mountain-meadow: rgba(48, 197, 123, 1);
+      --new-car: rgba(15, 79, 193, 1);
+  --portage: rgba(125, 167, 242, 0.06);
+  
+  }
+  
+  .below-header, .overview{
+      padding: 30px 0;
+      margin: 0 30px;
+  }
+  .dashoboard-vings-8228 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    min-height: 22px;
+    min-width: 194px;
+    text-align: left;
+    width: auto;
+  }
+  .madetommy-regular-normal-mountain-meadow-18px {
+    color: var(--mountain-meadow);
+    font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+  }
+  
+  .saving-balance{
+      margin: 0 30px;
+      width: 90%;
+      margin: auto;
+      background-color: white;
+      padding: 40px;
+      border-radius: 16px;
+      height: 231px;
+      background-image: url(https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/group-of-blocks@1x.svg)
+  }
+  
+  .madetommy-regular-normal-black-30px {
+    color: black;
+    font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+  }
+  .total-balance-82187 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    min-height: 37px;
+    min-width: 193px;
+    text-align: left;
+    width: auto;
+  }
+  
+  .madetommy-medium-black-34px {
+    color: var(--new-car);;
+    font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+    font-size: 55px;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .x120000-78177 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    min-height: 35px;
+    text-align: left;
+      margin-top: 20px;
+  }
+  
+  .rrty{
+      width: fit-content;
+      margin-left: auto;
+  }
+  
+  .frame-48{
+      display: flex;
+      flex-wrap: wrap;
+  }
+  
+  @media only screen and (max-width: 600px) {
+      .rrty {
+          display: none;
+      }
+  }
+
+.transactions{
+  padding: 25px 15px;
+  background-color: white;
+  margin: auto;
+  margin-top: 40px;
+  width: 90%;
+  border-radius: 16px;
+}
+
+.tran-button-active {
+  align-items: flex-start;
+  background-color: var(--portage);
+  border-radius: 4.8px;
+  display: inline-flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  height: 37px;
+  justify-content: flex-start;
+  padding: 9px 62px;
+  cursor: pointer;
+}
+.tran-text-active {
+  color: var(--new-car);
+  font-family: "MADE TOMMY-Bold", Helvetica, Arial, serif;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 700;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 19px;
+  text-align: left;
+}
+
+
+
+
+
+.tran-button {
+  align-items: center;
+  background-color: transparent;
+  border-radius: 4.8px;
+  display: inline-flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  height: 37px;
+  justify-content: flex-start;
+  padding: 0 30px;
+  cursor: pointer;
+}
+.tran-text {
+  color: var(--mountain-meadow);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 19px;
+}

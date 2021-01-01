@@ -20,20 +20,20 @@ class WalletTransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WalletTransaction
-        fields = ['sender', 'beneficiary', 'amount', 'timestamp']
+        fields = ['id', 'sender', 'beneficiary', 'amount', 'timestamp']
         read_only_field = ['sender', 'beneficiary', 'amount', 'timestamp']
 
 
 class SavingTransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = SavingTransaction
-        fields = ['amount', 'savings_account', 'transaction_type', 'timestamp']
+        fields = ['id','amount', 'savings_account', 'transaction_type', 'timestamp']
         read_only_fields = ['amount', 'savings_account', 'transaction_type', 'timestamp']
 
 class AccountTransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccountTransaction
-        fields = ['amount', 'acct_no', 'name', 'successful', 'timestamp']
+        fields = ['id','amount', 'acct_no', 'name', 'successful', 'timestamp']
 
 
 class WalletSerializer(serializers.ModelSerializer):

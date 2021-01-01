@@ -4,13 +4,16 @@ import { USER_LOADED,
         REGISTER_FAIL,
         REGISTER_SUCCESS,
         LOGIN_FAIL,
-        LOGIN_SUCCESS} from '../actions/types';
+        LOGIN_SUCCESS, 
+        LOGOUT_SUCCESSFUL,
+        SET_WALLET} from '../actions/types';
 
 const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     isLoading: false,
-    user: null
+    user: null,
+    has_set_wallet: false,
 }
 
 export default function(state = initialState, action){
@@ -25,29 +28,38 @@ export default function(state = initialState, action){
                 ...state,
                 isAuthenticated: true,
                 isLoading: false,
-                user: action.payload
+                user: action.payload,
+                has_set_wallet: action.payload.wallet.has_set_wallet
             };
         case AUTH_ERROR:
         case LOGIN_FAIL:
         case REGISTER_FAIL:
+        case LOGOUT_SUCCESSFUL:
             localStorage.removeItem('token')
             return{
                 ...state,
                 token: null,
                 isAuthenticated: null,
                 isLoading: false,
-                user: null
+                user: null,
+                has_set_wallet: false
 
             };
-            case LOGIN_SUCCESS:
-            case REGISTER_SUCCESS:
-                localStorage.setItem('token', action.payload.token)
-                return {
-                    ...state,
-                    ...action.payload,
-                    isAuthenticated: true,
-                    isLoading: false
-                };
+        case LOGIN_SUCCESS:
+        case REGISTER_SUCCESS:
+            localStorage.setItem('token', action.payload.token)
+            return {
+                ...state,
+                ...action.payload,
+                isAuthenticated: true,
+                isLoading: false,
+                has_set_wallet: action.payload.user.wallet.has_set_wallet
+            };
+        case SET_WALLET:
+            return{
+                ...state,
+                has_set_wallet: true,
+            }
 
         default:
             return state;

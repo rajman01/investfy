@@ -1,5 +1,5 @@
-QS = 'quick save'
-JS = 'joint save'
+QS = 'Quick save'
+JS = 'Joint save'
 TS = 'Target Save'
 
 SAVING_ACCOUNT_CHOICES = [

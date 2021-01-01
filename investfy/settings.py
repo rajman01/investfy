@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'payment',
     'salary_management',
     'frontend',
-    'knox'
+    'knox',
+    'corsheaders',
 ]
 
 REST_FRAMEWORK = {
@@ -60,6 +61,8 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -178,3 +181,5 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": timedelta(days=1)
     }
 }
+
+CORS_ALLOW_ALL_ORIGINS = True

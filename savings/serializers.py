@@ -15,7 +15,7 @@ class QuicksaveTransactionSerializer(ModelSerializer):
 
     class Meta:
         model = QuicksaveTransaction
-        fields = ['amount', 'transaction_type', 'timestamp']
+        fields = ['id','amount', 'transaction_type', 'timestamp']
 
 
 class QuickSaveSerializer(ModelSerializer):
@@ -65,7 +65,7 @@ class PasswordSerializer(Serializer):
 class TargeSaveTransactionSerializer(ModelSerializer):
     class Meta:
         model = TargetSavingTransaction
-        fields = ['amount', 'transaction_type', 'timestamp']
+        fields = ['id','amount', 'transaction_type', 'timestamp']
 
 
 class TargetSaveAutoSaveSerializer(ModelSerializer):
@@ -190,7 +190,7 @@ class CreateJointTargetSaveSerializer(ModelSerializer):
 class JointSaveTransactionSerializer(ModelSerializer):
     class Meta:
         model = JointSaveTransaction
-        fields = ['amount', 'transaction_type', 'timestamp']
+        fields = ['id','amount', 'transaction_type', 'timestamp']
 
 
 class JointSaveMemberSerializer(ModelSerializer):

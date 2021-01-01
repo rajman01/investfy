@@ -36,7 +36,7 @@ class RegisterView(generics.CreateAPIView):
         if seriaizer.is_valid():
             user = seriaizer.save()
             user_serializer = UserSerializer(instance=user)
-            return Response(data={"user": user_serializer.data, "token": AuthToken.objects.create(user)[1]}, status=status.HTTP_201_CREATED)
+            return Response(data={"user": user_serializer.data, "token": AuthToken.objects.create(user)[1]}, status=status.HTTP_200_OK)
         return Response(seriaizer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

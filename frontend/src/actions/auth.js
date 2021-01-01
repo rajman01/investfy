@@ -1,5 +1,7 @@
 import axios from 'axios'
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_FAIL, REGISTER_SUCCESS } from './types'
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_FAIL, REGISTER_SUCCESS, LOGOUT_SUCCESSFUL, SET_WALLET } from './types'
+import { createMessage, returnErrors } from './messages'
+
 
 export const loadUser = () => (dispatch, getState) => {
     dispatch({type: USER_LOADING});
@@ -11,10 +13,10 @@ export const loadUser = () => (dispatch, getState) => {
         });
     })
     .catch(err => {
-        console.log(err);
+        // dispatch(returnErrors(err.response.data, err.response.status))
         dispatch({
             type: AUTH_ERROR
-        })
+        });
     })
 }
 
@@ -31,11 +33,12 @@ export const register = ({full_name, email, phone_number, password}) => (dispatc
     .then((res) => {
         dispatch({
             type: REGISTER_SUCCESS,
-            patload: res.data
+            payload: res.data
         });
+        dispatch(createMessage({registerSuccesful: "REGISTERED SUCCESSFULLY"}))
     })
     .catch((err) => {
-        console.log(err)
+        dispatch(returnErrors(err.response.data, err.response.status));
         dispatch({
             type: REGISTER_FAIL
         });
@@ -57,13 +60,42 @@ export const login = ({ email, password }) => (dispatch) => {
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
-        })
+        });
+        dispatch(createMessage({loginSuccesful: "LOGIN SUCCESSFUL"}));
     })
     .catch((err) => {
+        dispatch(returnErrors(err.response.data, err.response.status));
         dispatch({
             type: LOGIN_FAIL
         });
     });
+}
+
+export const setWallet = ({wallet_id, password}) => (dispatch, getState) => {
+    const body = JSON.stringify({ wallet_id, password })
+    axios.post('wallet/set', body, tokenConfig(getState))
+    .then(res => {
+        dispatch({
+            type: SET_WALLET,
+            payload: true
+        })
+        dispatch(createMessage({response: res.data.response}));
+    })
+    .catch(err => {
+        dispatch(returnErrors(err.response.data, err.response.status));
+    })
+}
+
+export const logout = () => (dispatch, getState) => {
+    axios.post('/auth/logout', null, tokenConfig(getState))
+    .then((res) => {
+        dispatch({
+            type: LOGOUT_SUCCESSFUL
+        });
+    })
+    .catch((err) => {
+        dispatch(returnErrors(err.response.data, err.response.status))
+    })
 }
 
 export const tokenConfig = (getState) => {
@@ -78,7 +110,6 @@ export const tokenConfig = (getState) => {
     if(token){
         config.headers['Authorization'] = `Token ${token}`;
     }
-    console.log(config)
 
     return config;
 }

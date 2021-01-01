@@ -57,6 +57,8 @@ class Wallet(models.Model):
         return False
     
     def has_password(self):
+        if self.password == b'':
+            return False
         if self.password.tobytes():
             return True
         return False

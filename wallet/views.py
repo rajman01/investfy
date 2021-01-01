@@ -1,7 +1,7 @@
 from rest_framework import generics, status, views
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .serializers import WalletSerializer, SetWalletPasswordSerializer, WalletTransferSerializer, ChangeWalletPasswordSerializer, ChangeWalletIDSerializer, FundWalletSerializer
+from .serializers import WalletSerializer, SetWalletPasswordSerializer, WalletTransferSerializer, ChangeWalletPasswordSerializer, ChangeWalletIDSerializer, FundWalletSerializer, WalletTransactionSerializer
 from .models import Wallet, WalletTransaction
 from .permissions import ViewOwnWallet
 from django.contrib.auth import get_user_model
@@ -27,7 +27,7 @@ class SetPasswordView(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         wallet = request.user.wallet
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(instance=wallet, data=request.data)
         serializer.is_valid(raise_exception=True)
         password = ((serializer.validated_data)['password'])
         wallet_id = ((serializer.validated_data)['wallet_id'])
@@ -101,9 +101,10 @@ class FundWalletView(generics.GenericAPIView):
         wallet = self.request.user.wallet
         wallet.balance += amount
         wallet.save()
-        WalletTransaction.objects.create(
+        transaction = WalletTransaction.objects.create(
             beneficiary=request.user,
             amount=amount
         )
-        return Response(data={'response': f'You have funded Your wallet with {amount} naira'}, status=status.HTTP_200_OK)
+        transaction = WalletTransactionSerializer(instance=transaction)
+        return Response(data={'response': f'You have funded Your wallet with {amount} naira', 'transaction': transaction.data}, status=status.HTTP_200_OK)
         
