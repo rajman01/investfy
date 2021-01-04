@@ -37,6 +37,9 @@ class QuicksaveTransaction(models.Model):
     transaction_type = models.CharField(default=WTQ, choices=QUICKSAVE_TRANSACTION_TYPES, max_length=64)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-timestamp']
+
 
 
 @receiver(signal=post_save, sender=UserModel)
@@ -99,6 +102,9 @@ class TargetSavingTransaction(models.Model):
     amount = models.DecimalField(decimal_places=2, max_digits=10)
     transaction_type = models.CharField(default=WTT, choices=TARGET_SAVE_TRANSACTION_TYPES, max_length=64)
     timestamp = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-timestamp']
 
 
 class JointSave(models.Model):
@@ -170,6 +176,9 @@ class JointSaveTransaction(models.Model):
     amount =  models.DecimalField(decimal_places=2, max_digits=10)
     transaction_type = models.CharField(max_length=64, default=WTJ, choices=JOINT_SAVE_TRANSACTION_TYPES)
     timestamp = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-timestamp']
 
 
 class JointSaveTrack(models.Model):

@@ -71,6 +71,9 @@ class WalletTransaction(models.Model):
     amount = models.DecimalField(decimal_places=2, max_digits=10)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-timestamp']
+
 
 class SavingTransaction(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='savings_transactions')
@@ -78,6 +81,9 @@ class SavingTransaction(models.Model):
     savings_account = models.CharField(max_length=64, default=QS, choices=SAVING_ACCOUNT_CHOICES)
     transaction_type = models.CharField(max_length=64, default=WTS, choices=SAVING_TRANACTION_CHOICES)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-timestamp']
 
 
 class AccountTransaction(models.Model):
@@ -87,6 +93,9 @@ class AccountTransaction(models.Model):
     name = models.CharField(max_length=128)
     successful = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-timestamp']
 
 
 

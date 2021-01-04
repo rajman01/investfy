@@ -9,6 +9,7 @@ import WalletTransactions from '../layouts/WalletTransactions'
 import WalletSavingTransactions from '../layouts/WalletSavingTransactions'
 import AccountTransactions from '../layouts/AccountTransactions'
 import FundWallet from '../modals/FundWallet'
+import SendCash from '../modals/SendCash'
 
 
 class Wallet extends Component {
@@ -22,8 +23,6 @@ class Wallet extends Component {
     static propTypes = {
         wallet: PropTypes.object.isRequired,
         getWallet: PropTypes.func.isRequired,
-        email: PropTypes.string.isRequired,
-        full_name: PropTypes.string.isRequired,
     }
 
     componentDidMount(){
@@ -59,10 +58,7 @@ class Wallet extends Component {
     
 
     render() {
-        console.log(this.props)
-        console.log(this.props.wallet.account_transactions)
         const active = { 'overview': false, 'savings': false, 'investments': false, 'payments': false, 'account': false, 'wallet': true }
-        const full_name = this.props.full_name
         const { balance, wallet_id, sent_transactions, recieved_transactions, savings_transactions, account_transactions } = this.props.wallet;
         const walletIcon = "https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/rectangle-64-4@2x.svg";
         const transaction = () => {
@@ -79,7 +75,7 @@ class Wallet extends Component {
             <div>
                 <Sidebar active={active} />
                 <div className="main-content">
-                    <Header bigHeader="Wallet" fullName={ full_name } email={this.props.email} />
+                    <Header bigHeader="Wallet" />
                     <div className="row save-now">
                         <div className="col-4">
                             <div className="dashoboard-iew-123132 madetommy-regular-normal-mountain-meadow-18px border-class-1">
@@ -87,13 +83,13 @@ class Wallet extends Component {
                             </div>
                         </div>
                         <div className="col">
-                                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">SEND CASH</button>
+                                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sendCash">SEND CASH</button>
                         </div>
                         <div className="col-4">
                                 <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fundWallet">FUND WALLET</button>
                         </div>
                     </div>
-                    <BigCards text="Wallet Balance" amount={this.props.wallet.balance} icon={walletIcon} walletId={`WALLET ID : ${wallet_id}`}/>
+                    <BigCards text="Wallet Balance" amount={balance} icon={walletIcon} walletId={`WALLET ID : ${wallet_id}`}/>
 
                     <div className="transactions">
                         <div className="row mb-5">
@@ -113,15 +109,14 @@ class Wallet extends Component {
                     </div>
                 </div>
                 <FundWallet />
+                <SendCash />
             </div>
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-    wallet: state.wallet,
-    email: state.auth.user.email,
-    full_name: state.auth.user.full_name
+    wallet: state.wallet
 })
 
 

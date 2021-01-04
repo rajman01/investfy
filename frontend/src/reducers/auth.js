@@ -6,7 +6,8 @@ import { USER_LOADED,
         LOGIN_FAIL,
         LOGIN_SUCCESS, 
         LOGOUT_SUCCESSFUL,
-        SET_WALLET} from '../actions/types';
+        SET_WALLET,
+        QUICK_SAVE_DEPOSIT} from '../actions/types';
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -59,6 +60,19 @@ export default function(state = initialState, action){
             return{
                 ...state,
                 has_set_wallet: true,
+            }
+
+        case QUICK_SAVE_DEPOSIT:
+            return{
+                ...state,
+                user: {
+                    ...state.user,
+                    total_savings: `${parseFloat(state.user.total_savings) + parseFloat(action.payload.amount)}`
+                },
+                wallet: {
+                    ...state.wallet,
+                    balance: `${parseFloat(state.wallet.balance) - parseFloat(action.payload.amount)}`
+                }
             }
 
         default:

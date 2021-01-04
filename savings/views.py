@@ -9,7 +9,7 @@ from .serializers import (QuickSaveSerializer, SaveSerializer, TargetSaveSeriali
                             QuickSaveAutoSaveSerializer, TargetSaveAutoSaveSerializer, JointTargetSaveSerializer,
                              JointSaveSerializer, CreateJointTargetSaveSerializer,
                             CreateJointSaveSerializer, AcceptJointSaveSerializer, PasswordSerializer,
-                            InviteSerializer)
+                            InviteSerializer, QuicksaveTransactionSerializer)
 from user.tasks import send_email_task
 from .permissions import ViewOwnSave, ViewJointSave, AdminJointSave
 from .models import QuickSave, QuicksaveTransaction, TargetSave, TargetSavingTransaction, JointSave, JointSaveTransaction, JointSaveTrack
@@ -44,7 +44,7 @@ class QuickSaveCashOutView(generics.GenericAPIView):
         quick_save = request.user.quick_save
         amount = quick_save.balance
         if quick_save.cashout():
-            QuicksaveTransaction.objects.create(
+            quicsave_transaction = QuicksaveTransaction.objects.create(
                 user=request.user,
                 quicksave=quick_save,
                 amount=amount,
@@ -56,7 +56,8 @@ class QuickSaveCashOutView(generics.GenericAPIView):
                 savings_account=QS,
                 transaction_type=STW
             )
-            return Response(data={'response': 'successfully cashed out'}, status=status.HTTP_200_OK)
+            transaction_serializer = QuicksaveTransactionSerializer(instance=quicsave_transaction)
+            return Response(data={'response': 'successfully cashed out', 'transaction': transaction_serializer.data}, status=status.HTTP_200_OK)
         return Response(data={'error': 'No money to cash out'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -76,7 +77,7 @@ class QuickSaveDepositView(generics.GenericAPIView):
         if not wallet.check_password(password):
             return Response(data={'error': 'incorrect password'}, status=status.HTTP_400_BAD_REQUEST)
         if wallet.save_to_quicksave(amount):
-            QuicksaveTransaction.objects.create(
+            quicsave_transaction = QuicksaveTransaction.objects.create(
                 user=request.user,
                 quicksave=wallet.quick_save,
                 amount=amount,
@@ -88,7 +89,8 @@ class QuickSaveDepositView(generics.GenericAPIView):
                 savings_account=QS,
                 transaction_type=WTS
             )
-            return Response(data={'response': f'Saved {amount} to investfy with quick save'}, status=status.HTTP_200_OK)
+            transaction_serializer = QuicksaveTransactionSerializer(instance=quicsave_transaction)
+            return Response(data={'response': f'Saved {amount} to investfy with quick save', 'transaction': transaction_serializer.data}, status=status.HTTP_200_OK)
         return Response(data={'error': 'insufficient funds'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -102,9 +104,9 @@ class QuickSaveAutoSaveView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         quicksave = serializer.save()
         if quicksave.autosave:
-            data = {'response' : 'activated quicksave autosave'}
+            data = {'response' : 'activated quicksave autosave', 'status': True}
         else:
-            data = {'response' : 'de-activated quicksave autosave'}
+            data = {'response' : 'de-activated quicksave autosave', 'status': False}
         return Response(data=data, status=status.HTTP_200_OK)
 
 
@@ -240,6 +242,8 @@ class TargetSaveAutoSaveView(generics.GenericAPIView):
             data = {'response' : 'activated targetsave autosave'}
         else:
             data = {'response' : 'de-activated target autosave'}
+        autosave_data = TargetSaveAutoSaveSerializer(instance=autosave)
+        data['autosave'] = autosave_data.data
         return Response(data=data, status=status.HTTP_200_OK)
 
 

@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import {fundWallet} from '../../actions/wallet'
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types'
 
-class FundWallet extends Component {
+class Deposit extends Component {
     state = {
-        amount: ''
-    }
-
-    static propTypes = {
-      fundWallet: PropTypes.func.isRequired,
+        amount: '',
+        password: ''
     }
 
     onChange = (e) => {
@@ -20,29 +14,33 @@ class FundWallet extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.fundWallet(this.state);
+        this.props.deposit(this.state);
         this.setState({
-          amount: ''
+          amount: '',
+          password: ''
         })
-
     }
 
     render() {
         return (
-            <div className="modal fade" id="fundWallet" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id={this.props.id} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title" id="exampleModalLabel">Fund Your Wallet</h5>
+                    <h5 className="modal-title" id="exampleModalLabel">{this.props.header}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div className="modal-body">
                     <form onSubmit={this.onSubmit}>
                     <div className="mb-3">
                       <label for="amount" className="col-form-label">Amount</label>
-                      <input type="number" name="amount" required step=".01" class="form-control" id="fundAmount" onChange={this.onChange} value={this.state.amount} placeholder="Amount To Fund"/>
+                      <input type="number" name="amount" required step=".01" class="form-control" onChange={this.onChange} value={this.state.amount} placeholder="Amount To Save"/>
                     </div>
-                      <button type="submit" className="btn btn-primary">Fund</button>
+                    <div className="mb-3">
+                      <label for="amount" className="col-form-label">Password</label>
+                      <input type="password" name="password" required class="form-control" onChange={this.onChange} value={this.state.password} placeholder="Your Wallet Password"/>
+                    </div>
+                      <button type="submit" className="btn btn-primary">Save</button>
                     </form>
                   </div>
                   <div className="modal-footer">
@@ -55,4 +53,4 @@ class FundWallet extends Component {
     }
 }
 
-export default connect(null, { fundWallet })(FundWallet);
+export default Deposit;

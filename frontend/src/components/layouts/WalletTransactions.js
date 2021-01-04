@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { timeStamp } from '../../actions/wallet'
 
 class WalletTransactions extends Component {
     render() {
@@ -16,10 +17,10 @@ class WalletTransactions extends Component {
             <tbody>
                 { transactions.map(transaction => (
                     <tr key={transaction.id}>
-                        <td>{transaction.sender ? (transaction.sender.username) : null}</td>
+                        <td>{transaction.sender ? (transaction.sender.username) : 'None'}</td>
                         <td>{transaction.beneficiary.username}</td>
                         <td>{transaction.amount}</td>
-                        <td>{transaction.timestamp}</td>
+                        <td>{timeStamp(transaction.timestamp)}</td>
                     </tr>
                 )) }
             </tbody>

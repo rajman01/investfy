@@ -11,6 +11,7 @@ import Login from './auth/Login';
 import Register from './auth/register';
 import SetWallet from './auth/SetWallet'
 import Dashboard from './wallet/Dashboard'
+import QuickSave from './savings/QuickSave'
 import Wallet from './wallet/Wallet'
 import Alerts from './layouts/Alerts'
 import { loadUser } from '../actions/auth'
@@ -38,6 +39,7 @@ class App extends Component{
                         <Switch>
                             <PrivateRoute exact path="/" component={Dashboard} />
                             <PrivateRoute exact path='/wallet' component={Wallet} />
+                            <PrivateRoute exact path="/savings/quicksave" component={QuickSave} />
                             <BasicPrivateRoute exact path="/wallet/set" component={SetWallet} />
                             <Route exact path="/login" component={Login} />
                             <Route exact Path="/register" component={Register} />

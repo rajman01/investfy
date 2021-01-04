@@ -24,7 +24,7 @@ class QuickSaveSerializer(ModelSerializer):
 
     class Meta:
         model = QuickSave
-        fields = ['user', 'balance', 'autosave', 'day_interval', 'transactions']
+        fields = ['id', 'user', 'balance', 'autosave', 'day_interval', 'autosave_amount', 'transactions']
 
 
 class QuickSaveAutoSaveSerializer(ModelSerializer):
@@ -75,7 +75,6 @@ class TargetSaveAutoSaveSerializer(ModelSerializer):
         read_only_fields = ['active']
 
     def update(self, instance, validated_data):
-        print('done')
         if not instance.active:
             instance.active = True
             instance.day_interval = validated_data['day_interval']

@@ -146,7 +146,6 @@ class UserDetailView(generics.GenericAPIView):
     authentication_classes = [TokenAuthentication]
 
     def get(self, request, *args, **kwargs):
-        print(request.headers)
         user = request.user
         serializer = self.serializer_class(instance=user)
         return Response(data=serializer.data, status=status.HTTP_200_OK)

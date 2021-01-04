@@ -64,18 +64,19 @@ class WalletTransferView(generics.GenericAPIView):
         beneficiary_wallet = Wallet.objects.get(wallet_id=((serializer.validated_data)['wallet_id']))
         beneficiary = UserModel.objects.get(wallet=beneficiary_wallet)
         if sender.wallet.transfer(beneficiary_wallet, amount):
-            WalletTransaction.objects.create(
+            transaction = WalletTransaction.objects.create(
                 sender=sender,
                 beneficiary=beneficiary,
                 amount=amount
             )
-            sender_body = f'You sent {amount} to {beneficiary.username}'
-            beneficiary_body = f'You just recieved {amount} from {sender.full_name}'
-            sender_data = {'body': sender_body, 'subject': 'Wallet debit', 'to': [sender.email]}
-            beneficiary_data = {'body': beneficiary_body, 'subject': 'Wallet Credit', 'to': [beneficiary.email]}
-            send_email_task.delay(sender_data)
-            send_email_task.delay(beneficiary_data)
-            return Response({'response': 'Transaction succesful'}, status=status.HTTP_200_OK)
+            # sender_body = f'You sent {amount} to {beneficiary.username}'
+            # beneficiary_body = f'You just recieved {amount} from {sender.full_name}'
+            # sender_data = {'body': sender_body, 'subject': 'Wallet debit', 'to': [sender.email]}
+            # beneficiary_data = {'body': beneficiary_body, 'subject': 'Wallet Credit', 'to': [beneficiary.email]}
+            # send_email_task.delay(sender_data)
+            # send_email_task.delay(beneficiary_data)
+            transaction_serializer = WalletTransactionSerializer(instance=transaction)
+            return Response({'response': 'Transaction succesful', 'transaction': transaction_serializer.data}, status=status.HTTP_200_OK)
         return Response({'error': 'insufficient funds'}, status=status.HTTP_400_BAD_REQUEST)
 
 

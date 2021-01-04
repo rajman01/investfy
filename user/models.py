@@ -13,8 +13,9 @@ class User(AbstractUser):
 
     def total_savings(self):
         amount = Decimal('0.00')
-        for transaction in self.savings_transactions.all():
-            amount += transaction.amount
+        amount += self.quick_save.balance
+        for target_save in self.target_savings.filter(joint=False):
+            amount += target_save.progress
         return amount
 
     def total_investments(self):

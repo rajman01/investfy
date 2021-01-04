@@ -1,4 +1,4 @@
-import { FUND_WALLET, GET_WALLET } from '../actions/types'
+import { FUND_WALLET, GET_WALLET, SEND_CASH } from '../actions/types'
 
 const initialState = {
     'id': null,
@@ -25,8 +25,14 @@ export default function (state = initialState, action){
         case FUND_WALLET:
             return{
                 ...state,
-                balance: `${parseFloat(action.payload.amount) + parseFloat(state.balance)}`,
-                recieved_transactions: [...state.recieved_transactions, payload.transaction]
+                balance: `${parseFloat(state.balance) + parseFloat(action.payload.amount)}`,
+                recieved_transactions: [action.payload, ...state.recieved_transactions]
+            }
+        case SEND_CASH:
+            return{
+                ...state, 
+                balance: `${parseFloat(state.balance) - parseFloat(action.payload.amount)}`,
+                sent_transactions: [action.payload, ...state.sent_transactions]
             }
         default:
             return state;
