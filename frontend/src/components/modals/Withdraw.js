@@ -1,16 +1,33 @@
 import React, { Component } from 'react';
 
 class Withdraw extends Component {
+    state = {
+      id: null
+    }
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.withdraw();
+        this.props.withdraw(this.state);
 
+    }
+
+    // componentDidMount(){
+    //    this.setState({
+    //       id: this.props.id
+    //     });
+    // }
+
+    componentDidUpdate(prevProps){
+      if(this.props !== prevProps){
+        this.setState({
+          id: this.props.id
+        });
+      }
     }
 
     render() {
         return (
-            <div className="modal fade" id={this.props.id} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id={this.props.modalId} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                   <div className="modal-header">

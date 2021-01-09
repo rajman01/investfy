@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 import bcrypt
 from decimal import Decimal
 from .utils import SAVING_ACCOUNT_CHOICES, QS, SAVING_TRANACTION_CHOICES, WTS
+from decimal import Decimal
 
 UserModel = get_user_model()
 
@@ -14,7 +15,7 @@ UserModel = get_user_model()
 class Wallet(models.Model):
     wallet_id = models.CharField(max_length=32, unique=True)
     owner = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name='wallet')
-    balance = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
+    balance = models.DecimalField(default=Decimal('0.00'), decimal_places=2, max_digits=10)
     password = models.BinaryField(default=b'')
 
     def can_deduct(self, amount):

@@ -43,15 +43,15 @@ class SendCash extends Component {
                     <form onSubmit={this.onSubmit}>
                     <div className="mb-3">
                       <label for="amount" className="col-form-label">wallet_id</label>
-                      <input type="text" name="wallet_id" required class="form-control" id="wallet_id" onChange={this.onChange} value={this.state.wallet_id} placeholder="Beneficiary's wallet_id"/>
+                      <input type="text" name="wallet_id" required className="form-control" id="wallet_id" onChange={this.onChange} value={this.state.wallet_id} placeholder="Beneficiary's wallet_id"/>
                     </div>
                     <div className="mb-3">
                       <label for="amount" className="col-form-label">Amount</label>
-                      <input type="number" name="amount" required step=".01" class="form-control" id="sendAmount" onChange={this.onChange} value={this.state.amount} placeholder="Amount To Send"/>
+                      <input type="number" name="amount" required step=".01" className="form-control" id="sendAmount" onChange={this.onChange} value={this.state.amount} placeholder="Amount To Send"/>
                     </div>
                     <div className="mb-3">
                       <label for="amount" className="col-form-label">Password</label>
-                      <input type="password" name="password" required class="form-control" id="password" onChange={this.onChange} value={this.state.password} placeholder="Your Wallet Password"/>
+                      <input type="password" name="password" required className="form-control" id="password" onChange={this.onChange} value={this.state.password} placeholder="Your Wallet Password"/>
                     </div>
                       <button type="submit" className="btn btn-primary">Send</button>
                     </form>

@@ -12,10 +12,13 @@ export const getWallet = () => (dispatch, getState) => {
         });
     })
     .catch((err) => {
-        dispatch({
-            type: AUTH_ERROR
-        });
-    
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
     });
 };
 
@@ -30,7 +33,13 @@ export const fundWallet = ({amount}) => (dispatch, getState) => {
         });
     })
     .catch(err => {
-        dispatch(returnErrors(err.response.data, err.response.status));
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
     })
 }
 
@@ -45,7 +54,13 @@ export const sendCash = ({wallet_id, amount, password}) => (dispatch, getState) 
         });
     })
     .catch(err => {
-        dispatch(returnErrors(err.response.data, err.response.status));
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
     })
 }
 

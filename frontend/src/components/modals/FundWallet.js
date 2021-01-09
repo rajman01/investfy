@@ -40,7 +40,7 @@ class FundWallet extends Component {
                     <form onSubmit={this.onSubmit}>
                     <div className="mb-3">
                       <label for="amount" className="col-form-label">Amount</label>
-                      <input type="number" name="amount" required step=".01" class="form-control" id="fundAmount" onChange={this.onChange} value={this.state.amount} placeholder="Amount To Fund"/>
+                      <input type="number" name="amount" required step=".01" className="form-control" id="fundAmount" onChange={this.onChange} value={this.state.amount} placeholder="Amount To Fund"/>
                     </div>
                       <button type="submit" className="btn btn-primary">Fund</button>
                     </form>

@@ -233,8 +233,9 @@ label #cancle {
 }
 
 .main-content {
-    height: 100%;
+    min-height: 100vh;
     background-color: var(--portage2);
+    padding-bottom: 50px;
 }
 
 

@@ -1,4 +1,4 @@
-import { CASH_OUT, GET_QUICKSAVE, QUICK_SAVE_AUTOSAVE, QUICK_SAVE_DEPOSIT } from '../actions/types'
+import { QUICK_SAVE_CASH_OUT, GET_QUICKSAVE, DEPOSIT_QUICK_SAVE, AUTOSAVE_QUICK_SAVE } from '../actions/types'
 
 const initialState = {
     'id': null,
@@ -21,35 +21,38 @@ export default function (state = initialState, action){
     switch(action.type){
         case GET_QUICKSAVE:
             return(state=action.payload);
-        
-        case CASH_OUT:
-            return{
+
+        case DEPOSIT_QUICK_SAVE:
+            console.log('done');
+            // return {
+            //     ...state,
+            //     balance: `${parseFloat(state.balance) + parseFloat(action.payload.amount)}`,
+            //     transactions: [action.payload, ...state.transactions]
+            // };
+
+        case QUICK_SAVE_CASH_OUT:
+            console.log(action)
+            return {
                 ...state,
                 balance: '0.00',
-                transactions: [action.payload.transaction, ...state.transactions]
-            }
-        case QUICK_SAVE_DEPOSIT:
-            return{
-                ...state,
-                balance: `${parseFloat(state.balance) + parseFloat(action.payload.amount)}`,
                 transactions: [action.payload, ...state.transactions]
-            }
-
-        case QUICK_SAVE_AUTOSAVE:
-            if(payload.status){
-                return{
+            };
+            
+        case AUTOSAVE_QUICK_SAVE:
+            if(action.payload.status){
+                return {
                     ...state,
-                    autosave: payload.status,
-                    day_interval: payload.day_interval,
-                    autosave_amount: payload.autosave_amount,
-                }
+                    autosave: action.payload.status,
+                    day_interval: action.payload.day_interval,
+                    autosave_amount: action.payload.autosave_amount,
+                };
             }else{
-                return{
+                return {
                     ...state,
-                    autosave: payload.status,
+                    autosave: action.payload.status,
                     day_interval: null,
                     autosave_amount: '0.00',
-                }
+                };
             }
         default:
             return state;

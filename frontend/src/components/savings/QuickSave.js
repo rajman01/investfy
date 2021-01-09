@@ -54,7 +54,7 @@ class QuickSave extends Component {
                                         </div>
                                         <div className="col-6 border-class-100">
                                         <button className="frame-58" data-bs-toggle="modal" data-bs-target="#quickSaveAutoSave">
-                                                Change Autosave status
+                                                Autosave
                                             </button>
                                         </div>
                                     </div>
@@ -74,9 +74,9 @@ class QuickSave extends Component {
                         <SavingsTransactions transactions={transactions}/>
                     </div>
                 </div>
-                <Deposit id="quickSaveDeposit" header="Save To Investfy Through QuickSave" deposit={this.props.depositQuickSave}/>
-                <Withdraw withdraw={this.props.quickSaveCashOut} amount={balance} id="quickSaveCashOut" header="Quick Save Withdraw"/>
-                <AutoSave id="quickSaveAutoSave" header="Change Autosave Status" autosave_amount={autosave_amount} day_interval={day_interval} autoSave={this.props.quickSaveAutoSave} status={autosave}/>
+                <Deposit modalId="quickSaveDeposit" header="Save To Investfy Through QuickSave" deposit={this.props.depositQuickSave} id={null} />
+                <Withdraw withdraw={this.props.quickSaveCashOut} amount={balance} modalId="quickSaveCashOut" header="Quick Save Withdraw" id={null} />
+                <AutoSave modalId="quickSaveAutoSave" header="Change Autosave Status" autosave_amount={autosave_amount} day_interval={day_interval} autoSave={this.props.quickSaveAutoSave} status={autosave} id={null} />
             </div>
         )
     }

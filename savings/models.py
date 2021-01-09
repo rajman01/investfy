@@ -14,7 +14,7 @@ UserModel = get_user_model()
 class QuickSave(models.Model):
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, related_name='quick_save')
     wallet = models.OneToOneField(Wallet, on_delete=models.CASCADE, related_name='quick_save')
-    balance = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
+    balance = models.DecimalField(default=Decimal('0.00'), decimal_places=2, max_digits=10)
     autosave = models.BooleanField(default=False)
     day_interval = models.IntegerField(blank=True, null=True)
     autosave_amount = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
@@ -50,11 +50,11 @@ def create_quick_save(sender, instance=None, created=False, **kwargs):
 
 class TargetSave(models.Model):
     name = models.CharField(max_length=64, null=True, blank=True)
-    description = models.CharField(max_length=128, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='target_savings')
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, related_name='target_savings')
-    targeted_amount = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
-    progress = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
+    targeted_amount = models.DecimalField(default=Decimal('0.00'), decimal_places=2, max_digits=10)
+    progress = models.DecimalField(default=Decimal('0.00'), decimal_places=2, max_digits=10)
     joint = models.BooleanField(default=False)
     members = models.ManyToManyField(UserModel, related_name='joint_target_savings', blank=True)
     date_created = models.DateField(auto_now_add=True)
@@ -68,7 +68,6 @@ class TargetSave(models.Model):
         if self.progress >= (Decimal('0.5') * self.targeted_amount):
             self.wallet.balance += self.progress
             self.progress = Decimal('0.00')
-            self.targeted_amount = Decimal('0.00')
             if not self.joint:
                 self.autosave.active = False
                 self.autosave.save()
@@ -86,7 +85,7 @@ class TargetSaveAutoSave(models.Model):
     target_save = models.OneToOneField(TargetSave, on_delete=models.CASCADE, related_name='autosave')
     active = models.BooleanField(default=False)
     day_interval = models.IntegerField(blank=True, null=True)
-    autosave_amount = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
+    autosave_amount = models.DecimalField(default=Decimal('0.00'), decimal_places=2, max_digits=10)
     last_saved = models.DateField(blank=True, null=True)
 
 
@@ -111,8 +110,8 @@ class JointSave(models.Model):
     name = models.CharField(max_length=64)
     admin = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING, related_name='my_joint_saving', blank=True, null=True)
     members = models.ManyToManyField(UserModel, related_name='joint_savings', blank=True)
-    amount = models.DecimalField(decimal_places=2, max_digits=10, default='0.00')
-    total = models.DecimalField(decimal_places=2, max_digits=10, default='0.00')
+    amount = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0.00'))
+    total = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal('0.00'))
     frequency = models.CharField(max_length=64, default=W, choices=JOINT_SAVING_FREQUENCY_TYPES)
     is_active = models.BooleanField(default=True)
     date_created = models.DateField(auto_now_add=True)

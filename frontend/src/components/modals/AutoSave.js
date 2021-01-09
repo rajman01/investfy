@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 class AutoSave extends Component {
     state = {
+        id: null,
         day_interval: null,
         autosave_amount: ''
     }
@@ -18,15 +19,26 @@ class AutoSave extends Component {
     }
 
     componentDidMount(){
-      this.setState({
-        day_interval: this.props.day_interval,
-        autosave_amount: this.props.autosave_amount
-      })
+      // console.log(this.props);
+      // this.setState({
+      //   id: this.props.id,
+      //   day_interval: this.props.day_interval,
+      //   autosave_amount: this.props.autosave_amount
+      // })
+    }
+    componentDidUpdate(prevProps){
+      if(this.props !== prevProps){
+        this.setState({
+          id: this.props.id,
+          day_interval: this.props.day_interval,
+          autosave_amount: this.props.autosave_amount
+        });
+      }
     }
 
     render() {
         return (
-            <div className="modal fade" id={this.props.id} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id={this.props.modalId} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                   <div className="modal-header">

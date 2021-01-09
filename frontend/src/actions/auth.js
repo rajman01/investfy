@@ -82,7 +82,13 @@ export const setWallet = ({wallet_id, password}) => (dispatch, getState) => {
         dispatch(createMessage({response: res.data.response}));
     })
     .catch(err => {
-        dispatch(returnErrors(err.response.data, err.response.status));
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
     })
 }
 
@@ -94,7 +100,13 @@ export const logout = () => (dispatch, getState) => {
         });
     })
     .catch((err) => {
-        dispatch(returnErrors(err.response.data, err.response.status))
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
     })
 }
 

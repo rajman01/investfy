@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 class Deposit extends Component {
     state = {
+        id: null,
         amount: '',
         password: ''
     }
@@ -21,9 +22,23 @@ class Deposit extends Component {
         })
     }
 
+    // componentDidMount(){
+    //   this.setState({
+    //       id: this.props.id
+    //     })
+    // }
+    
+    componentDidUpdate(prevProps){
+      if(this.props !== prevProps){
+        this.setState({
+          id: this.props.id
+        });
+      }
+    }
+
     render() {
         return (
-            <div className="modal fade" id={this.props.id} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id={this.props.modalId} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                   <div className="modal-header">

@@ -68,7 +68,7 @@ class Dashboard extends Component {
                         </div>
                     </div>
                 </div>
-                <Deposit id="saveNow" header="Save To Investfy Through QuickSave" deposit={this.props.depositQuickSave}/>
+                <Deposit modalId="saveNow" id={null} header="Save To Investfy Through QuickSave" deposit={this.props.depositQuickSave}/>
             </div>
         )
     }

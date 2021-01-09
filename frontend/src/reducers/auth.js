@@ -7,7 +7,7 @@ import { USER_LOADED,
         LOGIN_SUCCESS, 
         LOGOUT_SUCCESSFUL,
         SET_WALLET,
-        QUICK_SAVE_DEPOSIT} from '../actions/types';
+        DEPOSIT_QUICK_SAVE} from '../actions/types';
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -62,7 +62,7 @@ export default function(state = initialState, action){
                 has_set_wallet: true,
             }
 
-        case QUICK_SAVE_DEPOSIT:
+        case DEPOSIT_QUICK_SAVE:
             return{
                 ...state,
                 user: {

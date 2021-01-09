@@ -9,7 +9,7 @@ from .serializers import (QuickSaveSerializer, SaveSerializer, TargetSaveSeriali
                             QuickSaveAutoSaveSerializer, TargetSaveAutoSaveSerializer, JointTargetSaveSerializer,
                              JointSaveSerializer, CreateJointTargetSaveSerializer,
                             CreateJointSaveSerializer, AcceptJointSaveSerializer, PasswordSerializer,
-                            InviteSerializer, QuicksaveTransactionSerializer)
+                            InviteSerializer, QuicksaveTransactionSerializer, TargeSaveTransactionSerializer)
 from user.tasks import send_email_task
 from .permissions import ViewOwnSave, ViewJointSave, AdminJointSave
 from .models import QuickSave, QuicksaveTransaction, TargetSave, TargetSavingTransaction, JointSave, JointSaveTransaction, JointSaveTrack
@@ -151,7 +151,7 @@ class TargetSaveCashoutView(generics.GenericAPIView):
         targetsave = self.get_object()
         amount = targetsave.progress
         if targetsave.cashout():
-            TargetSavingTransaction.objects.create(
+            transaction = TargetSavingTransaction.objects.create(
                 user=request.user,
                 target_save=targetsave,
                 amount=amount,
@@ -163,7 +163,8 @@ class TargetSaveCashoutView(generics.GenericAPIView):
                 savings_account=TS,
                 transaction_type=STW
             )
-            return Response(data={'response': 'successfully cashed out'}, status=status.HTTP_200_OK)
+            transaction_serializer = TargeSaveTransactionSerializer(instance=transaction)
+            return Response(data={'response': 'successfully cashed out', 'transaction': transaction_serializer.data}, status=status.HTTP_200_OK)
         return Response(data={'error': 'You must have saved up to 0.5 of the targeted saving'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -187,7 +188,7 @@ class TargetSaveDepositView(generics.GenericAPIView):
             targetsave = self.get_object()
             targetsave.deposit(amount)
             wallet.deduct(amount)
-            TargetSavingTransaction.objects.create(
+            transaction = TargetSavingTransaction.objects.create(
                 user=request.user,
                 target_save=targetsave,
                 amount=amount,
@@ -199,7 +200,8 @@ class TargetSaveDepositView(generics.GenericAPIView):
                 savings_account=TS,
                 transaction_type=WTS
             )
-            return Response(data={'response': f'Saved {amount} to investfy with target save'}, status=status.HTTP_200_OK)     
+            transaction_serializer = TargeSaveTransactionSerializer(instance=transaction)
+            return Response(data={'response': f'Saved {amount} to investfy with target save', 'transaction': transaction_serializer.data}, status=status.HTTP_200_OK)     
         return Response(data={'error': 'insufficient funds'}, status=status.HTTP_400_BAD_REQUEST)
 
 

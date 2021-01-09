@@ -4,6 +4,7 @@ import errors from './errors'
 import messages from './messages'
 import wallet from './wallet'
 import quickSave from './quickSave'
+import targetSave from './targetSave'
  
 export default combineReducers({
     auth,
@@ -11,4 +12,5 @@ export default combineReducers({
     messages,
     wallet,
     quickSave,
+    targetSave,
 });

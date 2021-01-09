@@ -158,3 +158,74 @@
   line-height: normal;
   min-height: 19px;
 }
+
+.madetommy-light-black-22px {
+  color: black;
+  font-family: "MADE TOMMY-Light", Helvetica, Arial, serif;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 300;
+}
+.targeted-saving-9628 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 27px;
+  min-width: 164px;
+  text-align: left;
+}
+
+.arrow-chev-onbigright {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: 14px;
+}
+
+.madetommy-medium-new-car-50px {
+  color: var(--new-car);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 500;
+  display: inline-block;
+}
+.x20000-9669 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 63px;
+  min-width: 200px;
+  text-align: left;
+}
+
+.arrow-chev-onbigright-big {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: 22px;
+}
+
+.madetommy-medium-mountain-meadow-26px {
+  color: var(--mountain-meadow);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 500;
+}
+.x4000-9683 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 31px;
+  text-align: left;
+}
+
+.description{
+  width: fit-content;
+  margin: auto;
+}

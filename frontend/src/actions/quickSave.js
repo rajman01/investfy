@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_QUICKSAVE, CASH_OUT, QUICK_SAVE_DEPOSIT, QUICK_SAVE_AUTOSAVE } from './types';
+import { GET_QUICKSAVE, QUICK_SAVE_CASH_OUT, DEPOSIT_QUICK_SAVE, AUTOSAVE_QUICK_SAVE } from './types';
 import { tokenConfig } from './auth';
 import { returnErrors, createMessage } from './messages';
 
@@ -13,22 +13,34 @@ export const getQuickSave = () => (dispatch, getState) => {
         });
     })
     .catch((err) => {
-        dispatch({
-            type: AUTH_ERROR
-        });
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
     });
 };
 
-export const quickSaveCashOut = () => (dispatch, getState) => {
+export const quickSaveCashOut = ({id}) => (dispatch, getState) => {
     axios.get('/savings/quicksave/cashout', tokenConfig(getState))
     .then(res => {
         dispatch(createMessage({response: res.data.response}));
         dispatch({
-            type: CASH_OUT,
-            payload: res.data
+            type: QUICK_SAVE_CASH_OUT,
+            payload: res.data.transaction
         });
     })
-    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
+    .catch((err) => {
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    });
 }
 
 export const depositQuickSave = ({amount, password}) => (dispatch, getState) => {
@@ -37,11 +49,19 @@ export const depositQuickSave = ({amount, password}) => (dispatch, getState) => 
     .then(res => {
         dispatch(createMessage({response: res.data.response}));
         dispatch({
-            type: QUICK_SAVE_DEPOSIT,
-            payload: res.data.transaction
+            type: DEPOSIT_QUICK_SAVE,
+            payload: res.data.transaction,
         });
     })
-    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
+    .catch((err) => {
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    });
 }
 
 export const quickSaveAutoSave = ({autosave_amount, day_interval}) => (dispatch, getState) => {
@@ -50,12 +70,18 @@ export const quickSaveAutoSave = ({autosave_amount, day_interval}) => (dispatch,
     .then(res => {
         dispatch(createMessage({response: res.data.response}));
         const payload = {status: res.data.status, day_interval, autosave_amount}
-        console.log(payload)
-
         dispatch({
-            type: QUICK_SAVE_AUTOSAVE,
+            type: AUTOSAVE_QUICK_SAVE,
             payload: payload
         });
     })
-    .catch((err) => dispatch(returnErrors(err.response.data, err.response.status)));
+    .catch((err) =>{
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    });
 }

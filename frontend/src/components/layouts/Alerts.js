@@ -15,6 +15,9 @@ class Alerts extends Component {
             if(error.msg.full_name) alert.error(`Full name: ${error.msg.full_name.join()}`);
             if(error.msg.phone_number) alert.error(`Phone number: ${error.msg.phone_number.join()}`);
             if(error.msg.wallet_id) alert.error(`Wallet ID: ${error.msg.wallet_id.join()}`);
+            if(error.msg.name) alert.error(`Name: ${error.msg.name.join()}`);
+            if(error.msg.description) alert.error(`Description: ${error.msg.description.join()}`);
+            if(error.msg.targeted_amount) alert.error(`Targeted Amount: ${error.msg.targeted_amount.join()}`);
             if(error.msg.error) alert.error(`Error: ${error.msg.error}`);
             if(error.msg.detail) alert.error(`Error: ${error.msg.detail}`);
             if(error.msg.amount) alert.error(`Amount: ${error.msg.amount.join()}`);
