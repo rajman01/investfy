@@ -35,7 +35,7 @@
       background-color: white;
       padding: 40px;
       border-radius: 16px;
-      height: 231px;
+      min-height: 231px;
       background-image: url(https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/group-of-blocks@1x.svg)
   }
   
@@ -226,6 +226,11 @@
 }
 
 .description{
-  width: fit-content;
+  width: 90%;
   margin: auto;
+}
+
+.view-full{
+  width: fit-content;7
+  margin-left: auto;
 }

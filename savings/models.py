@@ -59,6 +59,9 @@ class TargetSave(models.Model):
     members = models.ManyToManyField(UserModel, related_name='joint_target_savings', blank=True)
     date_created = models.DateField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-date_created']
+
 
     def deposit(self, amount):
         self.progress += Decimal(str(amount))
@@ -115,6 +118,9 @@ class JointSave(models.Model):
     frequency = models.CharField(max_length=64, default=W, choices=JOINT_SAVING_FREQUENCY_TYPES)
     is_active = models.BooleanField(default=True)
     date_created = models.DateField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date_created']
 
     def contribute(self):
         self.total += self.amount

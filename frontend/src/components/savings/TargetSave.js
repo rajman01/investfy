@@ -5,6 +5,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { returnErrors, createMessage } from "../../actions/messages";
+import { Link } from 'react-router-dom'
 
 class TargetSave extends Component {
     state = {
@@ -99,6 +100,7 @@ class TargetSave extends Component {
                                         <h2>{savings.name}</h2>
                                     </div>
                                 </div>
+                                <Link to={`/savings/targetsave/${savings.id}`} className="btn btn-primary view-full">View Full</Link>
                             </div>
                         </div>
                     ))}
@@ -120,7 +122,7 @@ class TargetSave extends Component {
                             <label for="name" className="col-form-label">Name</label>
                             <input type="text" name="name" required className="form-control" id="name" onChange={this.onChange} value={this.state.name} placeholder="Name Your Target Save"/>
                             <label for="description" className="col-form-label">Descriptiont</label>
-                            <input type="text" name="description" class="form-control" id="description" onChange={this.onChange} value={this.state.description} placeholder="Describe Your Target Save (ooptional)"/>
+                            <textarea name="description" class="form-control" id="description" onChange={this.onChange} value={this.state.description} placeholder="Describe Your Target Save (ooptional)"></textarea>
                             <label for="targeted_amount" className="col-form-label">Targeted Amount</label>
                             <input type="number" name="targeted_amount" required step=".01" class="form-control" id="targetedAmount" onChange={this.onChange} value={this.state.targeted_amount} placeholder="Set Your Target Amount"/>
                             </div>

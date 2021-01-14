@@ -277,7 +277,7 @@ class CreateJointTargetSaveView(generics.CreateAPIView):
         target_save = serializer.save()
         body = f'You have been added to {target_save.user.username} joint target save'
         emails = [member.email for member in target_save.members.all().exclude(pk=request.user.pk)]
-        send_email_task.delay({'body': body, 'subject': 'Joint Target Saving', 'to': emails})
+        #send_email_task.delay({'body': body, 'subject': 'Joint Target Saving', 'to': emails})
         data = JointTargetSaveSerializer(instance=target_save)
         return Response(data=data.data, status=status.HTTP_201_CREATED)
 
@@ -290,7 +290,7 @@ class JointTargetSaveCashOut(generics.GenericAPIView):
         targetsave = self.get_object()
         amount = targetsave.progress
         if targetsave.cashout():
-            TargetSavingTransaction.objects.create(
+            transaction = TargetSavingTransaction.objects.create(
                 user=request.user,
                 target_save=targetsave,
                 amount=amount,
@@ -302,7 +302,8 @@ class JointTargetSaveCashOut(generics.GenericAPIView):
                 savings_account=TS,
                 transaction_type=STW
             )
-            return Response(data={'response': 'successfully cashed out'}, status=status.HTTP_200_OK)
+            transaction_serializer = TargeSaveTransactionSerializer(instance=transaction)
+            return Response(data={'response': 'successfully cashed out', 'transaction': transaction_serializer.data}, status=status.HTTP_200_OK)
         return Response(data={'error': 'You must have saved up to 0.5 of the targeted saving'}, status=status.HTTP_400_BAD_REQUEST)
 
         
@@ -323,7 +324,7 @@ class JointTargetSaveDepositView(generics.GenericAPIView):
             targetsave = self.get_object()
             targetsave.deposit(amount)
             wallet.deduct(amount)
-            TargetSavingTransaction.objects.create(
+            transaction = TargetSavingTransaction.objects.create(
                 user=request.user,
                 target_save=targetsave,
                 amount=amount,
@@ -335,7 +336,8 @@ class JointTargetSaveDepositView(generics.GenericAPIView):
                 savings_account=TS,
                 transaction_type=WTS
             )
-            return Response(data={'response': f'Saved {amount} to investfy with target save'}, status=status.HTTP_200_OK)     
+            transaction_serializer = TargeSaveTransactionSerializer(instance=transaction)
+            return Response(data={'response': f'Saved {amount} to investfy with target save', 'transaction': transaction_serializer.data}, status=status.HTTP_200_OK)     
         return Response(data={'error': 'insufficient funds'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -373,12 +375,14 @@ class JointTargetSaveInviteView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         members =  ((serializer.validated_data)['members'])
         target_save = self.get_object()
+        new_users = []
         for username in members:
             member = UserModel.objects.get(username=username)
             if member not in target_save.members.all():
+                new_users.append(username)
                 target_save.members.add(member)
         target_save.save()
-        return Response(data={'response': 'successfullt added new members'}, status=status.HTTP_200_OK)
+        return Response(data={'response': 'successfully added new members', 'new_users': new_users}, status=status.HTTP_200_OK)
 
 class JointTargetSaveLeaveView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated, ViewJointSave]
@@ -388,7 +392,8 @@ class JointTargetSaveLeaveView(generics.GenericAPIView):
         target_save = self.get_object()
         for transaction in TargetSavingTransaction.objects.filter(target_save=target_save, user=request.user):
             transaction.delete()
-        if request.user == target_save.user and target_save.members.exists():
+        target_save.members.remove(request.user)
+        if request.user == target_save.user:
             target_save.user = target_save.members.first()
         target_save.save()
         return Response(data={'response': 'You left this joint target save'}, status=status.HTTP_200_OK)

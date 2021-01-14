@@ -63,9 +63,11 @@ class PasswordSerializer(Serializer):
 
 
 class TargeSaveTransactionSerializer(ModelSerializer):
+    username = CharField(source='user.username')
+
     class Meta:
         model = TargetSavingTransaction
-        fields = ['id','amount', 'transaction_type', 'timestamp']
+        fields = ['id', 'username', 'amount', 'transaction_type', 'timestamp']
 
 
 class TargetSaveAutoSaveSerializer(ModelSerializer):

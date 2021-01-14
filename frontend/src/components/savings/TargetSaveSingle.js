@@ -7,6 +7,7 @@ import SavingsTransactions from '../layouts/SavingsTransactions'
 import  AutoSave from '../modals/AutoSave'
 import  Deposit  from '../modals/Deposit'
 import  Withdraw  from '../modals/Withdraw'
+import Delete from '../modals/Delete'
 import { getTargetSave, targetSaveAutoSave, targetSaveCashOut, targetSaveDeposit, deleteTargetSave } from '../../actions/targetSave'
 
 
@@ -35,9 +36,6 @@ class TargetSaveSingle extends Component {
                 <Sidebar active={sidebarActive} />
                 <div className="main-content">
                     <Header bigHeader={`Target Save (${name})`} />
-                    <div className="row">
-                        
-                    </div>
                     <div className="row save-now">
                         <div className="col-12">
                             <div className="dashoboard-iew-123132 madetommy-regular-normal-mountain-meadow-18px border-class-1">
@@ -85,18 +83,21 @@ class TargetSaveSingle extends Component {
                     </div>
                     <div className="row saving-balance mt-4">
                         <div className="description">
-                            <h1>Name: {name}</h1>
-                            {description ? <p>`Description ${description}`</p> : ''}
+                            <h2>Name: {name}</h2>
+                            {description ? <p className="mt-2">Description: {description}</p> : ''}
+                            <p>Created on:  {date_created}</p>
+                            <button className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTargetSave">Delete</button>
                         </div>
                     </div>
                     <div className="transaction-history">
-                        <h1 className="quick-save-tory-88652 madetommy-medium-new-car-26px border-class-1">Target Save Transaction History</h1>
+                        <h1 className="quick-save-tory-88652 madetommy-medium-new-car-26px border-class-1">{name} Transaction History</h1>
                         <SavingsTransactions transactions={transactions}/>
                     </div>
                 </div>
                 <Deposit modalId="targetSaveDeposit" header={`Save for Target Save (${name})`} deposit={this.props.targetSaveDeposit} id={id} />
                 <Withdraw withdraw={this.props.targetSaveCashOut} amount={progress} modalId="targetSaveCashOut" header={`Cash Out For Target Save (${name})`} id={id} />
                 <AutoSave modalId="targetSaveAutoSave" header="Change Autosave Status" autosave_amount={autosave_amount} day_interval={day_interval} autoSave={this.props.targetSaveAutoSave} status={active} id={id} />
+                <Delete modalId="deleteTargetSave" header="Are you sure you want to delete this target save" bigHeader="Delete Target Save" id={id} delete={this.props.deleteTargetSave}/>
             </div>
         )
     }
