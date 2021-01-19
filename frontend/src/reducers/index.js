@@ -6,6 +6,8 @@ import wallet from './wallet'
 import quickSave from './quickSave'
 import targetSave from './targetSave'
 import jointTargetSave from './jointTargetSave'
+import jointSave from './jointSave'
+import payments from './payments'
  
 export default combineReducers({
     auth,
@@ -14,5 +16,7 @@ export default combineReducers({
     wallet,
     quickSave,
     targetSave,
-    jointTargetSave
+    jointTargetSave,
+    jointSave,
+    payments
 });

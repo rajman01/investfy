@@ -29,41 +29,41 @@ class Sidebar extends Component {
                     <li><Link to="/">
                             <div className={overview ? "active": "frame-45"}>
                                 <img className="grid-dashboard" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/grid---dashboard@2x.svg" />
-                                <div className="overview-681 madetommy-medium-new-car-20px border-class-1">Overview</div>
+                                <div className={overview ? "overview-681 madetommy-medium-new-car-20px border-class-1" : "salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1"}>Overview</div>
                             </div>
                         </Link></li>
 
                         <li><Link to="/wallet">
                             <div className={wallet ? "active": "frame-45"}>
                                 <img className="user-usercircle" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/rectangle-64-4@2x.svg" />
-                                <div className="salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1">Wallet</div>
+                                <div className={wallet ? "overview-681 madetommy-medium-new-car-20px border-class-1" : "salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1"}>Wallet</div>
                             </div>
                         </Link></li>
 
-                    <li><a href="">
+                    <li><Link to="/savings">
                             <div className={savings ? "active": "frame-45"}>
                                 <img className="user-usercircle" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/rectangle-65@2x.png" />
-                                <div className="salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1">Savings</div>
+                                <div className={savings ? "overview-681 madetommy-medium-new-car-20px border-class-1" : "salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1"}>Savings</div>
                             </div>
-                        </a></li>
+                        </Link></li>
                     <li><a href="">
                             <div className={investments ? "active": "frame-45"}>
                                 <img className="user-usercircle" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/chart---line-chart-up@2x.svg" />
-                                <div className="salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1">Investments</div>
+                                <div className={investments ? "overview-681 madetommy-medium-new-car-20px border-class-1" : "salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1"}>Investments</div>
                             </div>
                         </a></li>
-                    <li><a href="">
+                    <li><Link to="/payments">
                             <div className={payments ? "active": "frame-45"}>
                                 <img className="user-usercircle" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/basic---credit-card-4@2x.svg" />
-                                <div className="salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1">Payments</div>
+                                <div className={payments ? "overview-681 madetommy-medium-new-car-20px border-class-1" : "salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1"}>Payments</div>
                             </div>
-                        </a></li>
-                    <li><a href="">
+                        </Link></li>
+                    <li><Link to="/account">
                             <div className={account ? "active": "frame-45"}>
                                 <img className="user-usercircle" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/user---user-circle-8@2x.svg" />
-                                <div className="salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1">My Account</div>
+                                <div className={account ? "overview-681 madetommy-medium-new-car-20px border-class-1" : "salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1"}>My Account</div>
                             </div>
-                        </a></li>
+                        </Link></li>
                 </ul>
                 <ul>
                     <li>

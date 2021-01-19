@@ -5,6 +5,15 @@
     text-decoration: none;
 }
 
+a{
+    text-decoration: none;
+}
+
+ul{
+    padding: 0;
+    margin: 0;
+}
+
 :root {
     --new-car: rgba(15, 79, 193, 0.7);
     --portage: rgba(125, 167, 242, 0.2);

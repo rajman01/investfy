@@ -7,7 +7,10 @@ import { USER_LOADED,
         LOGIN_SUCCESS, 
         LOGOUT_SUCCESSFUL,
         SET_WALLET,
-        DEPOSIT_QUICK_SAVE} from '../actions/types';
+        DEPOSIT_QUICK_SAVE,
+        BVN_VERIFIED,
+        UPDATE_ACCOUNT,
+        UPDATE_WALLET_ID} from '../actions/types';
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -74,7 +77,24 @@ export default function(state = initialState, action){
                     balance: `${parseFloat(state.wallet.balance) - parseFloat(action.payload.amount)}`
                 }
             }
+        case UPDATE_ACCOUNT:
+        case BVN_VERIFIED:
+            return {
+                ...state,
+                user: action.payload
+            }
 
+        case UPDATE_WALLET_ID:
+            return {
+                ...state,
+                user:{
+                    ...state.user,
+                    wallet: {
+                        ...state.user.wallet,
+                        wallet_id: action.payload
+                    }
+                }
+            }
         default:
             return state;
     }

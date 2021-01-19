@@ -7,6 +7,7 @@ from .serializers import BankSerializer, AcountDetailsSerializer, CreateAccountS
 from .utils import resolve_account
 from .permissions import ViewOwnAccount
 from wallet.models import AccountTransaction
+from wallet.serializers import AccountTransactionSerializer
 
 class BanksView(generics.ListAPIView):
     serializer_class = BankSerializer
@@ -35,7 +36,7 @@ class CreateNewAccountView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data, context={'user': request.user})
         serializer.is_valid(raise_exception=True)
         acct_no = ((serializer.validated_data)['number'])
         bank_code = ((serializer.validated_data)['bank_code'])
@@ -44,7 +45,7 @@ class CreateNewAccountView(generics.CreateAPIView):
         if result.get('status_code') != 200:
             return Response(data={'error': result['data'].get('message')}, status=status.HTTP_400_BAD_REQUEST)
         verified_name = result['data'].get('data')['account_name']
-        if verified_name.lower() != name.lower():
+        if verified_name.lower().strip() != name.lower().strip():
             return Response(data={'error': 'account number deos not match with the name given'}, status=status.HTTP_400_BAD_REQUEST)
         account = serializer.save()
         serializer_data = AccountSerializer(instance=account)
@@ -82,17 +83,18 @@ class MakePaymentView(generics.GenericAPIView):
             if result.get('status_code') != 200:
                 return Response(data={'error': result['data'].get('message')}, status=status.HTTP_400_BAD_REQUEST)
             verified_name = result['data'].get('data')['account_name']
-            if verified_name.lower() != name.lower():
+            if verified_name.lower().strip() != name.lower().strip():
                 return Response(data={'error': 'account number deos not match with the name given'}, status=status.HTTP_400_BAD_REQUEST)
             user.wallet.deduct(amount)
-            AccountTransaction.object.create(
+            transaction = AccountTransaction.objects.create(
                 user=user,
                 amount=amount,
                 acct_no=result['data'].get('data')['account_number'],
                 name=result['data'].get('data')['account_name'],
                 successful=True
             )
-            return Response(data={'response': 'Successfully made payment'}, status=status.HTTP_200_OK)
+            transaction_serializer = AccountTransactionSerializer(instance=transaction)
+            return Response(data={'response': 'Successfully made payment', 'transaction': transaction_serializer.data}, status=status.HTTP_200_OK)
         return Response({'error': 'Insufficient funds'}, status=status.HTTP_400_BAD_REQUEST)
 
         

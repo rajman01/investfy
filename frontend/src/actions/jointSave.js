@@ -1,96 +1,58 @@
+import { AUTH_ERROR, GET_JOINT_SAVE, DEPOSIT_JOINT_SAVE, DISBAND_JOINT_SAVE, LEAVE_JOINT_SAVE } from './types';
 import axios from 'axios';
-import { GET_WALLET, FUND_WALLET, SEND_CASH, AUTH_ERROR, UPDATE_WALLET_ID } from './types';
 import { tokenConfig } from './auth';
 import { returnErrors, createMessage } from './messages';
 
-export const getWallet = () => (dispatch, getState) => {
-    axios.get('/wallet', tokenConfig(getState))
-    .then((res) => {
-        dispatch({
-            type: GET_WALLET,
-            payload: res.data,
-        });
-    })
-    .catch((err) => {
-        if (err.response.status === 401){
-            dispatch({
-                type: AUTH_ERROR
-            });
-        }else {
-            dispatch(returnErrors(err.response.data, err.response.status));
-        }
-    });
-};
 
-export const fundWallet = ({amount}) => (dispatch, getState) => {
-    const body = JSON.stringify({amount});
-    axios.post('/wallet/fund', body, tokenConfig(getState))
+export const getJointSave = (id) => (dispatch, getState) => {
+    axios.get(`/savings/jointsave/${id}`, tokenConfig(getState))
     .then(res => {
-        dispatch(createMessage({response: res.data.response}));
         dispatch({
-            type: FUND_WALLET,
-            payload: res.data.transaction
-        });
-    })
-    .catch(err => {
-        if (err.response.status === 401){
-            dispatch({
-                type: AUTH_ERROR
-            });
-        }else {
-            dispatch(returnErrors(err.response.data, err.response.status));
-        }
-    })
-}
-
-export const sendCash = ({wallet_id, amount, password}) => (dispatch, getState) => {
-    const body = JSON.stringify({wallet_id, amount, password});
-    axios.post('/wallet/transfer', body, tokenConfig(getState))
-    .then(res => {
-        dispatch(createMessage({response: res.data.response}));
-        dispatch({
-            type: SEND_CASH,
-            payload: res.data.transaction
-        });
-    })
-    .catch(err => {
-        if (err.response.status === 401){
-            dispatch({
-                type: AUTH_ERROR
-            });
-        }else {
-            dispatch(returnErrors(err.response.data, err.response.status));
-        }
-    })
-}
-
-export const changeWalletPassword = ({current_password, new_password}) => (dispatch, getState) => {
-    const body = JSON.stringify({current_password, new_password})
-    axios.put('/wallet/password/change', body, tokenConfig(getState))
-    .then(res => {
-        dispatch(createMessage({response: res.data.response}));
-    })
-    .catch((err) => {
-        if (err.response.status === 401){
-            dispatch({
-                type: AUTH_ERROR
-            });
-        }else {
-            dispatch(returnErrors(err.response.data, err.response.status));
-        }
-    });
-}
-
-export const changeWalletId = ({ wallet_id }) => (dispatch, getState) => {
-    const body = JSON.stringify({ wallet_id })
-    axios.put('/wallet/wallet_id/change', body, tokenConfig(getState))
-    .then(res => {
-        dispatch(createMessage({response: res.data.response}));
-        dispatch({
-            type: UPDATE_WALLET_ID,
-            payload: wallet_id
+            type: GET_JOINT_SAVE, 
+            payload: res.data
         })
     })
+    .catch(err => {
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    })
+}
+
+
+export const jointSaveDeposit = ({id, password}) => (dispatch, getState) => {
+    const body = JSON.stringify({password});
+    axios.put(`/savings/jointsave/contribute/${id}`, body, tokenConfig(getState))
+    .then(res => {
+        dispatch(createMessage({response: res.data.response}));
+        dispatch({
+            type: DEPOSIT_JOINT_SAVE,
+            payload: res.data.transaction
+        });
+    })
+    .catch(err => {
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    })
+}
+
+export const disbandJointSave = ({id}) => (dispatch, getState) => {
+    axios.delete(`/savings/jointsave/disband/${id}`, tokenConfig(getState))
+    .then(res => {
+        dispatch(createMessage({response: res.data.response}));
+        dispatch({
+            type: DISBAND_JOINT_SAVE
+        });
+    })
     .catch((err) => {
         if (err.response.status === 401){
             dispatch({
@@ -103,12 +65,39 @@ export const changeWalletId = ({ wallet_id }) => (dispatch, getState) => {
 }
 
 
-
-export const timeStamp = (timeStamp) => {
-    if(timeStamp){    
-        const date = timeStamp.slice(0, 10);
-        const time = timeStamp.slice(11, 16);
-        return `${date} ${time}`
-    }
+export const inviteJointSave = ({id, members}) => (dispatch, getState) => {
+    const body = JSON.stringify({members});
+    axios.put(`/savings/jointsave/invite/${id}`, body, tokenConfig(getState))
+    .then(res => {
+        dispatch(createMessage({response: res.data.response}));
+    })
+    .catch(err => {
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    });
 }
 
+
+export const leaveJointSave = ({id}) => (dispatch, getState) => {
+    axios.get(`/savings/jointsave/leave/${id}`, tokenConfig(getState))
+    .then(res => {
+        dispatch(createMessage({response: res.data.response}));
+        dispatch({
+            type: LEAVE_JOINT_SAVE
+        });
+    })
+    .catch(err => {
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    });
+}

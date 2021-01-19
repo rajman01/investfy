@@ -68,20 +68,24 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'full_name', 'phone_number', 'email_verified', 
                     'bvn_verified', 'dob', 'total_savings', 'total_investments', 'wallet']
-        read_only_fields = ['id', 'email', 'email_verified', 'bvn_verified', 'wallet']
+        read_only_fields = ['id', 'email', 'email_verified', 'bvn_verified', 'wallet', 'total_savings', 'total_investments']
 
     def update(self, instance, validated_data):
         username = validated_data['username']
         full_name = validated_data['full_name']
         phone_number = validated_data['phone_number']
         dob = validated_data['dob']
+        first_name = validated_data['first_name']
+        last_name = validated_data['last_name']
         instance.username = username
         if not instance.bvn_verified:
             instance.full_name = full_name
             instance.phone_number = phone_number
             instance.dob = dob
+            instance.first_name = first_name
+            instance.last_name = last_name
         else:
-            if instance.full_name != full_name or instance.phone_number != phone_number or instance.dob != dob:
+            if instance.full_name != full_name or instance.phone_number != phone_number or instance.dob != dob or instance.first_name != first_name or instance.last_name != last_name:
                 raise serializers.ValidationError({'error': 'You cant change your name, phone_number, date of birth if you bvn is verified'})
             instannce.full_name = full_name
             instance.phone_number = phone_number

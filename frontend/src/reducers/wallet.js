@@ -1,4 +1,4 @@
-import { FUND_WALLET, GET_WALLET, SEND_CASH } from '../actions/types'
+import { FUND_WALLET, GET_WALLET, SEND_CASH, MAKE_PAYMENT, UPDATE_WALLET_ID } from '../actions/types'
 
 const initialState = {
     'id': null,
@@ -33,6 +33,22 @@ export default function (state = initialState, action){
                 ...state, 
                 balance: `${parseFloat(state.balance) - parseFloat(action.payload.amount)}`,
                 sent_transactions: [action.payload, ...state.sent_transactions]
+            }
+        case MAKE_PAYMENT:
+            return {
+                ...state,
+                account_transactions: [action.payload, ...state.account_transactions],
+                balance: `${parseFloat(state.balance) - parseFloat(action.payload.amount)}`,
+            }
+
+        case UPDATE_WALLET_ID:
+            return {
+                ...state,
+                owner: {
+                    ...state.owner,
+                    wallet_id: action.payload
+                },
+                wallet_id: action.payload
             }
         default:
             return state;

@@ -1,4 +1,5 @@
 import jwt
+from django.shortcuts import redirect
 from decimal import Decimal
 from rest_framework import generics, status, views, filters
 from rest_framework.response import Response
@@ -7,7 +8,7 @@ from wallet.models import SavingTransaction
 from wallet.utils import WTS, STW, QS, TS, JS
 from .serializers import (QuickSaveSerializer, SaveSerializer, TargetSaveSerializer, CreateTargetSaveSerializer,
                             QuickSaveAutoSaveSerializer, TargetSaveAutoSaveSerializer, JointTargetSaveSerializer,
-                             JointSaveSerializer, CreateJointTargetSaveSerializer,
+                             JointSaveSerializer, CreateJointTargetSaveSerializer, JointSaveTransactionSerializer,
                             CreateJointSaveSerializer, AcceptJointSaveSerializer, PasswordSerializer,
                             InviteSerializer, QuicksaveTransactionSerializer, TargeSaveTransactionSerializer)
 from user.tasks import send_email_task
@@ -431,7 +432,7 @@ class CreateJointSaveView(generics.CreateAPIView):
         )
         members = ((serializer.validated_data)['members'])
         current_site = get_current_site(request).domain
-        send_joint_save_invite.delay(members, joint_save.id, current_site)
+        #send_joint_save_invite.delay(members, joint_save.id, current_site)
         data = JointSaveSerializer(instance=joint_save)
         return Response(data=data.data, status=status.HTTP_200_OK)
 
@@ -457,7 +458,8 @@ class AcceptJointSaveView(generics.GenericAPIView):
                     joint_save=joint_save,
                     user=user
                 )
-            return Response({'response': f'You are now part of {joint_save.name} joint save'}, status=status.HTTP_200_OK)
+            return redirect('index')
+            # return Response({'response': f'You are now part of {joint_save.name} joint save'}, status=status.HTTP_200_OK)
         except jwt.ExpiredSignatureError:
             return Response({'error': 'link expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.exceptions.DecodeError:
@@ -480,11 +482,11 @@ class SaveToJointSaveView(generics.GenericAPIView):
         amount = joint_save.amount
         if not wallet.can_deduct(amount):
             return Response(data={'error': 'insufficient funds'}, status=status.HTTP_400_BAD_REQUEST)
-        latest_transaction = JointSaveTransaction.objects.filter(user=request.user, joint_save=joint_save)
-        if not latest_transaction.exists():
+        transactions = JointSaveTransaction.objects.filter(user=request.user, joint_save=joint_save)
+        if not transactions.exists():
             wallet.deduct(amount)
             joint_save.contribute()
-            JointSaveTransaction.objects.create(
+            transaction = JointSaveTransaction.objects.create(
                 joint_save=joint_save,
                 user=request.user,
                 amount=amount
@@ -495,13 +497,14 @@ class SaveToJointSaveView(generics.GenericAPIView):
                 savings_account=JS,
                 transaction_type=WTS
             )
-            return Response(data={'response': f'Made {joint_save.frequency} contribution to {joint_save.name}'}, status=status.HTTP_200_OK)
+            transaction_serializer = JointSaveTransactionSerializer(instance=transaction)
+            return Response(data={'response': f'Made {joint_save.frequency} contribution to {joint_save.name}', 'transaction': transaction_serializer.data}, status=status.HTTP_200_OK)
         else:       
-            transaction = latest_transaction.last()
-            if check_week(datetime.date(transaction.timestamp), joint_save.date_created) != check_week(datetime.date(datetime.now()), joint_save.date_created):
+            latest_transaction = transactions.latest('timestamp')
+            if check_week(datetime.date(latest_transaction.timestamp), joint_save.date_created) != check_week(datetime.date(datetime.now()), joint_save.date_created):
                 wallet.deduct(amount)
                 joint_save.contribute()
-                JointSaveTransaction.objects.create(
+                transaction = JointSaveTransaction.objects.create(
                     joint_save=joint_save,
                     user=request.user,
                     amount=amount
@@ -512,7 +515,8 @@ class SaveToJointSaveView(generics.GenericAPIView):
                     savings_account=JS,
                     transaction_type=WTS
                 )
-                return Response(data={'response': f'Made {joint_save.frequency} contribution to {joint_save.name}'}, status=status.HTTP_200_OK)
+                transaction_serializer = JointSaveTransactionSerializer(instance=transaction)
+                return Response(data={'response': f'Made {joint_save.frequency} contribution to {joint_save.name}', 'transaction': transaction_serializer.data}, status=status.HTTP_200_OK)
             else: 
                 return Response(data={'error': f'You\'ve made {joint_save.frequency} contribution to {joint_save.name} already'}, status=status.HTTP_400_BAD_REQUEST )
 
@@ -531,7 +535,7 @@ class InviteToJointSaveView(generics.GenericAPIView):
             members = ((serializer.validated_data)['members'])
             current_site = get_current_site(request).domain
             send_joint_save_invite.delay(members, joint_save.id, current_site)
-            return Response(data={'response': 'invitation sent to users'}, status=status.HTTP_200_OK)
+            return Response(data={'response': 'invitation sent to new members'}, status=status.HTTP_200_OK)
         return Response(data={'error': f'cant invite member {joint_save.name}'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -555,8 +559,8 @@ class DisbandJointSaveView(generics.DestroyAPIView):
                 )
             joint_save.save()
             name = joint_save.name
-            emails = [member.email for member in joint_save.members.all()]
-            send_disband_email_task.delay(name, emails)
+            # emails = [member.email for member in joint_save.members.all()]
+            # send_disband_email_task.delay(name, emails)
             joint_save.delete()
             return Response(data={'response': f'{name} as been disbaned'}, status=status.HTTP_200_OK)
         return Response(data={'response': 'sorry, you cant disband this joint save'}, status=status.HTTP_400_BAD_REQUEST)
@@ -603,7 +607,8 @@ class JointSaveReactivateView(generics.GenericAPIView):
             joint_save.is_active = True
             joint_save.date_created = datetime.date(datetime.now())
             joint_save.save()
-            return Response({'response': f'Re activated {joint_save.name} joint save'}, status=status.HTTP_200_OK)
+            return redirect('index')
+            # return Response({'response': f'Re activated {joint_save.name} joint save'}, status=status.HTTP_200_OK)
         except jwt.ExpiredSignatureError:
             return Response({'error': 'link expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.exceptions.DecodeError:

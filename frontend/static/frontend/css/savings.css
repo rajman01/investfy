@@ -4,6 +4,10 @@
   --portage: rgba(125, 167, 242, 0.06);
   
   }
+
+  html{
+    min-width: 400px;
+  }
   
   .below-header, .overview{
       padding: 30px 0;
@@ -130,9 +134,6 @@
 }
 
 
-
-
-
 .tran-button {
   align-items: center;
   background-color: transparent;
@@ -145,6 +146,13 @@
   padding: 0 30px;
   cursor: pointer;
 }
+
+.tran-button, .tran-button-active{
+  width: fit-content;
+  margin: auto;
+  margin-top: 10px;
+}
+
 .tran-text {
   color: var(--mountain-meadow);
   font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
@@ -157,6 +165,29 @@
   letter-spacing: 0px;
   line-height: normal;
   min-height: 19px;
+}
+
+.beneficiary, .beneficiary-active{
+  padding: 15px 20px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
+.beneficiary{
+  background-color: transparent;
+  color: var(--mountain-meadow);
+}
+
+.beneficiary:hover{
+  background-color: var(--portage);
+  color: var(--new-car);
+}
+
+.beneficiary-active{
+  background-color: var(--portage);
+  color: var(--new-car);
 }
 
 .madetommy-light-black-22px {
@@ -231,6 +262,100 @@
 }
 
 .view-full{
-  width: fit-content;7
+  width: fit-content;
   margin-left: auto;
+}
+
+.rectangle-64 {
+  height: 40px;
+  width: 40px;
+}
+
+.frame-saving {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0px 4px 60px rgba(125, 167, 242, 0.06);
+  min-height: 231px;
+  /* width: 307px; */
+  width: fit-content;
+  margin:auto;
+  margin-top: 20px;
+  padding: 31px 24px;
+}
+
+.madetommy-medium-black-25px {
+  color: black;
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 25px;
+  font-style: normal;
+  font-weight: 500;
+}
+.quick-save-82240 {
+  letter-spacing: 0px;
+  min-height: 35px;
+  text-align: left;
+  padding-top: 10px;
+}
+
+
+.madetommy-light-black-14px {
+  color: black;
+  font-family: "MADE TOMMY-Light", Helvetica, Arial, serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+}
+.text-1 {
+  letter-spacing: 0px;
+  min-height: 51px;
+  text-align: left;
+}
+
+.saving-choices{
+  width: 90%;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.ellipse-12 {
+  height: 27px;
+  width: 27px;
+}
+
+.ellipse-10 {
+  height: 32px;
+  width: 33px;
+}
+
+.ellipse-11 {
+  height: 26px;
+  width: 27px;
+}
+
+.card-link:hover{
+  text-decoration: none;
+}
+
+.form-hide{
+  display: none;
+}
+
+.account-content{
+  padding: 0 60px;
+}
+
+.float-right{
+  float: right;
+}
+
+.float-left{
+  float: left;
+}
+
+.edit{
+  width: 100%;
+}
+
+.username-label{
+  width: 100%;
 }

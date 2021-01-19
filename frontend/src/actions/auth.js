@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_FAIL, REGISTER_SUCCESS, LOGOUT_SUCCESSFUL, SET_WALLET } from './types'
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_FAIL, REGISTER_SUCCESS, LOGOUT_SUCCESSFUL, SET_WALLET, UPDATE_ACCOUNT, BVN_VERIFIED} from './types'
 import { createMessage, returnErrors } from './messages'
 
 
@@ -109,6 +109,103 @@ export const logout = () => (dispatch, getState) => {
         }
     })
 }
+
+export const sendEmailVerification = () => (dispatch, getState) => {
+    axios.get('/auth/email/verification', tokenConfig(getState))
+    .then(res => {
+        dispatch(createMessage({response: res.data.response}));
+    })
+    .catch((err) => {
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    });
+}
+
+
+export const changeAccountPassword = ({current_password, new_password}) => (dispatch, getState) => {
+    const body = JSON.stringify({current_password, new_password})
+    axios.put('/auth/password/change', body, tokenConfig(getState))
+    .then(res => {
+        dispatch(createMessage({response: res.data.response}));
+    })
+    .catch((err) => {
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    });
+}
+
+export const changeEmail = ({ new_email }) => (dispatch, getState) => {
+    const body = JSON.stringify({ new_email });
+    axios.put('/auth/email/change', body, tokenConfig(getState))
+    .then(res => {
+        dispatch(createMessage({response: res.data.response}));
+    })
+    .catch((err) => {
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    });
+}
+
+export const verifyBVN = ({ bvn }) => (dispatch, getState) => {
+    const body = JSON.stringify({ bvn });
+    axios.post('/auth/bvn/verification', body, tokenConfig(getState))
+    .then(res => {
+        dispatch(createMessage({response: res.data.response}));
+        dispatch({
+            type: BVN_VERIFIED,
+            payload: res.data.user
+        })
+    })
+    .catch((err) => {
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    });
+}
+
+
+export const updateAccount = ({ username, full_name, first_name, last_name, phone_number, dob }) => (dispatch, getState) => {
+    const body = JSON.stringify({  username, full_name, first_name, last_name, phone_number, dob  });
+    axios.put('/auth/user', body, tokenConfig(getState))
+    .then(res => {
+        dispatch(createMessage({response: 'Account Updated'}));
+        dispatch({
+            type: UPDATE_ACCOUNT,
+            payload: res.data
+        })
+    })
+    .catch((err) => {
+        console.log(err.response)
+        if (err.response.status === 401){
+            dispatch({
+                type: AUTH_ERROR
+            });
+        }else {
+            dispatch(returnErrors(err.response.data, err.response.status));
+        }
+    });
+}
+
+
 
 export const tokenConfig = (getState) => {
     const token = getState().auth.token;

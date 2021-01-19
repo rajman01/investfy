@@ -189,9 +189,10 @@ class CreateJointTargetSaveSerializer(ModelSerializer):
         return target_save
 
 class JointSaveTransactionSerializer(ModelSerializer):
+    username = CharField(source='user.username')
     class Meta:
         model = JointSaveTransaction
-        fields = ['id','amount', 'transaction_type', 'timestamp']
+        fields = ['id', 'username', 'amount', 'transaction_type', 'timestamp']
 
 
 class JointSaveMemberSerializer(ModelSerializer):

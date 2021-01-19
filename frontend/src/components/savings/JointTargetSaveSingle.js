@@ -61,7 +61,7 @@ class JointTargetSaveSingle extends Component {
             <div>
                 <Sidebar active={sidebarActive} />
                 <div className="main-content">
-                    <Header bigHeader={`Target Save (${name})`} />
+                    <Header bigHeader={`Joint Target Save (${name})`} />
                     <div className="row save-now">
                         <div className="col-12">
                             <div className="dashoboard-iew-123132 madetommy-regular-normal-mountain-meadow-18px border-class-1">

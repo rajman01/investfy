@@ -63,7 +63,7 @@ class Wallet extends Component {
         const walletIcon = "https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/rectangle-64-4@2x.svg";
         const transaction = () => {
             if(this.state.account_transactions){
-                return <AccountTransactions transactions={[account_transactions]} />
+                return <AccountTransactions transactions={account_transactions} />
             } else if(this.state.savings_transactions){
                 return <WalletSavingTransactions transactions={savings_transactions} />
             } else{
@@ -93,13 +93,13 @@ class Wallet extends Component {
 
                     <div className="transactions">
                         <div className="row mb-5">
-                            <div className="col-4">
+                            <div className="col-xl-4 col-lg-6 col-md-12">
                             <div className={this.state.wallet_transactions ? "tran-button-active" : "tran-button"}><div className={this.state.wallet_transactions ? "tran-text-active" : "tran-text"}  onClick={this.changeTransaction} data-type="wallet">Wallet Transactions</div></div>
                             </div>
-                            <div className="col-4">
+                            <div className="col-xl-4 col-lg-6 col-md-12">
                                 <div className={this.state.savings_transactions ? "tran-button-active" : "tran-button"}><div className={this.state.savings_transactions ? "tran-text-active" : "tran-text"} onClick={this.changeTransaction} data-type="saving">Savings Transactions</div></div>
                             </div>
-                            <div className="col-4">
+                            <div className="col-xl-4 col-lg-6 col-md-12">
                                 <div className={this.state.account_transactions ? "tran-button-active" : "tran-button"}><div className={this.state.account_transactions ? "tran-text-active" : "tran-text"} onClick={this.changeTransaction} data-type="account">Accounts Transactions</div></div>
                             </div>
                         </div>

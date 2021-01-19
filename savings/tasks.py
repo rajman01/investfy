@@ -101,8 +101,8 @@ def joint_save_weekly_round_up():
             amount = joint_save.amount
             for member in joint_save.members.all():
                 wallet = member.wallet
-                latest_transaction = JointSaveTransaction.objects.filter(user=member, joint_save=joint_save)
-                if not latest_transaction.exists():
+                transactions = JointSaveTransaction.objects.filter(user=member, joint_save=joint_save)
+                if not transactions.exists():
                     wallet.balance -= joint_save.amount
                     joint_save.contribute()
                     JointSaveTransaction.objects.create(
@@ -117,10 +117,8 @@ def joint_save_weekly_round_up():
                         transaction_type=WTS
                     )
                 else:
-                    transaction = latest_transaction.last()
-                    print(transaction)
-                    print(check_week(datetime.date(transaction.timestamp), joint_save.date_created), (check_week(datetime.date(datetime.now()), joint_save.date_created) - 1))
-                    if check_week(datetime.date(transaction.timestamp), joint_save.date_created) != (check_week(datetime.date(datetime.now()), joint_save.date_created) - 1):
+                    latest_transaction = transactions.latest('timestamp')
+                    if check_week(datetime.date(latest_transaction.timestamp), joint_save.date_created) != (check_week(datetime.date(datetime.now()), joint_save.date_created) - 1):
                         wallet.balance -= joint_save.amount
                         joint_save.contribute()
                         JointSaveTransaction.objects.create(
@@ -134,7 +132,7 @@ def joint_save_weekly_round_up():
                             savings_account=JS,
                             transaction_type=WTS
                         )
-    return 
+    return None
     
 
 

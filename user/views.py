@@ -1,4 +1,5 @@
 import jwt
+from django.shortcuts import redirect
 from decouple import config
 from .serializers import (RegisterSerializer, UserSerializer, LoginSerializer, EmailVerificationSerializer, 
                             ChangePasswordSerializer, ChangeEmailSerializer, VerifyBVNSerializer)
@@ -94,7 +95,8 @@ class VerifyEmailView(views.APIView):
             user = UserModel.objects.get(id=payload['user_id'])
             user.email_verified = True
             user.save()
-            return Response({'response': 'your email has been verified'}, status=status.HTTP_200_OK)
+            return redirect('index')
+            # return Response({'response': 'your email has been verified'}, status=status.HTTP_200_OK)
         except jwt.ExpiredSignatureError:
             return Response({'error': 'Activation link expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.exceptions.DecodeError:
@@ -182,7 +184,8 @@ class VerifyBVNView(generics.GenericAPIView):
                 user.phone_number = data.get('phone_number')
                 user.bvn_verified = True
                 user.save()
-                return Response(data={'response': 'Your account has been verified'}, status=status.HTTP_200_OK)
+                user_serializer = UserSerializer(instance=user)
+                return Response(data={'response': 'Your account has been verified', 'user': user_serializer.data}, status=status.HTTP_200_OK)
             return Response(data={'error': 'Invalid bvn details'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

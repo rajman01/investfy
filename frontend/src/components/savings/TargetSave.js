@@ -58,7 +58,6 @@ class TargetSave extends Component {
             this.setState({
                 target_savings: res.data
             });
-            console.log(this.state)
         })
         .catch(err => this.props.returnErrors(err.response.data, err.response.status))
     }

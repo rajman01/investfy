@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import  Deposit  from '../modals/Deposit'
 import {depositQuickSave} from '../../actions/quickSave'
+import { Link } from 'react-router-dom'
 
 
 class Dashboard extends Component {
@@ -58,13 +59,19 @@ class Dashboard extends Component {
 
                     <div className="row overview">
                         <div className="col-xl-4 col-lg-6 col-md-12">
-                            <Card icon={savingsIcon} amount={total_savings} text="Total Savings" />
+                            <Link to="/savings" className="card-link">
+                                <Card icon={savingsIcon} amount={total_savings} text="Total Savings" />
+                            </Link>
                         </div>
                         <div className="col-xl-4 col-lg-6 col-md-12">
-                            <Card icon={investmentIcon} amount={total_investments} text="Total Investments"/>
+                            <Link to="/investments" className="card-link">
+                                <Card icon={investmentIcon} amount={total_investments} text="Total Investments"/>
+                            </Link>
                         </div>
                         <div className="col-xl-4 col-lg-6 col-sm-md">
-                            <Card icon={walletIcon} amount={wallet.balance} text="My E-Wallet"/>
+                            <Link to="/wallet" className="card-link">
+                                <Card icon={walletIcon} amount={wallet.balance} text="My E-Wallet"/>
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -41,7 +41,6 @@ banks = [{'id': 1, 'code': '044', 'name': 'Access Bank'},
          {'id': 660, 'code': '090110', 'name': 'VFD Micro Finance Bank'}, 
          {'id': 661, 'code': '090317', 'name': 'PatrickGold Microfinance Bank'}]
 
-
 def resolve_account(acct_no, bank_code):
     data = {'account_number': acct_no, 'account_bank': bank_code}
     url = 'https://api.flutterwave.com/v3/accounts/resolve'
@@ -49,5 +48,5 @@ def resolve_account(acct_no, bank_code):
         'Content-Type': 'application/json', 
         'Authorization': f'Bearer {config("FLUTTERWAVE_SECRET_KEY")}'
         }
-    response = requests.post(url=url, data=data, headers=headers)
+    response = requests.request("POST", url, json=data, headers=headers)
     return {'data': response.json(), 'status_code': response.status_code}
