@@ -43,6 +43,9 @@
     margin: 0 30px;
 }
 
+
+
+
 .madetommy-light-black-22px {
   color: black;
   font-family: "MADE TOMMY-Light", Helvetica, Arial, serif;
@@ -182,6 +185,7 @@
   text-align: left;
   width: auto;
 }
+
 .transaction-history {
   align-items: flex-start;
   background-color: white;
@@ -199,4 +203,13 @@
   margin-bottom: 40px;
 }
 
-
+@media only screen and (max-width: 600px) {
+  .below-header, .overview{
+    margin: 0 10px;
+}
+.transaction-history {
+  padding: 36px 10px;
+  width: 100%;
+  margin: 40px 10px;
+}
+}

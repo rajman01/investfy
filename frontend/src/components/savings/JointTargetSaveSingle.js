@@ -124,7 +124,7 @@ class JointTargetSaveSingle extends Component {
                             <p>Created on:  {date_created}</p>
                             {user.username === this.props.username ? (
                                 <div>
-                                    <button className="btn btn-info mr-3" data-bs-toggle="modal" data-bs-target="#leaveJointTargetSave">Leave</button>
+                                    <button className="btn btn-info leave" data-bs-toggle="modal" data-bs-target="#leaveJointTargetSave">Leave</button>
                                     <button className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteJointTargetSave">Delete</button>
                                 </div>
                                 

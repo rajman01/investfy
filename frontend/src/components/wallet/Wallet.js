@@ -77,16 +77,14 @@ class Wallet extends Component {
                 <div className="main-content">
                     <Header bigHeader="Wallet" />
                     <div className="row save-now">
-                        <div className="col-4">
+                        <div className="col-lg-4 col-sm-6">
                             <div className="dashoboard-iew-123132 madetommy-regular-normal-mountain-meadow-18px border-class-1">
                                 Dashoboard / Wallet
                             </div>
                         </div>
-                        <div className="col">
-                                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sendCash">SEND CASH</button>
-                        </div>
-                        <div className="col-4">
-                                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fundWallet">FUND WALLET</button>
+                        <div className="col-lg-8 col-sm-6">
+                            <button type="button" className="btn btn-primary send-cash" data-bs-toggle="modal" data-bs-target="#sendCash">SEND CASH</button>
+                            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fundWallet">FUND WALLET</button>
                         </div>
                     </div>
                     <BigCards text="Wallet Balance" amount={balance} icon={walletIcon} walletId={`WALLET ID : ${wallet_id}`}/>

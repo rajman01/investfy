@@ -45,7 +45,7 @@ class QuickSave extends Component {
                                 <div className="col-7">
 
                                     <div className="quick-save-lance-8344 madetommy-light-black-22px border-class-1">Quick Save Balance</div>
-                                    <h1 className="x40000-8385 madetommy-medium-new-car-50px border-class-1">#{balance}</h1>
+                                    <h1 className="x650000-78181 madetommy-medium-black-34px border-class-1">#{balance}</h1>
                                     <div className="row">
                                         <div className="col-6 border-class-100">
                                             <button className="frame-58" data-bs-toggle="modal" data-bs-target="#quickSaveCashOut">

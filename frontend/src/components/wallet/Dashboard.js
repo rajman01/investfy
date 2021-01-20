@@ -45,7 +45,7 @@ class Dashboard extends Component {
                             </div>
                         </div>
                         <div className="col"></div>
-                        <div className="col-4">
+                        <div className="col-6">
                            
                             <button className="btn btn-lg btn-primary quick-save-now" data-bs-toggle="modal" data-bs-target="#saveNow">SAVE NOW</button>
                         </div>

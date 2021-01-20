@@ -54,7 +54,7 @@ class TargetSaveSingle extends Component {
                                     &nbsp;&nbsp;Progress
                                     </div> 
                                     <div className="mt-3">
-                                        <h1 class="x20000-9669 border-class-1 madetommy-medium-new-car-50px">#{targeted_amount}&nbsp;
+                                        <h1 class="x650000-78181 madetommy-medium-black-34px border-class-1">#{targeted_amount}&nbsp;
                                         <img className="arrow-chev-onbigright-big" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/arrow---chevron-big-right-1@2x.svg"/></h1>
                                         <span class="x4000-9683 border-class-1 madetommy-medium-mountain-meadow-26px">&nbsp;#{progress}</span>
                                     </div>

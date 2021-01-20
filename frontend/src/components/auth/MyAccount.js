@@ -267,7 +267,7 @@ class MyAccount extends Component {
                                         <button className="btn btn-primary float-right" onClick={this.edit} name="bank_account">{ this.state.bank_account ? ('Hide') : ('Show')}</button>
                                         <button className="btn btn-primary float-left" data-bs-toggle="modal" data-bs-target="#addAccount">Add Account</button>
                                     </div>
-                                    <table className={this.state.bank_account ? ('table table-bordered mt-5') : ('table table-bordered form-hide mt-5')}>
+                                    <table className={this.state.bank_account ? ('table table-bordered bank-account') : ('table table-bordered form-hide mt-5 bank-account')}>
                                         <thead className="thead-light">
                                         <tr>
                                             <th scope="col">Name</th>

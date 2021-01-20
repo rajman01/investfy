@@ -6,7 +6,7 @@
   }
 
   html{
-    min-width: 400px;
+    min-width: 500px;
   }
   
   .below-header, .overview{
@@ -65,10 +65,12 @@
   .madetommy-medium-black-34px {
     color: var(--new-car);;
     font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
-    font-size: 55px;
+    font-size: 45px;
     font-style: normal;
     font-weight: 700;
   }
+
+
   .x120000-78177 {
     background-color: transparent;
     flex-shrink: 0;
@@ -90,10 +92,10 @@
       flex-wrap: wrap;
   }
   
-  @media only screen and (max-width: 600px) {
-      .rrty {
-          display: none;
-      }
+
+
+  .send-cash{
+    margin-right: 10px;
   }
 
 .transactions{
@@ -358,4 +360,48 @@
 
 .username-label{
   width: 100%;
+}
+
+.cancel{
+  cursor: pointer;
+}
+
+.leave{
+  margin-right: 10px;
+}
+.bank-account{
+  margin-top: 60px;
+}
+
+@media only screen and (max-width: 600px) {
+  .rrty {
+      display: none;
+  }
+  .madetommy-medium-black-34px{
+    font-size: 35px;
+  }
+  .saving-balance{
+    margin: 0 10px;
+    width: 100%;
+   }
+   .transactions{
+    padding: 25px 5px;
+    margin: 40px 10px;
+    width: 100%;
+  }
+  .saving-choices{
+    width: 100%;
+    margin: 30px 10px;
+  }
+  .saving-balance{
+    margin: 0 10px;
+    width: 100%;
+    background-color: white;
+    padding: 10px;
+  }
+  .account-content{
+    padding: 0 10px;
+  }
+  
+  
 }

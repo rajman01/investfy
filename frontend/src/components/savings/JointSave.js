@@ -128,7 +128,7 @@ class JointSave extends Component {
                                             <h3>Total Savings</h3>
                                         </div> 
                                         <div className="mt-3">
-                                            <h1 class="x20000-9669 border-class-1 madetommy-medium-new-car-50px">#{savings.total}
+                                            <h1 class="x650000-78181 madetommy-medium-black-34px border-class-1">#{savings.total}
                                             </h1><br/>
                                             <h4>{`${savings.amount} Naira to be saved every week`}</h4>
                                         </div>
