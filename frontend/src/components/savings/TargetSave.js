@@ -4,12 +4,11 @@ import Header from '../layouts/Header'
 import axios from 'axios';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { returnErrors, createMessage } from "../../actions/messages";
+import { getAllTargetSave, createTargetSave } from "../../actions/savings";
 import { Link } from 'react-router-dom'
 
 class TargetSave extends Component {
     state = {
-        target_savings: [],
         name: '',
         description: '',
         targeted_amount: '',
@@ -17,8 +16,9 @@ class TargetSave extends Component {
 
     static propTypes = {
         token: PropTypes.string.isRequired,
-        returnErrors: PropTypes.func.isRequired,
-        createMessage: PropTypes.func.isRequired
+        getAllTargetSave: PropTypes.func.isRequired,
+        createTargetSave: PropTypes.func.isRequired,
+        all_target_save: PropTypes.array.isRequired
     }
 
     onChange = (e) => {
@@ -29,37 +29,16 @@ class TargetSave extends Component {
   
     onSubmit = (e) => {
         e.preventDefault();
-        const { name, description, targeted_amount } = this.state;
-        const body = JSON.stringify({ name, description, targeted_amount });
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Token ${this.props.token}`
-            }
-        };
-        axios.post('/savings/targetsave/create', body, config)
-        .then(res => {
-            this.props.createMessage({response: 'Target Save Created Successfully'});
-            this.setState({
-                target_savings: [res.data, ...this.state.target_savings]
-            })
+        this.props.createTargetSave(this.state);
+        this.setState({
+            name: '',
+            description: '',
+            targeted_amount: '',
         })
-        .catch((err) => this.props.returnErrors(err.response.data, err.response.status));
-    }
+        }
 
     componentDidMount(){
-        const config = {
-            headers: {
-                "Authorization": `Token ${this.props.token}`
-            }
-        };
-        axios.get('/savings/targetsavings', config)
-        .then(res => {
-            this.setState({
-                target_savings: res.data
-            });
-        })
-        .catch(err => this.props.returnErrors(err.response.data, err.response.status))
+        this.props.getAllTargetSave()
     }
 
     render() {
@@ -81,7 +60,7 @@ class TargetSave extends Component {
                         </div>
                     </div>
                     
-                    {this.state.target_savings.map(savings => (
+                    {this.props.all_target_save.map(savings => (
                         <div className="row saving-balance mb-3" key={savings.id}>
                             <div className="col-12">
                                 <div className="row">
@@ -140,7 +119,8 @@ class TargetSave extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    token: state.auth.token
+    token: state.auth.token,
+    all_target_save: state.savings.all_target_save
 })
 
-export default connect(mapStateToProps, { returnErrors, createMessage })(TargetSave)
+export default connect(mapStateToProps, { getAllTargetSave, createTargetSave })(TargetSave)

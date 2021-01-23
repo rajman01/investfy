@@ -23,15 +23,13 @@ export default function (state = initialState, action){
             return(state=action.payload);
 
         case DEPOSIT_QUICK_SAVE:
-            console.log('done');
-            // return {
-            //     ...state,
-            //     balance: `${parseFloat(state.balance) + parseFloat(action.payload.amount)}`,
-            //     transactions: [action.payload, ...state.transactions]
-            // };
+            return {
+                ...state,
+                balance: `${parseFloat(state.balance) + parseFloat(action.payload.amount)}`,
+                transactions: [action.payload, ...state.transactions]
+            };
 
         case QUICK_SAVE_CASH_OUT:
-            console.log(action)
             return {
                 ...state,
                 balance: '0.00',

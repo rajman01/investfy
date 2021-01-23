@@ -278,7 +278,7 @@ class CreateJointTargetSaveView(generics.CreateAPIView):
         target_save = serializer.save()
         body = f'You have been added to {target_save.user.username} joint target save'
         emails = [member.email for member in target_save.members.all().exclude(pk=request.user.pk)]
-        #send_email_task.delay({'body': body, 'subject': 'Joint Target Saving', 'to': emails})
+        send_email_task.delay({'body': body, 'subject': 'Joint Target Saving', 'to': emails})
         data = JointTargetSaveSerializer(instance=target_save)
         return Response(data=data.data, status=status.HTTP_201_CREATED)
 
@@ -432,7 +432,7 @@ class CreateJointSaveView(generics.CreateAPIView):
         )
         members = ((serializer.validated_data)['members'])
         current_site = get_current_site(request).domain
-        #send_joint_save_invite.delay(members, joint_save.id, current_site)
+        send_joint_save_invite.delay(members, joint_save.id, current_site)
         data = JointSaveSerializer(instance=joint_save)
         return Response(data=data.data, status=status.HTTP_200_OK)
 
@@ -559,8 +559,8 @@ class DisbandJointSaveView(generics.DestroyAPIView):
                 )
             joint_save.save()
             name = joint_save.name
-            # emails = [member.email for member in joint_save.members.all()]
-            # send_disband_email_task.delay(name, emails)
+            emails = [member.email for member in joint_save.members.all()]
+            send_disband_email_task.delay(name, emails)
             joint_save.delete()
             return Response(data={'response': f'{name} as been disbaned'}, status=status.HTTP_200_OK)
         return Response(data={'response': 'sorry, you cant disband this joint save'}, status=status.HTTP_400_BAD_REQUEST)

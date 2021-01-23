@@ -31,6 +31,11 @@ class Alerts extends Component {
             if(error.msg.bank_code) alert.error(`Bank Code: ${error.msg.bank_code.join()}`);
             if(error.msg.name) alert.error(`Name: ${error.msg.name.join()}`);
             if(error.msg.members) alert.error(`Members: ${error.msg.members.join()}`);
+            if(error.msg.payout_type) alert.error(`Payout Type: ${error.msg.payout_type.join()}`);
+            if(error.msg.units) alert.error(`Units: ${error.msg.units.join()}`);
+            if(error.msg.amount_per_unit) alert.error(`Amount Per Unit: ${error.msg.amount_per_unit.join()}`);
+            if(error.msg.yearly_profit_percent) alert.error(`Yearly Profit Percent: ${error.msg.yearly_profit_percent.join()}`);
+            if(error.msg.duration) alert.error(`Duration: ${error.msg.duration.join()}`);
             if(error.msg.error) alert.error(`Error: ${error.msg.error}`);
             if(error.msg.detail) alert.error(`Error: ${error.msg.detail}`);
             if(error.msg.amount) alert.error(`Amount: ${error.msg.amount.join()}`);

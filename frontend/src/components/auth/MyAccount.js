@@ -22,7 +22,7 @@ class MyAccount extends Component {
         wallet_id: '',
         account_edit: false,
         email_edit: false,
-        waller_id_edit: false,
+        wallet_id_edit: false,
         bank_account: false
     }
 
@@ -109,7 +109,7 @@ class MyAccount extends Component {
 
     changeWalletId = (e) => {
         e.preventDefault();
-        if(this.state.waller_id_edit){
+        if(this.state.wallet_id_edit){
             this.props.changeWalletId(this.state)
         }
     }

@@ -46,12 +46,12 @@ class Sidebar extends Component {
                                 <div className={savings ? "overview-681 madetommy-medium-new-car-20px border-class-1" : "salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1"}>Savings</div>
                             </div>
                         </Link></li>
-                    <li><a href="">
+                    <li><Link to="/myinvestments">
                             <div className={investments ? "active": "frame-45"}>
                                 <img className="user-usercircle" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/chart---line-chart-up@2x.svg" />
                                 <div className={investments ? "overview-681 madetommy-medium-new-car-20px border-class-1" : "salary-manager-6826 madetommy-medium-mountain-meadow-20px border-class-1"}>Investments</div>
                             </div>
-                        </a></li>
+                        </Link></li>
                     <li><Link to="/payments">
                             <div className={payments ? "active": "frame-45"}>
                                 <img className="user-usercircle" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/basic---credit-card-4@2x.svg" />

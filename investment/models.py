@@ -20,7 +20,7 @@ INVESTMENT_TYPES = (
 class Investment(models.Model):
     name = models.CharField(max_length=64)
     description = models.TextField()
-    owner = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    owner = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name="my_investments")
     investment_type = models.CharField(max_length=32, default=FI, choices=INVESTMENT_TYPES)
     payout_type = models.CharField(max_length=32, choices=PAYOUT_TYPES)
     units = models.IntegerField()
@@ -33,12 +33,16 @@ class Investment(models.Model):
     investors = models.ManyToManyField(UserModel, blank=True, related_name="investments")
     duration = models.IntegerField()
     date_create = models.DateField(auto_now_add=True)
+    date_approved = models.DateField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-date_create']
 
     def sold_out(self):
-        return units_left == 0
+        return self.units_left == 0
 
     def yearly_investors_money(self):
-        profit = (self.yearly_profit_percent / 100) * self.amount_per_unit
+        profit = Decimal(str(self.yearly_profit_percent / 100)) * self.amount_per_unit
         unit_sold = self.units - self.units_left
         if self.payout_type == C_P:
             return (profit * unit_sold) + (self.amount_per_unit * unit_sold)
@@ -49,7 +53,7 @@ class Investment(models.Model):
         return self.investors.count()
 
     def invest(self, units, user):
-        if units >= self.units_left:
+        if units <= self.units_left:
             self.units_left -= units
             self.total_amount += units * self.amount_per_unit
             if user not in self.investors.all():
@@ -64,5 +68,8 @@ class InvesmentTransaction(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name="investments_transactions")
     investment = models.ForeignKey(Investment, on_delete=models.DO_NOTHING, related_name="transactions")
     amount = models.DecimalField(decimal_places=2, max_digits=10)
-    unit_bougth = models.IntegerField()
+    units_bought = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-timestamp']

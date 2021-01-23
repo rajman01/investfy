@@ -8,6 +8,8 @@ import targetSave from './targetSave'
 import jointTargetSave from './jointTargetSave'
 import jointSave from './jointSave'
 import payments from './payments'
+import investments from './investments'
+import savings from './savings'
  
 export default combineReducers({
     auth,
@@ -18,5 +20,7 @@ export default combineReducers({
     targetSave,
     jointTargetSave,
     jointSave,
-    payments
+    payments,
+    investments,
+    savings
 });

@@ -32,8 +32,7 @@ class AddAccount extends Component {
       const { acct_no, bank_code, name } = this.state;
       this.props.addAccount({number: acct_no, bank_code, name})
       this.setState({
-        acct_no: '',   
-        bank_code: '', 
+        acct_no: '',
         name: ''
       })
     }

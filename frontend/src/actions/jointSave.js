@@ -67,7 +67,7 @@ export const disbandJointSave = ({id}) => (dispatch, getState) => {
 
 export const inviteJointSave = ({id, members}) => (dispatch, getState) => {
     const body = JSON.stringify({members});
-    axios.put(`/savings/jointsave/invite/${id}`, body, tokenConfig(getState))
+    axios.post(`/savings/jointsave/invite/${id}`, body, tokenConfig(getState))
     .then(res => {
         dispatch(createMessage({response: res.data.response}));
     })

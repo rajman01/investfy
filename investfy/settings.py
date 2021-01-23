@@ -62,10 +62,10 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    #'user.custom_middleware.CustomCorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -178,6 +178,10 @@ CELERY_BEAT_SCHEDULE = {
     },
     "monthly": {
         "task": "savings.tasks.joint_save_monthly_check_up",
+        "schedule": timedelta(days=1)
+    },
+    "yeary": {
+        "task": "investment.tasks.yearly_round_up_investment",
         "schedule": timedelta(days=1)
     }
 }

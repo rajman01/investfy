@@ -21,6 +21,8 @@ import JointTargetSaveSingle from './savings/JointTargetSaveSingle'
 import JointSave from './savings/JointSave'
 import JointSaveSingle from './savings/JointSaveSingle'
 import Investments from './investments/Investments'
+import InvestmentSingle from './investments/InvestmentSingle'
+import MyInvestments from './investments/MyInvestments'
 import Payments from './payments/Payments'
 import Wallet from './wallet/Wallet'
 import Alerts from './layouts/Alerts'
@@ -49,7 +51,9 @@ class App extends Component{
                         <Switch>
                             <PrivateRoute exact path="/" component={Dashboard} />
                             <PrivateRoute exact path='/wallet' component={Wallet} />
+                            <PrivateRoute exact path='/myinvestments' component={MyInvestments} />
                             <PrivateRoute exact path='/investments' component={Investments} />
+                            <PrivateRoute exact path='/investment/:id' component={InvestmentSingle} />
                             <PrivateRoute exact path='/account' component={MyAccount} />
                             <PrivateRoute exact path="/savings" component={Savings}/>
                             <PrivateRoute exact path="/savings/jointsave/:id" component={JointSaveSingle}/>

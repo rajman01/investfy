@@ -19,6 +19,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from knox.models import AuthToken
 from knox.auth import TokenAuthentication
+from datetime import datetime
 
 
 UserModel = get_user_model()
@@ -139,7 +140,7 @@ class ChangeEmailView(generics.GenericAPIView):
         body = f"Hi {user.full_name}, use the link below to verify your new email \n {absurl}"
         data = {'body': body, 'subject': 'Verify your new email', 'to': [user.email]}
         send_email_task.delay(data)
-        return Response({'response': 'Your email has been updated, We have sent verication link to your ntew email'}, status=status.HTTP_200_OK)
+        return Response({'response': 'Your email has been updated, We have sent verication link to your new email'}, status=status.HTTP_200_OK)
 
 
 class UserDetailView(generics.GenericAPIView):
@@ -175,12 +176,14 @@ class VerifyBVNView(generics.GenericAPIView):
             response = get_bvn_details(BVN)
             if response.get('status_code') == 200:
                 data = response['data'].get('data')
+                if UserModel.objects.filter(phone_number=data.get('phone_number')).exists():
+                    return Response(data={'error': 'A user with the phone number of this bvn already exists'}, status=status.HTTP_400_BAD_REQUEST)
                 user.first_name = data.get('first_name')
                 user.last_name = data.get('last_name')
                 user.full_name = f'{data.get("first_name")} {data.get("middle_name")} {data.get("last_name")}'
-                bvn_dob = data.get('date_of_birth')
-                dob = {'YYYY': bvn_dob[6:], 'MM': bvn_dob[3:5], 'DD': bvn_dob[:2]}
-                user.dob = f"{dob['YYYY']}-{dob['MM']}-{dob['DD']}"
+                bvn_dob = data.get('date_of_birth').strip()
+                dob = datetime.strptime(bvn_dob, '%d-%b-%Y')
+                user.dob = dob.strftime('%Y-%m-%d')
                 user.phone_number = data.get('phone_number')
                 user.bvn_verified = True
                 user.save()

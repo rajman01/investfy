@@ -4,12 +4,11 @@ import Header from '../layouts/Header'
 import axios from 'axios';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { returnErrors, createMessage } from "../../actions/messages";
+import { getAllJointTargetSave, createJointTargerSave } from "../../actions/savings";
 import { Link } from 'react-router-dom'
 
 class JointTargetSave extends Component {
     state = {
-        joint_target_savings: [],
         name: '',
         description: '',
         targeted_amount: '',
@@ -20,9 +19,10 @@ class JointTargetSave extends Component {
 
     static propTypes = {
         token: PropTypes.string.isRequired,
-        returnErrors: PropTypes.func.isRequired,
-        createMessage: PropTypes.func.isRequired,
-        username: PropTypes.string.isRequired
+        getAllJointTargetSave: PropTypes.func.isRequired,
+        createJointTargerSave: PropTypes.func.isRequired,
+        username: PropTypes.string.isRequired,
+        all_joint_target_save: PropTypes.array.isRequired
     }
 
     onChange = (e) => {
@@ -35,21 +35,15 @@ class JointTargetSave extends Component {
         e.preventDefault();
         const { name, description, targeted_amount } = this.state;
         const members = this.state.members.map(member => member.username);
-        const body = JSON.stringify({ name, description, targeted_amount, members });
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Token ${this.props.token}`
-            }
-        };
-        axios.post('/savings/targetsave/joint/create', body, config)
-        .then(res => {
-            this.props.createMessage({response: 'Joint Target Save Created Successfully'});
-            this.setState({
-                joint_target_savings: [res.data, ...this.state.joint_target_savings]
-            })
-        })
-        .catch((err) => this.props.returnErrors(err.response.data, err.response.status));
+        this.props.createJointTargerSave({ name, description, targeted_amount, members });
+        this.setState({
+              name: '',
+                description: '',
+                targeted_amount: '',
+                members: [],
+                users: [ null ],
+                search: ''
+        }) 
     }
 
     search = (e) => {
@@ -86,18 +80,7 @@ class JointTargetSave extends Component {
     }
 
     componentDidMount(){
-        const config = {
-            headers: {
-                "Authorization": `Token ${this.props.token}`
-            }
-        };
-        axios.get('/savings/targetsavings/joint', config)
-        .then(res => {
-            this.setState({
-                joint_target_savings: res.data
-            });
-        })
-        .catch(err => this.props.returnErrors(err.response.data, err.response.status))
+        this.props.getAllJointTargetSave()    
     }
 
     render() {
@@ -119,7 +102,7 @@ class JointTargetSave extends Component {
                         </div>
                     </div>
                     
-                    {this.state.joint_target_savings.map(savings => (
+                    {this.props.all_joint_target_save.map(savings => (
                         <div className="row saving-balance mb-3" key={savings.id}>
                             <div className="col-12">
                                 <div className="row">
@@ -232,7 +215,8 @@ class JointTargetSave extends Component {
 
 const mapStateToProps = (state) => ({
     token: state.auth.token,
-    username: state.auth.user.username
+    username: state.auth.user.username,
+    all_joint_target_save: state.savings.all_joint_target_save
 })
 
-export default connect(mapStateToProps, { returnErrors, createMessage })(JointTargetSave)
+export default connect(mapStateToProps, { getAllJointTargetSave, createJointTargerSave })(JointTargetSave)

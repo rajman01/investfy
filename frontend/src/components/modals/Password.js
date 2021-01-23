@@ -51,7 +51,7 @@ class Password extends Component {
                             <label for="amount" className="col-form-label">Password</label>
                             <input type="password" name="password" required class="form-control" onChange={this.onChange} value={this.state.password} placeholder="Your Wallet Password"/>
                         </div>
-                      <button type="submit" className="btn btn-primary">Save</button>
+                      <button type="submit" className="btn btn-primary">Submit</button>
                     </form>
                   </div>
                   <div className="modal-footer">

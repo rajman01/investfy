@@ -45,7 +45,7 @@ class JointSaveSingle extends Component {
     }
 
     changeTransaction = (username) => {
-        const user = this.props.jointTargetSave.members.find(member => member.username === username);
+        const user = this.props.jointSave.members.find(member => member.username === username);
         this.setState({
             active: username,
             transactions: user.transactions

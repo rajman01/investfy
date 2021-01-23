@@ -67,7 +67,7 @@ class Wallet extends Component {
             } else if(this.state.savings_transactions){
                 return <WalletSavingTransactions transactions={savings_transactions} />
             } else{
-                return <WalletTransactions transactions={[...sent_transactions, ...recieved_transactions]} />
+                return <WalletTransactions transactions={[...sent_transactions, ...recieved_transactions].sort((a,b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())} />
             }
         }
 

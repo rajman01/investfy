@@ -3,6 +3,7 @@
     padding: 0;
     list-style: none;
     text-decoration: none;
+    font-family: "MADE TOMMY-Light", Helvetica, Arial, serif;
 }
 
 a{
@@ -254,7 +255,7 @@ label #cancle {
     }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1000px) {
 
     label #cancle,
     label #btn,
@@ -271,7 +272,7 @@ label #cancle {
     }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1000px) {
 
     .main-content {
         padding-top: 50px;

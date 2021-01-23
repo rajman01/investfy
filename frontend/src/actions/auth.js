@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_FAIL, REGISTER_SUCCESS, LOGOUT_SUCCESSFUL, SET_WALLET, UPDATE_ACCOUNT, BVN_VERIFIED} from './types'
+import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, REGISTER_FAIL, REGISTER_SUCCESS, LOGOUT_SUCCESSFUL, SET_WALLET, UPDATE_ACCOUNT, BVN_VERIFIED, EMAIL_CHANGE} from './types'
 import { createMessage, returnErrors } from './messages'
 
 
@@ -149,6 +149,9 @@ export const changeEmail = ({ new_email }) => (dispatch, getState) => {
     axios.put('/auth/email/change', body, tokenConfig(getState))
     .then(res => {
         dispatch(createMessage({response: res.data.response}));
+        dispatch({
+            type: EMAIL_CHANGE
+        })
     })
     .catch((err) => {
         if (err.response.status === 401){

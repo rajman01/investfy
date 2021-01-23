@@ -19,6 +19,11 @@ class Invite extends Component {
         e.preventDefault();
         const members = this.state.members.map(member => member.username);
         this.props.invite({id: this.state.id, members});
+        this.setState({
+            members: [],
+            users: [ null ],
+            search: ''
+        })
     }
 
     componentDidUpdate(prevProps){

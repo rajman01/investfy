@@ -87,7 +87,7 @@ class UserSerializer(serializers.ModelSerializer):
         else:
             if instance.full_name != full_name or instance.phone_number != phone_number or instance.dob != dob or instance.first_name != first_name or instance.last_name != last_name:
                 raise serializers.ValidationError({'error': 'You cant change your name, phone_number, date of birth if you bvn is verified'})
-            instannce.full_name = full_name
+            instance.full_name = full_name
             instance.phone_number = phone_number
             instance.dob = dob
         instance.save()

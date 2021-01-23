@@ -34,7 +34,7 @@ class Savings extends Component {
                                 <div className="frame-saving">
                                     <img className="rectangle-64" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/rectangle-64@2x.svg" />
                                     <h1 class="quick-save-82240 border-class-1 madetommy-medium-black-25px">Quick Save</h1>
-                                    <p class="text-1 border-class-1 madetommy-light-black-14px"> Some of us are building from scratch. No rich parents. No connections. No assistance. .</p>
+                                    <p class="text-1 border-class-1 madetommy-light-black-14px">A QuickSave Account is where you can quickly save at any time and also cash out at your convinient time. Support Autosave feature.</p>
                                 </div>
                             </Link>
                         </div>
@@ -45,7 +45,8 @@ class Savings extends Component {
                                     <img className="ellipse-10" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/ellipse-10@2x.png" />
                                     <img className="ellipse-11" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/ellipse-11@2x.png" />
                                     <h1 class="quick-save-82240 border-class-1 madetommy-medium-black-25px">Joint Save</h1>
-                                    <p class="text-1 border-class-1 madetommy-light-black-14px"> Some of us are building from scratch. No rich parents. No connections. No assistance. .</p>
+                                    <p class="text-1 border-class-1 madetommy-light-black-14px">A JointSave Account is a savings account where you need to invite at least two members and save a particular amount every week. Then a random member will cashout at the end of the month. This goes on every month until
+                                    every member has cashed out</p>
                                 </div>
                             </Link>
                         </div>
@@ -54,7 +55,7 @@ class Savings extends Component {
                                 <div className="frame-saving">
                                     <img className="rectangle-64" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/rectangle-64@2x.svg" />
                                     <h1 class="quick-save-82240 border-class-1 madetommy-medium-black-25px">Target Save</h1>
-                                    <p class="text-1 border-class-1 madetommy-light-black-14px"> Some of us are building from scratch. No rich parents. No connections. No assistance. .</p>
+                                    <p class="text-1 border-class-1 madetommy-light-black-14px">A Target Save Account is a savings account in which you need to set a particutar goal and keep saving until you reach at least half of your goal.  Support Autosave feature.</p>
                                 </div>
                             </Link>
                         </div>
@@ -65,7 +66,7 @@ class Savings extends Component {
                                         <img className="ellipse-10" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/ellipse-10@2x.png" />
                                         <img className="ellipse-11" src="https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/ellipse-11@2x.png" />
                                         <h1 class="quick-save-82240 border-class-1 madetommy-medium-black-25px">Joint Target Save</h1>
-                                        <p class="text-1 border-class-1 madetommy-light-black-14px"> Some of us are building from scratch. No rich parents. No connections. No assistance. .</p>
+                                        <p class="text-1 border-class-1 madetommy-light-black-14px">A Joint Targetsave Account is just like the Targetsave account but with at least two members involved</p>
                                 </div>
                             </Link>
                         </div>                        

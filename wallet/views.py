@@ -46,7 +46,7 @@ class ChangePasswordView(generics.GenericAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         if user.wallet.check_password(((serializer.validated_data)['current_password'])):
-            user.wallet.set_password(((serializer.validated_data)['new_password']))
+            user.wallet.set_password(((serializer.validated_data)['new_password']), user.wallet.wallet_id)
             return Response({'response': 'Your password has been updated'}, status=status.HTTP_200_OK)
         return Response({'error': 'invalid_password'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -69,12 +69,12 @@ class WalletTransferView(generics.GenericAPIView):
                 beneficiary=beneficiary,
                 amount=amount
             )
-            # sender_body = f'You sent {amount} to {beneficiary.username}'
-            # beneficiary_body = f'You just recieved {amount} from {sender.full_name}'
-            # sender_data = {'body': sender_body, 'subject': 'Wallet debit', 'to': [sender.email]}
-            # beneficiary_data = {'body': beneficiary_body, 'subject': 'Wallet Credit', 'to': [beneficiary.email]}
-            # send_email_task.delay(sender_data)
-            # send_email_task.delay(beneficiary_data)
+            sender_body = f'You sent {amount} to {beneficiary.username}'
+            beneficiary_body = f'You just recieved {amount} from {sender.full_name}'
+            sender_data = {'body': sender_body, 'subject': 'Wallet debit', 'to': [sender.email]}
+            beneficiary_data = {'body': beneficiary_body, 'subject': 'Wallet Credit', 'to': [beneficiary.email]}
+            send_email_task.delay(sender_data)
+            send_email_task.delay(beneficiary_data)
             transaction_serializer = WalletTransactionSerializer(instance=transaction)
             return Response({'response': 'Transaction succesful', 'transaction': transaction_serializer.data}, status=status.HTTP_200_OK)
         return Response({'error': 'insufficient funds'}, status=status.HTTP_400_BAD_REQUEST)
@@ -82,7 +82,7 @@ class WalletTransferView(generics.GenericAPIView):
 
 class ChangeWalletIDView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
-    serialzer_class = ChangeWalletIDSerializer
+    serializer_class = ChangeWalletIDSerializer
 
     def put(self, request, *args, **kwargs):
         serializer = self.serializer_class(instance=request.user.wallet, data=request.data)

@@ -8,9 +8,17 @@ import { USER_LOADED,
         LOGOUT_SUCCESSFUL,
         SET_WALLET,
         DEPOSIT_QUICK_SAVE,
+        TARGETSAVE_DEPOSIT,
+        JOINT_TARGETSAVE_DEPOSIT,
+        DEPOSIT_JOINT_SAVE,
         BVN_VERIFIED,
         UPDATE_ACCOUNT,
-        UPDATE_WALLET_ID} from '../actions/types';
+        UPDATE_WALLET_ID, 
+        INVEST, 
+        FUND_WALLET,
+        SEND_CASH,
+        EMAIL_CHANGE, 
+        INVESTMENT_CASHOUT} from '../actions/types';
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -66,16 +74,19 @@ export default function(state = initialState, action){
             }
 
         case DEPOSIT_QUICK_SAVE:
+        case TARGETSAVE_DEPOSIT:
+        case JOINT_TARGETSAVE_DEPOSIT:
+        case DEPOSIT_JOINT_SAVE:
             return{
                 ...state,
                 user: {
                     ...state.user,
-                    total_savings: `${parseFloat(state.user.total_savings) + parseFloat(action.payload.amount)}`
+                    total_savings: `${parseFloat(state.user.total_savings) + parseFloat(action.payload.amount)}`,
+                    wallet: {
+                        ...state.user.wallet,
+                        balance: `${parseFloat(state.user.wallet.balance) - parseFloat(action.payload.amount)}`
+                    }
                 },
-                wallet: {
-                    ...state.wallet,
-                    balance: `${parseFloat(state.wallet.balance) - parseFloat(action.payload.amount)}`
-                }
             }
         case UPDATE_ACCOUNT:
         case BVN_VERIFIED:
@@ -92,6 +103,62 @@ export default function(state = initialState, action){
                     wallet: {
                         ...state.user.wallet,
                         wallet_id: action.payload
+                    }
+                }
+            }
+        case INVEST:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    total_investments: `${parseFloat(state.user.total_investments) + parseFloat(action.payload.amount)}`,
+                    wallet: {
+                        ...state.user.wallet,
+                        balance: `${parseFloat(state.user.wallet.balance) - parseFloat(action.payload.amount)}`
+                    }
+                }
+            }
+
+        case FUND_WALLET:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    wallet: {
+                        ...state.user.wallet,
+                        balance: `${parseFloat(state.user.wallet.balance) + parseFloat(action.payload.amount)}`
+                    }
+                }
+            }
+        
+        case SEND_CASH:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    wallet: {
+                        ...state.user.wallet,
+                        balance: `${parseFloat(state.user.wallet.balance) - parseFloat(action.payload.amount)}`
+                    }
+                }
+            }
+        case EMAIL_CHANGE:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    email_verified: false
+                }
+            }
+
+        case INVESTMENT_CASHOUT:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    wallet: {
+                        ...state.user.wallet,
+                        balance: `${parseFloat(state.user.wallet.balance) + parseFloat(action.payload.amount)}`
                     }
                 }
             }
