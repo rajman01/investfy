@@ -49,9 +49,10 @@ export const jointTargetSaveDeposit = ({id, amount, password}) => (dispatch, get
     axios.post(`/savings/targetsave/joint/save/${id}`, body, tokenConfig(getState))
     .then(res => {
         dispatch(createMessage({response: res.data.response}));
+        const jointTargetSave = getState().jointTargetSave;
         dispatch({
             type: JOINT_TARGETSAVE_DEPOSIT,
-            payload: res.data.transaction
+            payload: {...res.data.transaction, own: jointTargetSave.user.username == res.data.transaction.username}
         });
     })
     .catch(err => {

@@ -16,7 +16,7 @@ def check_end_of_year(date2, date1):
 
 @shared_task
 def yearly_round_up_investment():
-    for investment in Investment.objects.filter(active=True, autosave=True):
+    for investment in Investment.objects.filter(active=True, approved=True):
         if check_end_of_year(datetime.date(datetime.now()), investment.date_approved):
             profit = Decimal(str(investment.yearly_profit_percent / 100)) * investment.amount_per_unit
             for investor in investment.investors.all():

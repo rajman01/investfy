@@ -93,8 +93,8 @@ class CreateInvestorSerializer(serializers.ModelSerializer):
         fields = ['name', 'description', 'payout_type', 'units', 'amount_per_unit', 'yearly_profit_percent', 'duration']
 
     def validate_yearly_profit_percent(self, yearly_profit_percent):
-        if yearly_profit_percent < 5 or yearly_profit_percent > 200:
-            raise serializers.ValidationError(f'must be between 5 and 100')
+        if yearly_profit_percent < 20 or yearly_profit_percent > 200:
+            raise serializers.ValidationError(f'must be between 20 and 200')
         return yearly_profit_percent
 
     def validate_duration(self, duration):

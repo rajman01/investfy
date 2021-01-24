@@ -18,7 +18,8 @@ import { USER_LOADED,
         FUND_WALLET,
         SEND_CASH,
         EMAIL_CHANGE, 
-        INVESTMENT_CASHOUT} from '../actions/types';
+        INVESTMENT_CASHOUT, 
+        MAKE_PAYMENT} from '../actions/types';
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -75,7 +76,6 @@ export default function(state = initialState, action){
 
         case DEPOSIT_QUICK_SAVE:
         case TARGETSAVE_DEPOSIT:
-        case JOINT_TARGETSAVE_DEPOSIT:
         case DEPOSIT_JOINT_SAVE:
             return{
                 ...state,
@@ -87,6 +87,32 @@ export default function(state = initialState, action){
                         balance: `${parseFloat(state.user.wallet.balance) - parseFloat(action.payload.amount)}`
                     }
                 },
+            }
+
+        case JOINT_TARGETSAVE_DEPOSIT:
+            if (action.payload.own){
+                return{
+                    ...state,
+                    user: {
+                        ...state.user,
+                        total_savings: `${parseFloat(state.user.total_savings) + parseFloat(action.payload.amount)}`,
+                        wallet: {
+                            ...state.user.wallet,
+                            balance: `${parseFloat(state.user.wallet.balance) - parseFloat(action.payload.amount)}`
+                        }
+                    },
+                }
+            }else{
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        wallet: {
+                            ...state.user.wallet,
+                            balance: `${parseFloat(state.user.wallet.balance) - parseFloat(action.payload.amount)}`
+                        }
+                    }
+                }
             }
         case UPDATE_ACCOUNT:
         case BVN_VERIFIED:
@@ -159,6 +185,17 @@ export default function(state = initialState, action){
                     wallet: {
                         ...state.user.wallet,
                         balance: `${parseFloat(state.user.wallet.balance) + parseFloat(action.payload.amount)}`
+                    }
+                }
+            }
+        case MAKE_PAYMENT:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    wallet: {
+                        ...state.user.wallet,
+                        balance: `${parseFloat(state.user.wallet.balance) - parseFloat(action.payload.amount)}`
                     }
                 }
             }
