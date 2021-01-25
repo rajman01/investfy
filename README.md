@@ -6,13 +6,13 @@ NB: This application does not deal with real money yet, and only deals with dumm
 
 This project is totaly different from all the other projects in cs50 web programming with python and javascript course and no part of this project got its content from the other projects. its complexity level is also higher then the other projects taken in this course. 
 
-This appication offer some unique features out of the box:
+This appication offers some unique features out of the box:
 - Fast and secure way to transfer  money from one E-Wallet to another.
 - Saving has never been more easy with investfy varities of savings account with varities of  features which is easy and secure to use.  
 - With investfy Investment program, users can now easily apply for investments and invest in other investment with assured profit.
 
 ## what is inside this project ?
-There are quite a number of apps(folders) and files inside this project, so i'm going to be listing them and explaining what is inside and what each app does.  
+There are quite a number of apps(folders) and files inside this project, so i'm going to list them and explain what is inside and what each app does.  
 
 - ### user app:  
     This is a django app that takes care of authentications and anything that deals with the user like changing of password, email verification, BVN verification e.t.c  
@@ -53,7 +53,7 @@ There are quite a number of apps(folders) and files inside this project, so i'm 
 Here are the features this application offers.  
 
 - ### E-Wallet:
-    The E-Wallet is like the money bank of the qpplication, all transactions in this application are related to the E-Wallet.  
+    The E-Wallet is like the money bank of the application, all transactions in this application are related to the E-Wallet.  
     The E-Wallet support few features which are:  
     1. #### Funding of wallet:
         Users are able to  fund their E-wallet with any amount they wish.  
@@ -67,13 +67,13 @@ Here are the features this application offers.
     1. #### Auto Save faeture:
         The Quick save account supports the autosave feature in which users can switch it on by providing the day-interval and the amount to save every day-interval provided. When the autosave feature is on, the server will save the given amount every day-interval provided with the help of celery that gives the server the ability to perform scheduled tasks.  
     2. #### Save To Quick Save:
-        Users can save to investfy through their quick save account. The money users are saving to their quicksave account comes from their respective E-wallet.  
+        Users can save to investfy through their quick save account. The money users are saving to investfy through any savings account comes from their respective E-wallet.  
 
     3. #### Withdraw from Quick Save:
         users can withdraw the total amount they have saved in their quick save account to their respective E-Wallet.  
 
 - ### JointSave:
-    Users can create multiple joint save accounts in which they have to invite at least two members when creating a joint save accont and set an amount to contribute every week. Invitation links are sent to the invited members in which they can accept the invitation or just ignore it. Every member is to contribute a particular amount every week then and a random member recieves the total amount at the end of the month. This cycle continues every month until every member has recieved its total amount, Then an email is sent to the admin to reactivate the jointsave if the meber wishes. If a member does not make its weekly contribution, the server transfer the amount from the member's wallet to the jointsave account at the end of the week.  
+    Users can create multiple joint save accounts in which they have to invite at least two members when creating a joint save accont and set an amount to contribute every week. Invitation links are sent to the invited members in which they can accept the invitation or just ignore it. Every member is to contribute a particular amount every week then and a random member recieves the total amount at the end of the month. This cycle continues every month until every member has recieved its total amount, Then an email is sent to the admin to reactivate the jointsave if the admin wishes. If a member does not make its weekly contribution, the server transfer the amount from the member's wallet to the jointsave account at the end of the week.  
     Features of a joint save account includes:
 
     1. #### Save to Joint Save:
@@ -98,7 +98,7 @@ Here are the features this application offers.
 
     2. #### Withdraw Target save balance:
         users are able to withdraw the progress in a targetsave account only when they have saved up to 0.5% of the targeted amount.
-        The balance is transfered to the user's E-wallet.
+        The money is transfered to the user's E-wallet.
     3. #### Autosave:
         Just like the quick save autosave feature, targetsave also supports autosave feature.
     4. #### Delete targetsave:
@@ -128,3 +128,48 @@ Here are the features this application offers.
 -  ### Investments:
     Users are able to apply for Investment program provided they must give very detailed and convincing description on why they need the investment program and other needed fields. When an investment is created, The investment is not yet approved, only the admin or organisers of investfy can approve investments. Only approved investments are available for investing.
     Features of investment.
+
+    1. #### Apply for Investment Progeram:
+        Users are able to apply for investment program by providing details about the investment the user is applying for.
+
+    2. #### Invest in an  Investment:
+        Users can invest in an investment program by buying any amount of units available in the investment program.
+
+    3. #### Withdram from Investment:
+        Owners of investment can withdraw the amount available their investment program(i.e money investors have invested in the program).
+
+    4. #### Investment Yearly Round up:
+        At the end of every year investment program, investors will recieve their profits from the investments which will be provided by the owner of the investment. 
+
+- ### Payments:
+    Users can make payments to external bank accounts.  
+    Nb: note that this payments are not real and the user will not recieve any money.  
+    Features include:
+
+    1. #### Making Payments:
+        Users can transfer money from their E-wallets to real bank accounts.
+
+    2. #### Adding Bank Accounts:
+        Users can save beneficiaries so when next making payment to that account, the user doesn't have to put the full details of the beneficiary.
+
+- ### Other features includes:
+    1. Users can edit details of there account e.g, username, phone_number, email e.t.c. When a account is verified with bvn, the user will not be able to edit some detais.
+
+    2. Users will need to verify their email account and BVN befor they can access some features on the application.
+
+    3. Users can Change there account and wallet passwords.
+
+    4. users can also add and delete beneficiarys bank accounts.
+
+## How To Run The Application
+    1. Install Python:  
+    Make sure there is python and pip installed on your machine. pip comes with the latest versions of python released nowadays. If not, you can visit the [python website](https://www.python.org/) to download python on your machine.
+
+    2. Install python packages:  
+    Open a terminal and change your directory to the application root forlder and run 'pip install -r requirements.txt' 
+
+    3. Make migrations: 
+    Also from the root folder, run 'python manage.py migrate' to make migrations.
+
+    4. Add List of Banks:
+    from 
