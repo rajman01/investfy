@@ -34,19 +34,19 @@ def yearly_round_up_investment():
                     amount=Decimal(str(yearly_gain))
                 )
                 body = f"Congratulation, Your yearly gain for {investment.name} investment ({yearly_gain} Naira) has been transfered to your wallet"
-                email = {'body': body, 'subject': f'{Investment.name} investment yearly gain', 'to': [investor.email]}
-                send_email_task(email)
+                email = {'body': body, 'subject': f'{investment.name} investment yearly gain', 'to': [investor.email]}
+                send_email_task.delay(email)
             yearly_investors_money = Decimal(str(investment.yearly_investors_money()))
             investment.owner.wallet.balance -= yearly_investors_money
             investment.owner.wallet.save()
             body = f"Hi {investment.owner.full_name}, its {investment.name} investment Yearly round up, The Yearly investors money {str(yearly_investors_money)} naira has been deducted from your wallet. If Your wallet balance is negative, simply payup by funding your wallet. Thank You"
             email = {'body': body, 'subject': f'{investment.name} investment Yearly round up', 'to': [investment.owner.email]}
-            send_email_task(email)
+            send_email_task.delay(email)
             date_difference = datetime.date(datetime.now()) - investment.date_approved
             if date_difference.days == investment.duration * 365:
                 investment.active = False
                 investment.save()
                 body = f"Hi {investment.owner.full_name}, Just Here to inform You that {investment.name} investment time is up, if You have any pending money to give investfy, please pay up by simple funding Your wallet. Thank You"
                 email = {'body': body, 'subject': f'{investment.name} investment time up', 'to': [investment.owner.email]}
-                send_email_task(email)
+                send_email_task.delay(email)
     return None

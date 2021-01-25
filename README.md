@@ -31,7 +31,7 @@ There are quite a number of apps(folders) and files inside this project, so i'm 
     The deals mainly with investment, where users can apply for investments and invest in other peoples investments.  
 
 - ### frontend app:  
-    This contains all the static files, templates and the main react application used for the frontend.  
+    This contains all the static files, templates and the main.js, the compiled javascript file used for the frontend.  
     NB: This is also a django app not just a regular folder.  
 
 - ### investfy: 
@@ -162,14 +162,43 @@ Here are the features this application offers.
     4. users can also add and delete beneficiarys bank accounts.
 
 ## How To Run The Application
-    1. Install Python:  
-    Make sure there is python and pip installed on your machine. pip comes with the latest versions of python released nowadays. If not, you can visit the [python website](https://www.python.org/) to download python on your machine.
+1. #### Install Python:  
+    Make sure python and pip are installed on your machine. pip comes with the latest versions of python released nowadays. If not, you can visit the [python website](https://www.python.org/) to download python on your machine.
 
-    2. Install python packages:  
+2. #### Install python packages:  
     Open a terminal and change your directory to the application root forlder and run 'pip install -r requirements.txt' 
 
-    3. Make migrations: 
+3. #### Make migrations: 
     Also from the root folder, run 'python manage.py migrate' to make migrations.
 
-    4. Add List of Banks:
-    from 
+4. #### Add List of Banks:
+    From the root folder, run 'python add_banks.py' to add the list of banks to the database.
+
+5. #### Set up envirenment variables:
+    Firsty, create a .env file in the root folder.
+    There is a .env.example file in the root folder which holds the type of variables that wil be set in the .env file.  
+
+    Secondly, set up your EMAIL and PASSWORD which will be used to by the app to send emails.  
+
+    Thirdly, go to [Flutterwave](https://flutterwave.com),  
+    create an account,  
+    you are to login into your dashboard. Make sure your accout is in live mode,  
+    open your settings tab, 
+    move to the api section then copy the secret key and public key. 
+
+    In your .env file, paste both keys in their respective variables.
+
+    Lastly, for the CELERY_BROKER_URL you can set up redis on [Heroku](https://heroku.com) by create an app on heroku, go to addons, search for Heroku Redis, click provision, it might take a while to set up, after setting up, click on the redis and view credentials. Copy the URI and paste it in the .env file.
+
+6. #### Set Up Celery Worker:
+    Open a new terminal, if you installed all python packages in a virtual environment, dont forget to connect to the virtual environment when opeing a new terminal.
+
+    cd into the application root folder, 
+    run 'celery -A investfy worker -l info'
+
+7. #### Set Up Celery beat:
+    Open a new terminal, cd into the application root directory, run 'celery -A investfy beat -l info'.
+
+8. #### Run Server: 
+    Open a new terminal, cd into the application root directory, run 'python manage.py runserver', opern your browser and go to [localhost:8000](http://localhost:8000).
+    The application should be running live.

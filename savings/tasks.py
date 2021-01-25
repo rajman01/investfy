@@ -81,7 +81,7 @@ def send_joint_save_invite(members, joint_save_id, current_site):
         absurl = 'http://' + current_site + relative_link + '?token=' + str(token)
         body = f"Hi {user.full_name}, {joint_save.admin.username} invited you to join {joint_save.name} joint save. click this link to join \n {absurl} \n the link will expire in 24hrs"
         email = {'body': body, 'subject': 'Accept joint saving', 'to': [user.email]}
-        send_email_task(email)
+        send_email_task.delay(email)
     return None
 
 
@@ -89,7 +89,7 @@ def send_joint_save_invite(members, joint_save_id, current_site):
 def send_disband_email_task(name, emails):
     body = f"{name} joint save as been disbanded"
     if emails:
-        send_email_task({'body': body, 'subject': 'Joint Save Disbaned', 'to': emails})
+        send_email_task.delay({'body': body, 'subject': 'Joint Save Disbaned', 'to': emails})
     return None
 
 
@@ -162,7 +162,7 @@ def joint_save_monthly_check_up():
             )
             body = f"Congratulation {random_member.full_name},  its you turn to cash out from {joint_save.name} joint saving, {amount} has been transfered to wallet"
             email = {'body': body, 'subject': f'{joint_save.name} cash out', 'to': [random_member.email]}
-            send_email_task(email)
+            send_email_task.delay(email)
             if joint_save.has_all_cahsed_out():
                 joint_save.is_active = False
                 joint_save.save()
@@ -176,5 +176,5 @@ def joint_save_monthly_check_up():
                     absurl = 'http://' + GLOBAL_CURRENT_SITE + relative_link + '?token=' + str(token)
                     body = f"Hi {joint_save.admin.full_name}, Your {joint_save.name} joint savings has been completed. click the link below to re-activate. ignore if you think other wise \n {absurl}"
                     email = {'body': body, 'subject': 'Re-activate joint saving', 'to': [joint_save.admin.email]}
-                    send_email_task(email)
+                    send_email_task.delay(email)
     return None

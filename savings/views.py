@@ -12,6 +12,7 @@ from .serializers import (QuickSaveSerializer, SaveSerializer, TargetSaveSeriali
                             CreateJointSaveSerializer, AcceptJointSaveSerializer, PasswordSerializer,
                             InviteSerializer, QuicksaveTransactionSerializer, TargeSaveTransactionSerializer)
 from user.tasks import send_email_task
+from user.permissions import EmailVerified
 from .permissions import ViewOwnSave, ViewJointSave, AdminJointSave
 from .models import QuickSave, QuicksaveTransaction, TargetSave, TargetSavingTransaction, JointSave, JointSaveTransaction, JointSaveTrack
 from .utils import QTW, WTQ, TTW, WTT, check_week
@@ -269,7 +270,7 @@ class JointTargetSaveView(generics.RetrieveAPIView):
 
 
 class CreateJointTargetSaveView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, EmailVerified]
     serializer_class = CreateJointTargetSaveSerializer
 
     def post(self, request, *args, **kwargs):
@@ -419,7 +420,7 @@ class JointSaveView(generics.RetrieveAPIView):
 
 
 class CreateJointSaveView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, EmailVerified]
     serializer_class = CreateJointSaveSerializer
 
     def post(self, request, *args, **kwargs):

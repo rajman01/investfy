@@ -92,7 +92,7 @@ class ChangeWalletIDView(generics.GenericAPIView):
 
 # temporary
 class FundWalletView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated, EmailVerified]
+    permission_classes = [IsAuthenticated, EmailVerified, BVNVerified]
     serializer_class = FundWalletSerializer
 
     def post(self, request, *args, **kwargs):

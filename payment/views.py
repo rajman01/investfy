@@ -8,6 +8,7 @@ from .utils import resolve_account
 from .permissions import ViewOwnAccount
 from wallet.models import AccountTransaction
 from wallet.serializers import AccountTransactionSerializer
+from user.permissions import EmailVerified, BVNVerified
 
 class BanksView(generics.ListAPIView):
     serializer_class = BankSerializer
@@ -66,7 +67,7 @@ class AccountViewSet(mixins.ListModelMixin,
 # temporary
 class MakePaymentView(generics.GenericAPIView):
     serializer_class = MakePaymentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, EmailVerified, BVNVerified]
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
