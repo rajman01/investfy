@@ -1,0 +1,44 @@
+{
+  "name": "investfy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rajman01/investfy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rajman01/investfy/issues"
+  },
+  "homepage": "https://github.com/rajman01/investfy#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.3.0"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-alert": "^7.0.2",
+    "react-alert-template-basic": "^1.0.0",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
+    "react-transition-group": "^4.4.1",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0"
+  }
+}

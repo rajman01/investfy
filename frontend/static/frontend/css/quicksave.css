@@ -1,0 +1,215 @@
+:root {
+  --new-car: rgba(15, 79, 193, 1);
+  --black: rgba(0, 0, 0, 0.1);
+    --mountain-meadow: rgba(48, 197, 123, 1);
+}
+
+.html{
+    min-width: 400px;
+}
+/* 
+.saving-balance{
+    margin: 0 30px;
+    width: 90%;
+    margin: auto;
+    background-color: white;
+    padding: 40px;
+    border-radius: 16px;
+    height: 231px;
+    background-image: url(https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96bbf9924fde667e42a12/img/group-of-blocks@1x.svg)
+} */
+
+.dashoboard-vings-8228 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 22px;
+  min-width: 194px;
+  text-align: left;
+  width: auto;
+}
+.madetommy-regular-normal-mountain-meadow-18px {
+  color: var(--mountain-meadow);
+  font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.below-header, .overview{
+    padding: 30px 0;
+    margin: 0 30px;
+}
+
+
+
+
+.madetommy-light-black-22px {
+  color: black;
+  font-family: "MADE TOMMY-Light", Helvetica, Arial, serif;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 300;
+}
+.quick-save-lance-8344 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 27px;
+  min-width: 208px;
+  text-align: left;
+  width: auto;
+}
+
+.madetommy-medium-new-car-50px {
+  color: var(--new-car);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 700;
+}
+.x40000-8385 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 63px;
+  min-width: 218px;
+  text-align: left;
+  width: auto;
+}
+
+
+.border-class-100 {
+  border: 1px solid var(--black);
+}
+
+.frame-58 {
+  background-color: transparent;
+  height: 65px;
+  /* padding: 21px 21px; */
+  width: 100%;
+    border: none;
+}
+
+.frame-58:hover {
+    background-color: var(--mountain-meadow)
+}
+
+.madetommy-regular-normal-black-1583261775970459px {
+  color: black;
+  font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+}
+.view-interests-83149 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 20px;
+  min-width: 114px;
+  text-align: left;
+  width: auto;
+
+}
+
+.madetommy-bold-white-17px {
+  color: white;
+  font-family: "MADE TOMMY-Bold", Helvetica, Arial, serif;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 700;
+}
+.quick-save-now{
+    background-color: var(--mountain-meadow);
+}
+
+
+
+.auto-save-off-83109 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 21px;
+  min-width: 125px;
+  text-align: left;
+  width: auto;
+}
+.madetommy-bold-black-17px {
+  color: black;
+  font-family: "MADE TOMMY-Bold", Helvetica, Arial, serif;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.opopo{
+    width: fit-content;
+    margin-left: auto;
+}
+
+.frame {
+  align-self: flex-end;
+  background-color: transparent;
+  flex-shrink: 0;
+  height: 448px;
+  margin-top: 41px;
+  width: 930px;
+}
+.madetommy-medium-new-car-26px {
+  color: var(--new-car);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 600;
+}
+.quick-save-tory-88652 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  margin-left: 2.43px;
+  min-height: 33px;
+  min-width: 387px;
+  text-align: left;
+  width: auto;
+}
+
+.transaction-history {
+  align-items: flex-start;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0px 4px 60px rgba(125, 167, 242, 0.06);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-height: 400px;
+  justify-content: flex-start;
+  padding: 36px 43.6px;
+  width: 90%;
+  margin: auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+@media only screen and (max-width: 600px) {
+  .below-header, .overview{
+    margin: 0 10px;
+}
+.transaction-history {
+  padding: 36px 10px;
+  width: 100%;
+  margin: 40px 10px;
+}
+}

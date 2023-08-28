@@ -1,0 +1,411 @@
+:root {
+    --black: rgba(0, 0, 0, 0.3);
+    --black-2: rgba(0, 0, 0, 0.1);
+    --black-3: rgba(0, 0, 0, 0.5);
+    --mountain-meadow: rgba(48, 197, 123, 1);
+    --new-car: rgba(15, 79, 193, 1);
+    --black4: rgba(0, 0, 0, 0.4);
+}
+
+.log-in {
+    background-image: url(https://anima-uploads.s3.amazonaws.com/projects/5fe43cde9fab0bd12ef8da9a/releases/5fe96d7a925f5b52f8a52040/img/group-of-blocks@1x.svg)
+}
+
+.arrow-chevronbigleft-eEVrzL {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: 7px;
+    transform: rotate(90deg);
+    width: 11px;
+}
+
+.arrow-chevronbigleft-pJxn4p {
+    align-items: flex-end;
+    background-color: transparent;
+    display: inline-flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: 13px;
+    justify-content: flex-start;
+    margin-left: 4px;
+    margin-top: 3px;
+    padding: 3px 1px;
+    transform: rotate(-90deg);
+    width: 13px;
+}
+
+.border-class-2 {
+    border: 1px solid var(--black-2);
+}
+
+.button {
+    align-items: flex-start;
+    background-color: var(--mountain-meadow);
+    border-radius: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: 80px;
+    justify-content: flex-start;
+    margin-top: 32px;
+    padding: 28px 117px;
+    width: 370px;
+}
+
+.create-account-5769 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    min-height: 23px;
+    min-width: 145px;
+    text-align: left;
+    width: auto;
+}
+
+.create-account-580 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    margin-left: 2px;
+    min-height: 31px;
+    min-width: 194px;
+    text-align: left;
+    width: auto;
+}
+
+.enter-emai-dress-5815 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    min-height: 22px;
+    min-width: 174px;
+    text-align: left;
+    width: auto;
+}
+
+.enter-fullname-5758 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    min-height: 22px;
+    min-width: 133px;
+    text-align: left;
+    width: auto;
+}
+
+.enter-password-5823 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    min-height: 22px;
+    min-width: 138px;
+    text-align: left;
+    width: auto;
+}
+
+.enter-phon-umber-5821 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    margin-left: 12px;
+    min-height: 22px;
+    min-width: 183px;
+    text-align: left;
+    width: auto;
+}
+
+.frame-3 {
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: 70px;
+    justify-content: flex-start;
+    margin-top: 32px;
+    padding: 0 27px;
+    width: 370px;
+}
+
+.frame-30 {
+    align-items: center;
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 0px 4px 60px rgba(125, 167, 242, 0.06);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    justify-content: flex-start;
+    padding: 59px 0;
+    width: 446px;
+    margin: auto;
+    margin-top: 15%;
+}
+
+.frame-33 {
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: 70px;
+    justify-content: flex-start;
+    margin-top: 32px;
+    overflow: hidden;
+    padding: 0 11px;
+    width: 370px;
+}
+
+.frame-34 {
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: 70px;
+    justify-content: flex-start;
+    margin-top: 32px;
+    padding: 0 24px;
+    width: 370px;
+}
+
+.line-6 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: 70px;
+    margin-left: 7px;
+    width: 1px;
+}
+
+.madetommy-bold-white-18px {
+    color: white;
+    font-family: "MADE TOMMY-Bold", Helvetica, Arial, serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.madetommy-medium-black-25px {
+    color: var(--black-3);
+    font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.madetommy-regular-normal-black-16px {
+    color: var(--black);
+    font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.madetommy-regular-normal-black-18px {
+    color: var(--black);
+    font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.rectangle-63 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: 30px;
+    margin-left: 161px;
+    width: 30px;
+}
+
+.x234-5825 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    margin-top: 2px;
+    min-height: 20px;
+    min-width: 48px;
+    text-align: left;
+    width: auto;
+}
+
+.login-words{
+    margin: auto;
+    margin-top: 15%;
+    padding-left: 40px;
+    width: fit-content;
+}
+
+.log-in-to--count-6043 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 126px;
+  text-align: left;
+  width: 395px;
+}
+.madetommy-medium-white-50px {
+  color: transparent;
+  font-family: "MADE TOMMY", Helvetica, Arial, serif;
+  font-size: 50px;
+}
+.span1-wwzu74 {
+  color: rgba(15, 79, 193, 1);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 500;
+}
+.span2-wwzu74 {
+  color: rgba(0, 0, 0, 1);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 500;
+}
+.span3-wwzu74 {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 500;
+}
+.span4-wwzu74 {
+  color: rgba(0, 0, 0, 1);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 500;
+}
+.span5-wwzu74 {
+  color: rgba(48, 197, 123, 1);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.madetommy-regular-normal-black-20px {
+  color: var(--black4);
+  font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+}
+.tech-is-ch-esses-6045 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 74px;
+  text-align: left;
+  width: 499px;
+}
+
+.investfy-502338 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 343px;
+  opacity: 0.05;
+  text-align: left;
+  width: 1006px;
+}
+.madetommy-medium-white-275625px {
+  color: transparent;
+  font-family: "MADE TOMMY", Helvetica, Arial, serif;
+  font-size: 275px;
+}
+.span1-j47KxE {
+  color: rgba(48, 197, 123, 1);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 275px;
+  font-style: normal;
+  font-weight: 500;
+}
+.span2-j47KxE {
+  color: rgba(15, 79, 193, 1);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 275px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.madetommy-medium-mountain-meadow-30px {
+  color: var(--mountain-meadow);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 500;
+}
+.no-account-6044 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 38px;
+  text-align: left;
+margin-top: 30px
+}
+
+
+.button2 {
+  align-items: flex-start;
+  background-color: var(--new-car);
+  border-radius: 10px;
+  display: inline-flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  height: 80px;
+  justify-content: flex-start;
+  padding: 27px 126px;
+  width: 315px;
+}
+.log-in-5828 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: auto;
+  letter-spacing: 0px;
+  line-height: normal;
+  min-height: 25px;
+  min-width: 70px;
+  text-align: left;
+  width: auto;
+}
+.madetommy-bold-white-20px {
+  color: white;
+  font-family: "MADE TOMMY-Bold", Helvetica, Arial, serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+
+@media only screen and (max-width: 800px) {
+
+    .investfy-502338{
+        display: none;
+    }
+}

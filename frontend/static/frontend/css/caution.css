@@ -1,0 +1,46 @@
+
+.attention--roroutline6 {
+  background-color: transparent;
+  flex-shrink: 0;
+  height: 36px;
+  margin-bottom: 0.07px;
+  width: 36px;
+}
+.caution-card {
+  align-items: center;
+  background-color: var(--lightning-yellow);
+  border-radius: 20px;
+  justify-content: flex-start;
+  padding: 23px 39px;
+  width: 90%;
+  margin: auto;
+}
+
+@media only screen and (max-width: 700px) {
+  .caution-card {
+      width: 100%;
+      margin: 0 10px;
+  }
+}
+
+
+
+.madetommy-medium-white-11976469993591309px6 {
+  color: white;
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+}
+.madetommy-regular-normal-black-17964704513549805px6 {
+  color: black;
+  font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+:root {
+  --lightning-yellow: rgba(247, 197, 19, 0.1);
+  --mountain-meadow: rgba(48, 197, 123, 1);
+}

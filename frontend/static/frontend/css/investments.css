@@ -1,0 +1,358 @@
+*{
+  font-family: "MADE TOMMY-Light", Helvetica, Arial, serif;
+}
+:root {
+    --new-car: rgba(15, 79, 193, 1);
+    --black: rgba(0, 0, 0, 0.1);
+    --black-2: rgba(0, 0, 0, 0.3);
+    --black-3: rgba(0, 0, 0, 0.5);
+  --winter-sky: rgba(246, 15, 112, 0.2);
+  --black-4: rgba(0, 0, 0, 0.6);
+  --mountain-meadow: rgba(48, 197, 123, 1);
+  --portage: rgba(125, 167, 242, 0.06);
+  
+  }
+
+.investments{
+    padding: 25px 35px;
+    background-color: white;
+    margin: auto;
+    margin-top: 40px;
+    width: 90%;
+    border-radius: 16px;
+    min-height: 400px;
+    margin-bottom: 40px;
+}
+
+.madetommy-medium-new-car-20px {
+  color: var(--new-car);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.border-class-88 {
+  border: 1px solid var(--black);
+}
+.edit-searchsmall {
+  height: 32px;
+  width: 32px;
+}
+.frame-65 {
+  align-items: center;
+  border-radius: 6px;
+  display: flex;
+  height: 48px;
+  overflow: hidden;
+  padding: 0 0 0 19px;
+  width: 367px;
+}
+.search-investment{
+    width: 100%;
+    border-radius: 6px;
+    height: 48px;
+    border: none;
+    padding: 0 15px;
+    outline: none;
+}
+.search-investment:focus{
+    border: none;
+    outline: none;
+}
+
+.madetommy-light-black-14px {
+  color: var(--black-2);
+  font-family: "MADE TOMMY-Light", Helvetica, Arial, serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 300;
+}
+
+
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+
+@font-face {
+  font-family: "MADE TOMMY-Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://fonts.animaapp.com/MADETOMMY-Regular") format("opentype");
+}
+
+@font-face {
+  font-family: "MADE TOMMY-Medium";
+  font-style: normal;
+  font-weight: 500;
+  src: url("https://fonts.animaapp.com/MADETOMMY-Medium") format("opentype");
+}
+
+@font-face {
+  font-family: "MADE TOMMY-Light";
+  font-style: normal;
+  font-weight: 300;
+  src: url("https://fonts.animaapp.com/MADETOMMY-Light") format("opentype");
+}
+
+* {
+  box-sizing: border-box;
+}
+.border-class-190 {
+  border: 1px solid var(--winter-sky);
+}
+.investment-mini-card {
+  border-radius: 10px;
+  height: 136px;
+  overflow: hidden;
+  position: relative;
+  
+}
+.madetommy-light-black-12px {
+  color: black;
+  font-family: "MADE TOMMY-Light", Helvetica, Arial, serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 300;
+}
+.madetommy-medium-black-16px {
+  color: var(--black-3);
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+}
+.madetommy-regular-normal-black-18px {
+  color: black;
+  font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+}
+.overlap-group {
+  height: 139px;
+  left: 22px;
+  position: absolute;
+  top: -22px;
+  width: 279px;
+}
+.price {
+  left: 157px;
+  letter-spacing: 0px;
+  position: absolute;
+  text-align: left;
+  top: 117px;
+}
+.rectangle-66 {
+  height: 134px;
+  left: 145px;
+  position: absolute;
+  top: 0px;
+  width: 134px;
+}
+
+.view-details-13121 {
+  left: 22px;
+  letter-spacing: 0px;
+  position: absolute;
+  text-align: left;
+  top: 68px;
+}
+
+.text-22 {
+    letter-spacing: 0px;
+    min-height: 40px;
+    text-align: left;
+    max-width: 200px;
+    position: absolute;
+    top: 37px;
+  }
+
+.madetommy-regular-normal-black-16pxs {
+  color: black;
+  font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+}
+.text-109 {
+  letter-spacing: 0px;
+  min-height: 20px;
+  min-width: 159px;
+  text-align: left;
+}
+
+
+
+.address {
+  letter-spacing: 0px;
+  margin-top: 6px;
+  min-height: 19px;
+  min-width: 72px;
+  text-align: left;
+}
+.fixed-income-1764 {
+  letter-spacing: 0px;
+  margin-top: 6px;
+  min-height: 19px;
+  min-width: 94px;
+  text-align: left;
+}
+.frame-69 {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  padding: 10px 0;
+  width: 100%;
+}
+.frame-7 {
+  align-items: flex-start;
+  background-color: var(--portage);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  min-height: 73px;
+  margin-top: 20px;
+  overflow: hidden;
+  padding: 16px 22px;
+  width: 100%;
+}
+.madetommy-regular-normal-black-12pxs {
+  color: var(--black-4);
+  font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+}
+.madetommy-regular-normal-black-15px {
+  color: var(--black-4);
+  font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+}
+.madetommy-regular-normal-mountain-meadow-16px {
+  color: var(--mountain-meadow);
+  font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+.payout-type-1766 {
+  letter-spacing: 0px;
+  min-height: 15px;
+  min-width: 70px;
+  text-align: left;
+}
+.text-19 {
+  letter-spacing: 0px;
+  min-height: 20px;
+  min-width: 161px;
+  text-align: left;
+}
+.text-2 {
+  letter-spacing: 0px;
+  min-height: 15px;
+  min-width: 99px;
+  text-align: left;
+}
+.text-3 {
+  letter-spacing: 0px;
+  margin-top: 6px;
+  min-height: 19px;
+  min-width: 178px;
+  text-align: left;
+}
+
+
+.madetommy-light-black-11px {
+  color: black;
+  font-family: "MADE TOMMY-Light", Helvetica, Arial, serif;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 300;
+}
+.text-1 {
+  letter-spacing: 0px;
+  min-height: 14px;
+  min-width: 217px;
+  text-align: left;
+}
+
+.black-border-1pxss {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.frame-70 {
+  border-radius: 7px;
+  height: 48px;
+  padding: 8px 18px;
+  width: 100%
+}
+
+.form-invest{
+  width: 90%;
+  margin: auto;
+  margin-top: 30%;
+}
+
+.form-invest form{
+  width: 100%;
+}
+
+.frame-71 {
+  background-color: var(--mountain-meadow);
+  border-radius: 7px;
+  height: 60px;
+  padding: 17px 138px;
+  width: 100%;
+  border: none;
+}
+.invest-1848 {
+  width: fit-content;
+  margin: auto;
+}
+.madetommy-medium-white-20px {
+  color: white;
+  font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.flex{
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.investments-header{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.apply{
+  width:fit-content;
+  margin-left: auto;
+}
+.investors-div{
+  width: 100%;
+}
+
+@media only screen and (max-width: 600px) {
+  
+.investments{
+  padding: 25px 10px;
+  background-color: white;
+  margin: 40px 10px;
+  width: 100%;
+}
+}
+
+
+@media only screen and (max-width: 1022px) {
+  
+.form-invest{
+  width: 100%;
+  margin-top: 20px;
+}
+ 
+}

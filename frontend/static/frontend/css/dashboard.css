@@ -1,0 +1,139 @@
+:root {
+    --new-car: rgba(15, 79, 193, 1);
+    --black: rgba(0, 0, 0, 0.4);
+    --new-car: rgba(15, 79, 193, 1);
+    --mountain-meadow: rgba(48, 197, 123, 1);
+}
+
+.frame-52 {
+    align-items: flex-start;
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0px 4px 60px rgba(125, 167, 242, 0.06);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: 231px;
+    justify-content: flex-start;
+    padding: 31px 24px;
+    width: 307px;
+    margin: auto;
+    margin-top: 30px;
+
+}
+
+.overview,
+.save-now {
+    padding: 30px 0;
+    margin: 0 30px;
+}
+
+.madetommy-medium-black-34px {
+    color: black;
+    font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.madetommy-medium-new-car-19px {
+    color: var(--new-car);
+    font-family: "MADE TOMMY-Medium", Helvetica, Arial, serif;
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.rectangle-64 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: 70px;
+    width: 70px;
+}
+
+.x-total-inv-ents-78180 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    margin-top: 13px;
+    min-height: 24px;
+    min-width: 175px;
+    text-align: left;
+    width: auto;
+}
+
+.x650000-78181 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    margin-top: 12px;
+    min-height: 35px;
+    text-align: left;
+}
+
+
+.dashoboard-iew-123132 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    min-height: 22px;
+    min-width: 209px;
+    text-align: left;
+    width: auto;
+}
+
+.madetommy-regular-normal-mountain-meadow-18px {
+    color: var(--mountain-meadow);
+    font-family: "MADE TOMMY-Regular", Helvetica, Arial, serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.frame-47 {
+    align-items: flex-start;
+    background-color: var(--mountain-meadow);
+    border-radius: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    height: 34px;
+    justify-content: flex-start;
+    padding: 10px 31px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.madetommy-extra-extra-bold-white-12px {
+    color: white;
+    font-family: "MADE TOMMY-ExtraBold", Helvetica, Arial, serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 800;
+}
+
+.save-now-7834 {
+    background-color: transparent;
+    flex-shrink: 0;
+    height: auto;
+    letter-spacing: 0px;
+    line-height: normal;
+    min-height: 14px;
+    text-align: left;
+}
+
+@media only screen and (max-width: 600px) {
+    .save-now {
+        margin: 0 10px;
+    }
+    .frame-52{
+        width: 100%;
+    }
+}
+
